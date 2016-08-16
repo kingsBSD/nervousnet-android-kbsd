@@ -1,5 +1,7 @@
 package ch.ethz.coss.nervousnet.vm;
 
+import ch.ethz.coss.nervousnet.lib.LibConstants;
+
 public class NervousnetVMConstants {
 
     public static final int STATE_PAUSED = 0;
@@ -16,10 +18,18 @@ public class NervousnetVMConstants {
     public final static int REQUEST_ENABLE_BT = 0;
 
 
-    public static long[] sensor_ids = {0, 1, 2, 3, 4, 5, 6};
+    public static long[] sensor_ids = {LibConstants.SENSOR_ACCELEROMETER,
+            LibConstants.SENSOR_BATTERY,
+            LibConstants.SENSOR_GYROSCOPE,
+            LibConstants.SENSOR_LOCATION,
+            LibConstants.SENSOR_LIGHT,
+            LibConstants.SENSOR_NOISE,
+            LibConstants.SENSOR_NOTIFICATION,
+            LibConstants.SENSOR_PROXIMITY,
+    };
 
     public static String[] sensor_labels = {"Accelerometer", "Battery", "Gyroscope",
-            "Location", "Light", "Noise", "Proximity"};
+            "Location", "Light", "Noise", "Notification", "Proximity"};
 
 //	public static long[] sensor_ids = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 //
@@ -30,7 +40,7 @@ public class NervousnetVMConstants {
 
     public static int[][] sensor_freq_constants = {{-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000},
             {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000},
-            {-1, 60000, 120000, 300000}
+            {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000}
     };
 
     public static byte SENSOR_STATE_NOT_AVAILABLE = -2;

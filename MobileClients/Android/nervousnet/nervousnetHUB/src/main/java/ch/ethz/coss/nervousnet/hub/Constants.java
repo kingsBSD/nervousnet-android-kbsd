@@ -37,7 +37,7 @@ public final class Constants {
 
     public static Integer[] icon_array_sensors = {R.drawable.ic_accel, R.drawable.ic_batt,
             R.drawable.ic_gyro, R.drawable.ic_loc, R.drawable.ic_light,
-            R.drawable.ic_noise, R.drawable.ic_proxim};
+            R.drawable.ic_noise, R.drawable.ic_noise, R.drawable.ic_proxim};
 
 
     public static String[] collection_rate_global_options = {"Switch off all Sensors", "Set all Sensors to High", "Set all Sensors to Medium", "Set all Sensors to low"};

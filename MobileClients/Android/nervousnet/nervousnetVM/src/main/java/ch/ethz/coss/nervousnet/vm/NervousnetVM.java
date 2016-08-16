@@ -14,6 +14,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
+import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.RemoteCallback;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.vm.sensors.AccelerometerSensor;
@@ -23,6 +24,7 @@ import ch.ethz.coss.nervousnet.vm.sensors.GyroSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.LightSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.LocationSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.NoiseSensor;
+import ch.ethz.coss.nervousnet.vm.sensors.NotificationSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.ProximitySensor;
 import ch.ethz.coss.nervousnet.vm.storage.Config;
 import ch.ethz.coss.nervousnet.vm.storage.SQLHelper;
@@ -101,29 +103,31 @@ public class NervousnetVM {
         for (Long key : hSensorConfig.keySet()) {
             SensorConfig sensorConfig = hSensorConfig.get(NervousnetVMConstants.sensor_ids[count++]);
             BaseSensor sensor = null;
-            if (sensorConfig.getID() == NervousnetVMConstants.sensor_ids[0]) { // Accelerometer
+
+            if (sensorConfig.getID() == LibConstants.SENSOR_ACCELEROMETER) {
                 sensor = new AccelerometerSensor(sensorManager,
                         manager.hasSystemFeature(PackageManager.FEATURE_SENSOR_ACCELEROMETER) ? sensorConfig.getState()
                                 : NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE);
-            } else if (sensorConfig.getID() == NervousnetVMConstants.sensor_ids[1]) { // Battery
+            } else if (sensorConfig.getID() == LibConstants.SENSOR_BATTERY) {
                 sensor = new BatterySensor(context, sensorConfig.getState());
-            } else if (sensorConfig.getID() == NervousnetVMConstants.sensor_ids[2]) { // Gyroscope
+            } else if (sensorConfig.getID() == LibConstants.SENSOR_GYROSCOPE) {
                 sensor = new GyroSensor(sensorManager, manager.hasSystemFeature(PackageManager.FEATURE_SENSOR_GYROSCOPE)
                         ? sensorConfig.getState() : NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE);
-            } else if (sensorConfig.getID() == NervousnetVMConstants.sensor_ids[3]) { // Location
+            } else if (sensorConfig.getID() == LibConstants.SENSOR_LOCATION) {
                 sensor = new LocationSensor(manager.hasSystemFeature(PackageManager.FEATURE_LOCATION)
                         ? sensorConfig.getState() : NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE, locManager,
                         context);
-            } else if (sensorConfig.getID() == NervousnetVMConstants.sensor_ids[4]) { // Light
+            } else if (sensorConfig.getID() == LibConstants.SENSOR_LIGHT) {
                 sensor = new LightSensor(sensorManager, manager.hasSystemFeature(PackageManager.FEATURE_SENSOR_LIGHT)
                         ? sensorConfig.getState() : NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE);
-            } else if (sensorConfig.getID() == NervousnetVMConstants.sensor_ids[5]) { // Noise
+            } else if (sensorConfig.getID() == LibConstants.SENSOR_NOISE) {
                 sensor = new NoiseSensor(manager.hasSystemFeature(PackageManager.FEATURE_MICROPHONE)
                         ? sensorConfig.getState() : NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE, context);
-            } else if (sensorConfig.getID() ==
-                    NervousnetVMConstants.sensor_ids[6]) { //Proximity
+            } else if (sensorConfig.getID() == LibConstants.SENSOR_PROXIMITY) {
                 sensor = new ProximitySensor(sensorManager, manager.hasSystemFeature(PackageManager.FEATURE_SENSOR_PROXIMITY)
                         ? sensorConfig.getState() : NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE);
+            } else if (sensorConfig.getID() == LibConstants.SENSOR_NOTIFICATION) {
+                sensor = new NotificationSensor(context, sensorConfig.getState());
             }
 
             if (sensor != null) {

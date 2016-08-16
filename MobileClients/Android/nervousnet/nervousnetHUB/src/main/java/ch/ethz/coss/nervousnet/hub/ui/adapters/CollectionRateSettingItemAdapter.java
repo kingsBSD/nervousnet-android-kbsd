@@ -46,8 +46,7 @@ public class CollectionRateSettingItemAdapter extends ArrayAdapter<String> {
         imageView.setImageResource(icons[position]);
 
         button = (Button) convertView.findViewById(R.id.sensor_level_button);
-        button.setText(NervousnetVMConstants.sensor_freq_labels[((Application) context.getApplicationContext()).nn_VM
-                .getSensorState(position)]);
+        button.setText(NervousnetVMConstants.sensor_freq_labels[((Application) context.getApplicationContext()).nn_VM.getSensorState(position)]);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

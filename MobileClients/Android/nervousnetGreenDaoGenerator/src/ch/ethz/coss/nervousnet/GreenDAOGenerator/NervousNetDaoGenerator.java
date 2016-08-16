@@ -39,8 +39,7 @@ public class NervousNetDaoGenerator {
 	public static void main(String[] args) throws Exception {
 		Schema schema = new Schema(3, "ch.ethz.coss.nervousnet.vm.storage");
 		schema.enableKeepSectionsByDefault();
-		addConfig(schema);
-		addSensorConfig(schema);
+		addConfig(schema);		addSensorConfig(schema);
 		addAuthentication(schema);
 		addSensors(schema);
 		new DaoGenerator().generateAll(schema, OUTPUT_FOLDER);
@@ -182,6 +181,12 @@ public class NervousNetDaoGenerator {
 		noiseData.addFloatProperty("Decibel");
 		noiseData.addLongProperty("Volatility").notNull();
 		noiseData.addBooleanProperty("ShareFlag");
+
+		Entity notificationData = schema.addEntity("NotificationData");
+		notificationData.implementsInterface("SensorDataImpl");
+		notificationData.addIdProperty().autoincrement().primaryKey();
+		notificationData.addLongProperty("TimeStamp");
+		notificationData.addStringProperty("appName");
 
 		Entity pressureData = schema.addEntity("PressureData");
 		pressureData.implementsInterface("SensorDataImpl");

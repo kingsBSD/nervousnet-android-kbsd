@@ -8,6 +8,7 @@
         android:minSdkVersion="17"
         android:targetSdkVersion="22" />
 
+    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -52,6 +53,18 @@
             android:permission="ch.ethz.coss.nervousnet.hub.BIND_PERM">
             <intent-filter>
                 <action android:name="ch.ethz.coss.nervousnet.hub" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="ch.ethz.coss.nervousnet.hub.NotificationService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibilityservice" />
+
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
         </service>
 
