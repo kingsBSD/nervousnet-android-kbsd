@@ -28,11 +28,20 @@
  */
 package ch.ethz.coss.nervousnet.hub.ui;
 
+import java.util.List;
+
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -96,10 +105,12 @@ public abstract class BaseActivity extends Activity implements ActionBarImplemen
     public void startStopSensorService(boolean on) {
         if (on) {
             ((Application) getApplication()).startService(this);
+            if (!accessibilityEnabled()) {
+                accessibilityPrompt();
+            }
         } else {
             ((Application) getApplication()).stopService(this);
         }
-
         ((Application) getApplication()).setState(this, on ? (byte) 1 : (byte) 0);
 //		finish();
 //		startActivity(getIntent());
@@ -126,6 +137,34 @@ public abstract class BaseActivity extends Activity implements ActionBarImplemen
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    private boolean accessibilityEnabled() {
+        AccessibilityManager am = (AccessibilityManager) this.getSystemService(Context.ACCESSIBILITY_SERVICE);
+        List<AccessibilityServiceInfo> runningServices = am.getEnabledAccessibilityServiceList(AccessibilityEvent.TYPES_ALL_MASK);
+        for (AccessibilityServiceInfo service : runningServices) {
+            //Log.i("accessibility",service.getId());
+            if ("ch.ethz.coss.nervousnet.hub/.NotificationService".equals(service.getId())) return true;
+        }
+        return false;
+    }
+
+    private void accessibilityPrompt() {
+        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
+        myAlertDialog.setTitle(this.getString(R.string.accessibiliity_dialog_title));
+        myAlertDialog.setMessage(this.getString(R.string.accessibiliity_dialog_prompt));
+        myAlertDialog.setPositiveButton(this.getString(R.string.accessibiliity_dialog_confirm), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+            }});
+
+        myAlertDialog.setNegativeButton(this.getString(R.string.accessibiliity_dialog_cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                // do something when the Cancel button is clicked
+            }});
+
+        myAlertDialog.show();
+
     }
 
 }
