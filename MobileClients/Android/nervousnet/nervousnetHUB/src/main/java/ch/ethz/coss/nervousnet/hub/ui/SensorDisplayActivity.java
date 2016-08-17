@@ -59,6 +59,7 @@ import ch.ethz.coss.nervousnet.hub.ui.fragments.GyroFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.LightFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.LocationFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.NoiseFragment;
+import ch.ethz.coss.nervousnet.hub.ui.fragments.NotificationFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.ProximityFragment;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
@@ -252,12 +253,13 @@ public class SensorDisplayActivity extends FragmentActivity implements ActionBar
                     errorFlag = updateStatus(nervousnetServiceController.getLatestReading(LibConstants.SENSOR_NOISE), index);
                     break;
                 case 6:
-                    // Pressure
+                    errorFlag = updateStatus(nervousnetServiceController.getLatestReading(LibConstants.SENSOR_NOTIFICATION), index);
+                    break;
+                case 7:
                     errorFlag = updateStatus(nervousnetServiceController.getLatestReading(LibConstants.SENSOR_PROXIMITY), index);
                     break;
 
                 case 11:
-                    // Proximity
                     errorFlag = false;
                     break;
 
@@ -325,6 +327,9 @@ public class SensorDisplayActivity extends FragmentActivity implements ActionBar
                     fragment = new NoiseFragment();
                     break;
                 case 6:
+                    fragment = new NotificationFragment();
+                    break;
+                case 7:
                     fragment = new ProximityFragment();
                     break;
                 default:
