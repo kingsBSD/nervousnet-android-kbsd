@@ -35,7 +35,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import ch.ethz.coss.nervousnet.hub.R;
-import ch.ethz.coss.nervousnet.lib.AccelerometerReading;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.NotificationReading;

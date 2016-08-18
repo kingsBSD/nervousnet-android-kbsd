@@ -54,6 +54,8 @@ public abstract class SensorReading implements Parcelable {
                 return new LocationReading(in);
             } else if (className.equals(NoiseReading.class.getName())) {
                 return new NoiseReading(in);
+            }  else if (className.equals(NotificationReading.class.getName())) {
+                return new NotificationReading(in);
             } else if (className.equals(ProximityReading.class.getName())) {
                 return new ProximityReading(in);
             } else {

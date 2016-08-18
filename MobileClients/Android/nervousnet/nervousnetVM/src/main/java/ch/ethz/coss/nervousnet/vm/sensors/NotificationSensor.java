@@ -15,7 +15,7 @@ import ch.ethz.coss.nervousnet.lib.NotificationReading;
 /**
  * Created by grg on 16/08/16.
  */
-public class NotificationSensor extends BaseSensor {
+public class NotificationSensor extends BaseSensor implements SensorEventListener {
 
     private Context context;
 
@@ -41,6 +41,16 @@ public class NotificationSensor extends BaseSensor {
         LocalBroadcastManager.getInstance(context).unregisterReceiver(notificationReceiver);
         return true;
     }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+    }
+
 
     private BroadcastReceiver notificationReceiver = new BroadcastReceiver() {
         @Override
