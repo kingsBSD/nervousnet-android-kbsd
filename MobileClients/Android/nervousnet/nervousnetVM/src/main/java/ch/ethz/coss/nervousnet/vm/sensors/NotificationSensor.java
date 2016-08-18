@@ -8,6 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import ch.ethz.coss.nervousnet.lib.NotificationReading;
 
@@ -37,6 +38,7 @@ public class NotificationSensor extends BaseSensor {
 
     @Override
     public boolean stop(boolean changeStateFlag) {
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(notificationReceiver);
         return true;
     }
 
@@ -45,6 +47,7 @@ public class NotificationSensor extends BaseSensor {
         public void onReceive(Context context, Intent intent) {
             long timestamp = intent.getLongExtra("timestamp",0L);
             String appName = intent.getStringExtra("appName");
+            //Log.d("notification",appName);
             reading = new NotificationReading(timestamp, appName);
             dataReady(reading);
         }

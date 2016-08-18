@@ -507,6 +507,7 @@ public class SQLHelper implements BaseSensorListener {
                     storeSensorAsync(LibConstants.SENSOR_NOTIFICATION, new ArrayList<SensorDataImpl>(notificationDataArrList));
                     notificationDataArrList.clear();
                 }
+                break;
 
             case LibConstants.SENSOR_PROXIMITY:
                 ProximityReading proxReading = (ProximityReading) reading;
