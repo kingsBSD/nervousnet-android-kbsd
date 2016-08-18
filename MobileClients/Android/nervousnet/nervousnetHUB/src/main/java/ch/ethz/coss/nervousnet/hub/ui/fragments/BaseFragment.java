@@ -28,7 +28,7 @@
  */
 package ch.ethz.coss.nervousnet.hub.ui.fragments;
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;

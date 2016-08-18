@@ -29,6 +29,7 @@
 package ch.ethz.coss.nervousnet.hub.ui.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v13.app.ActivityCompat;
@@ -81,7 +82,7 @@ public class LocationFragment extends BaseFragment {
         } else {
 
             double[] location = ((LocationReading) reading).getLatnLong();
-            FragmentActivity fragAct = getActivity();
+            Activity fragAct = getActivity();
             if (fragAct == null)
                 System.out.println("FragmentAcvitivity is null");
 

@@ -25,25 +25,17 @@
  *******************************************************************************/
 package ch.ethz.coss.nervousnet.hub.ui;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -69,7 +61,7 @@ import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.vm.NNLog;
 import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
-public class SensorDisplayActivity extends FragmentActivity implements ActionBarImplementation, NervousnetServiceConnectionListener {
+public class SensorDisplayActivity extends BaseActivity implements ActionBarImplementation, NervousnetServiceConnectionListener {
     private static BaseFragment fragment;
     int m_interval = 100; // 100 milliseconds by default, can be changed later
     Handler m_handler = new Handler();
@@ -82,10 +74,9 @@ public class SensorDisplayActivity extends FragmentActivity implements ActionBar
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        updateActionBar();
         setContentView(R.layout.activity_sensor_display);
 
-        sapAdapter = new SensorDisplayPagerAdapter(getApplicationContext(), getSupportFragmentManager());
+        sapAdapter = new SensorDisplayPagerAdapter(getApplicationContext(), this.getFragmentManager());
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(sapAdapter);
@@ -98,56 +89,6 @@ public class SensorDisplayActivity extends FragmentActivity implements ActionBar
         nervousnetServiceController = new NervousnetServiceController(SensorDisplayActivity.this, this);
         nervousnetServiceController.connect();
     }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return false;
-    }
-
-    @Override
-    public void updateActionBar() {
-
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflator.inflate(R.layout.ab_nn, null);
-        ActionBar actionBar;
-        Switch mainSwitch;
-
-        actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowHomeEnabled(false);
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setCustomView(v);
-        mainSwitch = (Switch) findViewById(R.id.mainSwitch);
-
-        byte state = ((Application) getApplication()).getState();
-        NNLog.d("SensorDisplayActivity", "state = " + state);
-        mainSwitch.setChecked(state == 0 ? false : true);
-
-        mainSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                startStopSensorService(isChecked);
-            }
-        });
-
-    }
-
-    public void startStopSensorService(boolean on) {
-        if (on) {
-            ((Application) getApplication()).startService(this);
-            initServiceConnection();
-        } else {
-            ((Application) getApplication()).stopService(this);
-            stopRepeatingTask();
-        }
-
-        ((Application) getApplication()).setState(this, on ? (byte) 1 : (byte) 0);
-        // updateServiceInfo();
-    }
-
 
     protected boolean updateStatus(SensorReading reading, int index) {
 
