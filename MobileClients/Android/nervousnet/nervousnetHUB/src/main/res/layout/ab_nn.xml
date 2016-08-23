@@ -27,7 +27,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:switchMinWidth="@dimen/switch_min_width"
-        android:text="Status"
         android:textSize="@dimen/switch_label_size"
         android:thumb="@drawable/thumb"
         android:track="@drawable/track" />

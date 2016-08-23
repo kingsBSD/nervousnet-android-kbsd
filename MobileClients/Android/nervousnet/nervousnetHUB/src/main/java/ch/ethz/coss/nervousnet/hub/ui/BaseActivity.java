@@ -40,6 +40,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.LayoutInflater;
@@ -49,6 +51,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import ch.ethz.coss.nervousnet.hub.Application;
+import ch.ethz.coss.nervousnet.hub.DbDumpTask;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.vm.NNLog;
 
@@ -100,6 +103,25 @@ public abstract class BaseActivity extends Activity implements ActionBarImplemen
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.base_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.dump_db:
+                dumpDb();
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void startStopSensorService(boolean on) {
@@ -166,5 +188,10 @@ public abstract class BaseActivity extends Activity implements ActionBarImplemen
         myAlertDialog.show();
 
     }
+
+    private void dumpDb() {
+        new DbDumpTask(BaseActivity.this).execute(0);
+    }
+
 
 }

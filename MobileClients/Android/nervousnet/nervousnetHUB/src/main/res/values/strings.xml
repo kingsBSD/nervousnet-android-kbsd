@@ -149,6 +149,8 @@ Clausiusstrasse 50,\n 8092 Zürich,\n Switzerland\n</string>
 	<string name="accessibiliity_dialog_confirm">Yes</string>
 	<string name="accessibiliity_dialog_cancel">Not Now</string>
 
+	<string name="dump_db">Export Database</string>
+
 	<!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
