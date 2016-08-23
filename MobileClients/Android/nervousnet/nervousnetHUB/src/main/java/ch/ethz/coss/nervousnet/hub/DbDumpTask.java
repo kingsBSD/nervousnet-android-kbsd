@@ -4,7 +4,6 @@ import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.Closeable;
@@ -45,7 +44,6 @@ public class DbDumpTask extends AsyncTask<Integer, Integer, Integer> {
         File exportFile = new File(dest, exportPath);
 
         File dbFile = context.getDatabasePath(DB_NAME);
-        Log.d("dbpath", dbFile.getAbsolutePath());
 
         FileChannel sourceStream = null, destStream = null;
 
