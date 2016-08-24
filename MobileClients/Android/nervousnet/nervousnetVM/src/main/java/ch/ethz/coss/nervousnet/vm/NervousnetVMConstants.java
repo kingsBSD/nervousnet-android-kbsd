@@ -26,10 +26,11 @@ public class NervousnetVMConstants {
             LibConstants.SENSOR_NOISE,
             LibConstants.SENSOR_NOTIFICATION,
             LibConstants.SENSOR_PROXIMITY,
+            LibConstants.SENSOR_TRAFFIC
     };
 
     public static String[] sensor_labels = {"Accelerometer", "Battery", "Gyroscope",
-            "Location", "Light", "Noise", "Notification", "Proximity"};
+            "Location", "Light", "Noise", "Notification", "Proximity", "Network Traffic"};
 
 //	public static long[] sensor_ids = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 //
@@ -40,7 +41,7 @@ public class NervousnetVMConstants {
 
     public static int[][] sensor_freq_constants = {{-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000},
             {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000},
-            {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000}
+            {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000}
     };
 
     public static byte SENSOR_STATE_NOT_AVAILABLE = -2;

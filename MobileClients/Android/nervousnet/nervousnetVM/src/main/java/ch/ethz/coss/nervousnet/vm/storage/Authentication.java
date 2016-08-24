@@ -4,9 +4,8 @@ package ch.ethz.coss.nervousnet.vm.storage;
 
 // KEEP INCLUDES - put your custom includes here
 // KEEP INCLUDES END
-
 /**
- * Entity mapped to table "AUTHENTICATION".
+ * Entity mapped to table AUTHENTICATION.
  */
 public class Authentication {
 

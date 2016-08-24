@@ -24,6 +24,7 @@ import ch.ethz.coss.nervousnet.lib.NotificationReading;
 import ch.ethz.coss.nervousnet.lib.ProximityReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.lib.RemoteCallback;
+import ch.ethz.coss.nervousnet.lib.TrafficReading;
 import ch.ethz.coss.nervousnet.vm.NNLog;
 import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 import ch.ethz.coss.nervousnet.vm.sensors.BaseSensor.BaseSensorListener;
@@ -47,9 +48,10 @@ public class SQLHelper implements BaseSensorListener {
     LocationDataDao locDao;
     GyroDataDao gyroDao;
     ProximityDataDao proximityDao;
+    TrafficDataDao trafficDao;
 
     ArrayList<SensorDataImpl> accelDataArrList, battDataArrList, gyroDataArrList, lightDataArrList, locDataArrList, noiseDataArrList,
-            notificationDataArrList, proxDataArrList;
+            notificationDataArrList, proxDataArrList, trafficDataArrList;
 
     public SQLHelper() {
 
@@ -80,6 +82,7 @@ public class SQLHelper implements BaseSensorListener {
         noiseDao = daoSession.getNoiseDataDao();
         notificationDao = daoSession.getNotificationDataDao();
         proximityDao = daoSession.getProximityDataDao();
+        trafficDao = daoSession.getTrafficDataDao();
 
         populateSensorConfig();
 
@@ -91,6 +94,8 @@ public class SQLHelper implements BaseSensorListener {
         noiseDataArrList = new ArrayList<SensorDataImpl>();
         notificationDataArrList = new ArrayList<SensorDataImpl>();
         proxDataArrList = new ArrayList<SensorDataImpl>();
+        trafficDataArrList = new ArrayList<SensorDataImpl>();
+
     }
 
     public synchronized void populateSensorConfig() {
@@ -108,14 +113,15 @@ public class SQLHelper implements BaseSensorListener {
     }
 
     public void resetDatabase() {
-          accDao.deleteAll();
-          battDao.deleteAll();
+        accDao.deleteAll();
+        battDao.deleteAll();
         locDao.deleteAll();
         gyroDao.deleteAll();
         lightDao.deleteAll();
         noiseDao.deleteAll();
         notificationDao.deleteAll();
         proximityDao.deleteAll();
+        trafficDao.deleteAll();
 
         accelDataArrList.clear();
         battDataArrList.clear();
@@ -125,6 +131,7 @@ public class SQLHelper implements BaseSensorListener {
         noiseDataArrList.clear();
         notificationDataArrList.clear();
         proxDataArrList.clear();
+        trafficDataArrList.clear();
     }
     public synchronized Config loadVMConfig() {
         NNLog.d(LOG_TAG, "Inside loadVMConfig");
@@ -244,6 +251,12 @@ public class SQLHelper implements BaseSensorListener {
                 NNLog.d(LOG_TAG, "ProximityData table count = " + proximityDao.count());
                 proximityDao.insertInTx(sensorDataList);
                 return true;
+
+            case LibConstants.SENSOR_TRAFFIC:
+                NNLog.d(LOG_TAG, "TrafficData table count = " + trafficDao.count());
+                trafficDao.insertInTx(sensorDataList);
+                return true;
+
         }
         return false;
     }
@@ -310,6 +323,11 @@ public class SQLHelper implements BaseSensorListener {
             case LibConstants.SENSOR_PROXIMITY:
                 qb = proximityDao.queryBuilder();
                 qb.where(ProximityDataDao.Properties.TimeStamp.between(startTime, endTime));
+                break;
+
+            case LibConstants.SENSOR_TRAFFIC:
+                qb = trafficDao.queryBuilder();
+                qb.where(TrafficDataDao.Properties.TimeStamp.between(startTime, endTime));
                 break;
 
             default:
@@ -404,6 +422,14 @@ public class SQLHelper implements BaseSensorListener {
                 reading = new ProximityReading(pdata.getTimeStamp(), pdata.getProximity());
                 reading.type = LibConstants.SENSOR_PROXIMITY;
                 return reading;
+
+            case LibConstants.SENSOR_TRAFFIC:
+                TrafficData trdata = (TrafficData) data;
+                reading = new TrafficReading(trdata.getTimeStamp(), trdata.getAppName(), trdata.getTxBytes(), trdata.getRxBytes());
+                reading.type = LibConstants.SENSOR_TRAFFIC;
+                return reading;
+
+
             default:
                 return null;
 
@@ -500,7 +526,7 @@ public class SQLHelper implements BaseSensorListener {
 
             case LibConstants.SENSOR_NOTIFICATION:
                 NotificationReading notificationReading = (NotificationReading) reading;
-                sensorData = new NotificationData(null, notificationReading.timestamp, notificationReading.getAppName());
+                sensorData = new NotificationData(null, reading.timestamp, notificationReading.getAppName(), true);
                 sensorData.setType(LibConstants.SENSOR_NOTIFICATION);
                 notificationDataArrList.add((SensorDataImpl) sensorData);
                 if (notificationDataArrList.size() > 100) {

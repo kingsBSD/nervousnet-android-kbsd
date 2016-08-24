@@ -4,9 +4,8 @@ package ch.ethz.coss.nervousnet.vm.storage;
 
 // KEEP INCLUDES - put your custom includes here
 // KEEP INCLUDES END
-
 /**
- * Entity mapped to table "GYRO_DATA".
+ * Entity mapped to table GYRO_DATA.
  */
 public class GyroData implements SensorDataImpl {
 
@@ -96,17 +95,17 @@ public class GyroData implements SensorDataImpl {
     }
 
     // KEEP METHODS - put your custom methods here
-    @Override
-    public Integer getType() {
-        // TODO Auto-generated method stub
-        return type;
-    }
+	@Override
+	public Integer getType() {
+		// TODO Auto-generated method stub
+		return type;
+	}
 
-    @Override
-    public void setType(Integer type) {
-        // TODO Auto-generated method stub
-        this.type = type;
-    }
+	@Override
+	public void setType(Integer type) {
+		// TODO Auto-generated method stub
+		this.type = type;
+	}
     // KEEP METHODS END
 
 }

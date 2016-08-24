@@ -1,0 +1,53 @@
+package ch.ethz.coss.nervousnet.hub.ui.fragments;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import ch.ethz.coss.nervousnet.hub.R;
+import ch.ethz.coss.nervousnet.lib.ErrorReading;
+import ch.ethz.coss.nervousnet.lib.LibConstants;
+import ch.ethz.coss.nervousnet.lib.SensorReading;
+import ch.ethz.coss.nervousnet.lib.TrafficReading;
+import ch.ethz.coss.nervousnet.vm.NNLog;
+
+/**
+ * Created by grg on 23/08/16.
+ */
+public class TrafficFragment extends BaseFragment {
+
+    public TrafficFragment() {
+        super(LibConstants.SENSOR_TRAFFIC);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_traffic, container, false);
+        return rootView;
+    }
+
+    @Override
+    public void updateReadings(SensorReading reading) {
+        NNLog.d("TrafficFragment", "Inside updateReadings ");
+
+        if (reading instanceof ErrorReading) {
+
+            NNLog.d("TrafficFragment", "Inside updateReadings - ErrorReading");
+            handleError((ErrorReading) reading);
+        } else {
+            TextView appName = (TextView) getActivity().findViewById(R.id.app_name);
+            appName.setText("" + ((TrafficReading) reading).getAppName());
+        }
+
+    }
+
+    @Override
+    public void handleError(ErrorReading reading) {
+        NNLog.d("TrafficFragment", "handleError called");
+        TextView status = (TextView) getActivity().findViewById(R.id.sensor_status_traffic);
+        status.setText("Error: code = " + reading.getErrorCode() + ", message = " + reading.getErrorString());
+    }
+
+}

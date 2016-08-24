@@ -4,9 +4,8 @@ package ch.ethz.coss.nervousnet.vm.storage;
 
 // KEEP INCLUDES - put your custom includes here
 // KEEP INCLUDES END
-
 /**
- * Entity mapped to table "SENSOR_CONFIG".
+ * Entity mapped to table SENSOR_CONFIG.
  */
 public class SensorConfig {
 

@@ -34,6 +34,7 @@ public class LibConstants {
     public static final int SENSOR_LIGHT = 4;
     public static final int SENSOR_NOISE = 5;
     public static final int SENSOR_NOTIFICATION = 7;
+    public static final int SENSOR_TRAFFIC = 8;
     public static final int SENSOR_PROXIMITY = 6;
 
 

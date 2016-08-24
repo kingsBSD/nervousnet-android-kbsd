@@ -5,32 +5,33 @@ package ch.ethz.coss.nervousnet.vm.storage;
 // KEEP INCLUDES - put your custom includes here
 // KEEP INCLUDES END
 /**
- * Entity mapped to table PRESSURE_DATA.
+ * Entity mapped to table TRAFFIC_DATA.
  */
-public class PressureData implements SensorDataImpl {
+public class TrafficData implements SensorDataImpl {
 
     private Long id;
     private Long TimeStamp;
-    private Float Pressure;
-    private long Volatility;
+    private String appName;
+    private Long txBytes;
+    private Long rxBytes;
     private Boolean ShareFlag;
 
     // KEEP FIELDS - put your custom fields here
-    private int type;
     // KEEP FIELDS END
 
-    public PressureData() {
+    public TrafficData() {
     }
 
-    public PressureData(Long id) {
+    public TrafficData(Long id) {
         this.id = id;
     }
 
-    public PressureData(Long id, Long TimeStamp, Float Pressure, long Volatility, Boolean ShareFlag) {
+    public TrafficData(Long id, Long TimeStamp, String appName, Long txBytes, Long rxBytes, Boolean ShareFlag) {
         this.id = id;
         this.TimeStamp = TimeStamp;
-        this.Pressure = Pressure;
-        this.Volatility = Volatility;
+        this.appName = appName;
+        this.txBytes = txBytes;
+        this.rxBytes = rxBytes;
         this.ShareFlag = ShareFlag;
     }
 
@@ -50,20 +51,28 @@ public class PressureData implements SensorDataImpl {
         this.TimeStamp = TimeStamp;
     }
 
-    public Float getPressure() {
-        return Pressure;
+    public String getAppName() {
+        return appName;
     }
 
-    public void setPressure(Float Pressure) {
-        this.Pressure = Pressure;
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
-    public long getVolatility() {
-        return Volatility;
+    public Long getTxBytes() {
+        return txBytes;
     }
 
-    public void setVolatility(long Volatility) {
-        this.Volatility = Volatility;
+    public void setTxBytes(Long txBytes) {
+        this.txBytes = txBytes;
+    }
+
+    public Long getRxBytes() {
+        return rxBytes;
+    }
+
+    public void setRxBytes(Long rxBytes) {
+        this.rxBytes = rxBytes;
     }
 
     public Boolean getShareFlag() {
@@ -75,17 +84,6 @@ public class PressureData implements SensorDataImpl {
     }
 
     // KEEP METHODS - put your custom methods here
-	@Override
-	public Integer getType() {
-		// TODO Auto-generated method stub
-		return type;
-	}
-
-	@Override
-	public void setType(Integer type) {
-		// TODO Auto-generated method stub
-		this.type = type;
-	}
     // KEEP METHODS END
 
 }

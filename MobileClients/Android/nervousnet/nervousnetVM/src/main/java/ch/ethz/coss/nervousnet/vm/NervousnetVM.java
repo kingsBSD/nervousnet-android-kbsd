@@ -26,6 +26,7 @@ import ch.ethz.coss.nervousnet.vm.sensors.LocationSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.NoiseSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.NotificationSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.ProximitySensor;
+import ch.ethz.coss.nervousnet.vm.sensors.TrafficSensor;
 import ch.ethz.coss.nervousnet.vm.storage.Config;
 import ch.ethz.coss.nervousnet.vm.storage.SQLHelper;
 import ch.ethz.coss.nervousnet.vm.storage.SensorConfig;
@@ -128,6 +129,8 @@ public class NervousnetVM {
                         ? sensorConfig.getState() : NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE);
             } else if (sensorConfig.getID() == LibConstants.SENSOR_NOTIFICATION) {
                 sensor = new NotificationSensor(context, sensorConfig.getState());
+            } else if (sensorConfig.getID() == LibConstants.SENSOR_TRAFFIC) {
+                sensor = new TrafficSensor(context, sensorConfig.getState());
             }
 
             if (sensor != null) {
