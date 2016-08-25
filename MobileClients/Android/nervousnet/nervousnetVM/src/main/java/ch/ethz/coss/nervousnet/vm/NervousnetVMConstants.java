@@ -33,12 +33,26 @@ public class NervousnetVMConstants {
             LibConstants.SENSOR_TRAFFIC
     };
 
+    public static String[] sensor_labels = {"ACCELEROMETER",
+            "BATTERY",
+            "GYROSCOPE",
+            "LOCATION",
+            "LIGHT",
+            "NOISE",
+            "NOTIFICATION",
+            "PROXIMITY",
+            "NETWORK TRAFFIC"};
 
-    public static String[] sensor_labels = {"ACCELEROMETER", "BATTERY", "GYROSCOPE",
-            "LOCATION", "LIGHT", "NOISE", "NOTIFICATION", "PROXIMITY", "NETWORK TRAFFIC"};
-
-    public static byte[] sensor_default_states = {SENSOR_STATE_AVAILABLE_DELAY_HIGH, SENSOR_STATE_AVAILABLE_DELAY_HIGH, SENSOR_STATE_AVAILABLE_DELAY_HIGH,
-            SENSOR_STATE_AVAILABLE_BUT_OFF, SENSOR_STATE_AVAILABLE_DELAY_HIGH, SENSOR_STATE_AVAILABLE_BUT_OFF, SENSOR_STATE_AVAILABLE_DELAY_HIGH};
+    public static byte[] sensor_default_states = {SENSOR_STATE_AVAILABLE_DELAY_HIGH,
+            SENSOR_STATE_AVAILABLE_DELAY_HIGH,
+            SENSOR_STATE_AVAILABLE_DELAY_HIGH,
+            SENSOR_STATE_AVAILABLE_BUT_OFF,
+            SENSOR_STATE_AVAILABLE_DELAY_HIGH,
+            SENSOR_STATE_AVAILABLE_BUT_OFF,
+            SENSOR_STATE_AVAILABLE_DELAY_HIGH,
+            SENSOR_STATE_AVAILABLE_DELAY_HIGH,
+            SENSOR_STATE_AVAILABLE_DELAY_HIGH
+    };
 
 
 //	public static long[] sensor_ids = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
@@ -48,13 +62,15 @@ public class NervousnetVMConstants {
 
     public static String[] sensor_freq_labels = {"Off", "High", "Medium", "Low"};
 
-    public static int[][] sensor_freq_constants = {{-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000},
-            {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000},
-            {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000}, {-1, 60000, 120000, 300000}
-
+    public static int[][] sensor_freq_constants = {{-1, 60000, 120000, 300000},
+            {-1, 60000, 120000, 300000},
+            {-1, 60000, 120000, 300000},
+            {-1, 60000, 120000, 300000},
+            {-1, 60000, 120000, 300000},
+            {-1, 60000, 120000, 300000},
+            {-1, 60000, 120000, 300000},
+            {-1, 60000, 120000, 300000},
+            {-1, 60000, 120000, 300000}
     };
-
-
-
 
 }
