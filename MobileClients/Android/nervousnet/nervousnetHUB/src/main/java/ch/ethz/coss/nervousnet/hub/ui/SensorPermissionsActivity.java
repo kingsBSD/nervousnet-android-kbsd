@@ -1,16 +1,12 @@
-package ch.ethz.coss.nervousnet.hub;
+package ch.ethz.coss.nervousnet.hub.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.internal.widget.AdapterViewCompat;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import ch.ethz.coss.nervousnet.hub.ui.BaseActivity;
+import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.hub.ui.adapters.AxonsArrayAdapter;
 import ch.ethz.coss.nervousnet.hub.ui.adapters.NervousnetAxon;
 
@@ -29,7 +25,7 @@ public class SensorPermissionsActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SensorPermissionsActivity.this, AxonSensorsActivity.class);
-                intent.putExtra("AxonName",axonArray[position].axonName);
+                intent.putExtra("AxonName", axonArray[position].axonName);
 
                 startNextActivity(intent);
             }

@@ -37,6 +37,7 @@ import android.widget.TextView;
 
 import ch.ethz.coss.nervousnet.hub.BuildConfig;
 import ch.ethz.coss.nervousnet.hub.R;
+import ch.ethz.coss.nervousnet.hub.TermsOfUse;
 
 /**
  * @author prasad
@@ -55,7 +56,7 @@ public class AboutActivity extends BaseActivity {
 
             String version = pInfo.versionName;
             int verCode = pInfo.versionCode;
-            versionTV.setText(version + ", " + verCode + (BuildConfig.DEBUG ? "\n"+"Debug build" : ""));
+            versionTV.setText(version + ", " + verCode + (BuildConfig.DEBUG ? "\n" + getString(R.string.str_debug_build) : ""));
 
         } catch (NameNotFoundException e) {
             // TODO Auto-generated catch block
@@ -69,11 +70,18 @@ public class AboutActivity extends BaseActivity {
             public void onClick(View v) {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("market://details?id=ch.ethz.coss.nervousnet.hub")));
+                            Uri.parse(getString(R.string.url_playstore_app))));
                 } catch (android.content.ActivityNotFoundException anfe) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-                            "https://play.google.com/store/apps/details?id=ch.ethz.coss.nervousnet.hub")));
+                            getString(R.string.url_playstore_website))));
                 }
+            }
+        });
+
+        ((Button) findViewById(R.id.termsButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new TermsOfUse(AboutActivity.this).showTerms(false);
             }
         });
 

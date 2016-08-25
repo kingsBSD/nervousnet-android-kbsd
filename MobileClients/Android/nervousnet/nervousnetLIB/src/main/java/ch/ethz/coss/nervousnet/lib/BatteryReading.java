@@ -182,7 +182,7 @@ public class BatteryReading extends SensorReading {
             default:
             case 0:
             case (byte) BatteryManager.BATTERY_HEALTH_UNKNOWN:
-                return new String("unknown");
+                return new String("Unknown");
 
             case (byte) BatteryManager.BATTERY_HEALTH_GOOD:
                 return new String("Good");

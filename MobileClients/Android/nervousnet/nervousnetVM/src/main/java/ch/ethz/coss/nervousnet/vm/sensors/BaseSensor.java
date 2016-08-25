@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
+import ch.ethz.coss.nervousnet.lib.Utils;
 import ch.ethz.coss.nervousnet.vm.NNLog;
 import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
@@ -86,7 +86,7 @@ public abstract class BaseSensor {
 
     public abstract boolean start();
 
-    public abstract boolean updateAndRestart(byte state);
+    public abstract boolean stopAndRestart(byte state);
 
     public abstract boolean stop(boolean changeStateFlag);
 
@@ -94,19 +94,19 @@ public abstract class BaseSensor {
         NNLog.d(LOG_TAG, "getReading called ");
 
         if (sensorState == NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE) {
-            NNLog.d(LOG_TAG, "Error 101 : Sensor not available.");
-            return new ErrorReading(new String[]{"101", "Sensor not available on phone."});
-        } else if (sensorState == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF) {
-            NNLog.d(LOG_TAG, "Error 102 : Sensor available but switched off");
-            return new ErrorReading(new String[]{"102", "Sensor is switched off."});
+            NNLog.d(LOG_TAG, "Error 201 : Sensor not available.");
+            return Utils.getErrorReading(201);
         } else if (sensorState == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_PERMISSION_DENIED) {
-            NNLog.d(LOG_TAG, "Error 103 : Sensor available but Permission Denied");
-            return new ErrorReading(new String[]{"103", "Sensor permission denied by user."});
+            NNLog.d(LOG_TAG, "Error 203 : Sensor available but Permission Denied");
+            return Utils.getErrorReading(202);
+        } else if (sensorState == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF) {
+            NNLog.d(LOG_TAG, "Error 203 : Sensor available but switched off");
+            return Utils.getErrorReading(203);
         }
 
         if (reading == null) {
-            NNLog.d(LOG_TAG, "Error 104 : Sensor reading object is null");
-            return new ErrorReading(new String[]{"104", "Sensor object is null."});
+            NNLog.d(LOG_TAG, "Error 204 : Sensor reading object is null");
+            return Utils.getErrorReading(204);
         }
         return reading;
 

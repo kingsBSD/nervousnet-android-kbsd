@@ -17,6 +17,7 @@ import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.RemoteCallback;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
+import ch.ethz.coss.nervousnet.lib.Utils;
 import ch.ethz.coss.nervousnet.vm.sensors.AccelerometerSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.BaseSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.BatterySensor;
@@ -148,7 +149,8 @@ public class NervousnetVM {
         int count = 0;
         for (Long key : hSensors.keySet()) {
             NNLog.d(LOG_TAG, "Inside startSensors Sensor ID = " + key);
-            BaseSensor sensor = hSensors.get(NervousnetVMConstants.sensor_ids[count++]);
+            BaseSensor sensor = hSensors.get(NervousnetVMConstants.sensor_ids[count]);
+            sensor.setSensorState(hSensorConfig.get(NervousnetVMConstants.sensor_ids[count++]).getState());
             if (sensor != null) {
                 sensor.start();
             }
@@ -165,10 +167,31 @@ public class NervousnetVM {
             NNLog.d(LOG_TAG, "Inside stopSensors Sensor ID = " + key);
             BaseSensor sensor = hSensors.get(NervousnetVMConstants.sensor_ids[count++]);
             if (sensor != null)
-                sensor.stop(false);
+                sensor.stop(true);
         }
 
         dataCollectionHandler.removeCallbacks(runnable);
+    }
+
+    public void startSensor(long sensorID) {
+
+        BaseSensor sensor = hSensors.get(sensorID);
+        if(sensor != null) {
+            SensorConfig sensorConfig = hSensorConfig.get(sensorID);
+            sensorConfig.setState(NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
+            hSensorConfig.put(sensorConfig.getID(), sensorConfig);
+            updateSensorConfig();
+            sensor.setSensorState(NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
+            sensor.start();
+        }
+
+
+    }
+
+    public void stopSensor(long sensorID, boolean changeStateFlag) {
+        BaseSensor sensor = hSensors.get(sensorID);
+        if(sensor != null)
+        sensor.stop(true);
     }
 
     public synchronized UUID getUUID() {
@@ -216,12 +239,28 @@ public class NervousnetVM {
 //		reInitSensor(id);
 
         BaseSensor sensor = hSensors.get(sensorConfig.getID());
-        sensor.updateAndRestart(state);
+        sensor.stopAndRestart(state);
 
     }
 
-    public synchronized void updateAllSensorConfig(byte state) {
+    public synchronized void updateSensorConfig() {
         NNLog.d(LOG_TAG, "UpdateSensorConfig called with state = " + state);
+
+        try {
+            sqlHelper.updateAllSensorConfig(hSensorConfig.values());
+
+        } catch (Exception e) {
+            NNLog.d(LOG_TAG, "Exception while calling updateSensorConfig ");
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+
+    public synchronized void updateAllSensorConfig(byte state) {
+        NNLog.d(LOG_TAG, "updateAllSensorConfig called with state = " + state);
         int count = 0;
         for (Long key : hSensorConfig.keySet()) {
             SensorConfig sensorConfig = hSensorConfig.get(NervousnetVMConstants.sensor_ids[count++]);
@@ -268,7 +307,7 @@ public class NervousnetVM {
         if (state == NervousnetVMConstants.STATE_PAUSED) {
             NNLog.d(LOG_TAG, "Error 001 : nervousnet is paused.");
 
-            return new ErrorReading(new String[]{"001", "nervousnet is paused."});
+            return Utils.getErrorReading(101);
         }
         return hSensors.get(sensorID).getReading();
     }
@@ -279,7 +318,7 @@ public class NervousnetVM {
         if (state == NervousnetVMConstants.STATE_PAUSED) {
             NNLog.d(LOG_TAG, "Error 001 : nervousnet is paused.");
             try {
-                cb.failure(new ErrorReading(new String[]{"001", "nervousnet is paused."}));
+                cb.failure(Utils.getErrorReading(101));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -295,7 +334,7 @@ public class NervousnetVM {
                 e.printStackTrace();
             } catch (Exception e) {
                 try {
-                cb.failure(new ErrorReading(new String[]{"301", "getReading callback Exception occured"}));
+                cb.failure(Utils.getErrorReading(301));
             } catch (RemoteException re) {
                 re.printStackTrace();
             }
@@ -309,7 +348,7 @@ public class NervousnetVM {
         if (state == NervousnetVMConstants.STATE_PAUSED) {
             NNLog.d(LOG_TAG, "Error 001 : nervousnet is paused.");
             try {
-                cb.failure(new ErrorReading(new String[]{"001", "nervousnet is paused."}));
+                cb.failure(Utils.getErrorReading(101));
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

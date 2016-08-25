@@ -1,132 +1,136 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="fill_parent"
-android:layout_height="fill_parent"
-android:paddingBottom="@dimen/activity_vertical_margin"
-android:paddingLeft="@dimen/activity_horizontal_margin"
-android:paddingRight="@dimen/activity_horizontal_margin"
-android:paddingTop="@dimen/activity_vertical_margin"
-tools:context="ch.ethz.coss.nervousnet.hub.ui.fragments.BatteryFragment">
-
-<ScrollView
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fillViewport="true">
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="ch.ethz.coss.nervousnet.hub.ui.fragments.BatteryFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="top"
-        android:orientation="vertical">
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal">
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <include layout="@layout/fragment_top_layout" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:hint="Sensor Status: " />
+                android:layout_gravity="center"
+                android:gravity="fill_horizontal|center_vertical|center|center_horizontal"
+                android:orientation="vertical"
+                android:background="@drawable/round_rect">
 
-            <TextView
-                android:id="@+id/sensor_status_batt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Sensor Status comes here" />
 
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:hint="Battery Level :"
+                        android:layout_weight="0.5"
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border"/>
+
+                    <TextView
+                        android:id="@+id/battery_percent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint="battery level comes here"
+                        android:layout_weight="0.5"
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:hint="Charging :"
+
+                        android:layout_weight="0.5"
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border"/>
+
+                    <TextView
+                        android:id="@+id/battery_isCharging"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:hint="battery charging state comes here"
+
+                        android:layout_weight="0.5"
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:hint="USB Charging :"
+
+                        android:layout_weight="0.5"
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border"/>
+
+                    <TextView
+                        android:id="@+id/battery_isUSB"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:hint="USB charging state comes here"
+
+                        android:layout_weight="0.5"
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:hint="AC Charging :"
+
+                        android:layout_weight="0.5"
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border"/>
+
+                    <TextView
+                        android:id="@+id/battery_isAC"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:hint="AC charging state comes here"
+
+                        android:layout_weight="0.5"
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border"/>
+                </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="fill_horizontal|center_vertical|center|center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Battery Values" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Battery Level" />
-
-                <TextView
-                    android:id="@+id/battery_percent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="battery level comes here" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Charging State" />
-
-                <TextView
-                    android:id="@+id/battery_isCharging"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="battery charging state comes here" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="USB Charging" />
-
-                <TextView
-                    android:id="@+id/battery_isUSB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="USB charging state comes here" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="AC Charging" />
-
-                <TextView
-                    android:id="@+id/battery_isAC"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="AC charging state comes here" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"></LinearLayout>
-            </LinearLayout>
-    </LinearLayout>
-
-</ScrollView>
+    </ScrollView>
 
 </LinearLayout>

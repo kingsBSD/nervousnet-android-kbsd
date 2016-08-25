@@ -40,6 +40,13 @@ public class TrafficReading extends SensorReading {
         return appName[0];
     }
 
+    public long getTxBytes() {
+        return txBytes;
+    }
+
+    public long getRxBytes() {
+        return txBytes;
+    }
 
     public void readFromParcel(Parcel in) {
         timestamp = in.readLong();

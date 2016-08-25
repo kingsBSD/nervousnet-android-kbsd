@@ -15,99 +15,92 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:orientation="vertical">
 
+            <include layout="@layout/fragment_top_layout" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Sensor Status: " />
-
-                <TextView
-                    android:id="@+id/sensor_status_accel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Sensor Status comes here" />
-
-            </LinearLayout>
-
-            <LinearLayout
+                android:layout_gravity="bottom"
+                android:gravity="bottom"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="fill_horizontal|center_vertical|center|center_horizontal">
+                android:background="@drawable/round_rect">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Reading"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:layout_gravity="center_horizontal" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="X axis" />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:hint="X axis: "
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border"/>
 
                     <TextView
                         android:id="@+id/accel_x"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Accelerometer X value comes here" />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:hint=" X value comes here"
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Y axis" />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:hint="Y axis: "
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border"/>
 
                     <TextView
                         android:id="@+id/accel_y"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Accelerometer Y value comes here" />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:hint=" Y value comes here"
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Z axis" />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:hint="Z axis: "
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border" />
 
                     <TextView
                         android:id="@+id/accel_z"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Accelerometer Z value comes here" />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:hint=" Z value comes here"
+                        android:padding="@dimen/padding_sensor_values"
+                        android:background="@drawable/shape_rect_border" />
                 </LinearLayout>
 
             </LinearLayout>
-
         </LinearLayout>
 
     </ScrollView>

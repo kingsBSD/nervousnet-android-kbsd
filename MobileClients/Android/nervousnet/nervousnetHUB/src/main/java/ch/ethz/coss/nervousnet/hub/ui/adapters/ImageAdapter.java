@@ -75,7 +75,7 @@ public class ImageAdapter extends BaseAdapter {
         if (convertView == null) {
             /* we define the view that will display on the grid */
 
-            // Inflate the layout
+            // Inflate the layout_rate_switch
             LayoutInflater li = ((Activity) mContext).getLayoutInflater();
             MyView = li.inflate(R.layout.category_grid_item, null);
         }

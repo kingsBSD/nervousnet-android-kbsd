@@ -6,16 +6,16 @@
     android:scaleType="centerCrop">
 
 
-         <android.support.v4.view.PagerTitleStrip
+    <android.support.v4.view.PagerTitleStrip
         android:id="@+id/pager_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:background="@color/white_nervous"
+        android:background="@color/gray"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:textColor="@color/gray"
-             />
+        android:textColor="@color/black"
+        android:textSize="@dimen/viewpager_label_size"/>
 
 
     <!--android.support.v4.view.PagerTabStrip

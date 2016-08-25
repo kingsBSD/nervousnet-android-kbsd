@@ -32,11 +32,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v13.app.ActivityCompat;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.Constants;
@@ -82,10 +83,10 @@ public class CollectionRateSettingsActivity extends BaseActivity {
 
     public Dialog createDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setItems(Constants.collection_rate_global_options, new DialogInterface.OnClickListener() {
+        builder.setItems(R.array.collection_rate_global_options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int itemClicked) {
-                String[] option_array = Constants.collection_rate_global_options;
+                String[] option_array = getResources().getStringArray(R.array.collection_rate_global_options);
                 String optionSelected = option_array[itemClicked];
                 ((Application) getApplication()).nn_VM.updateAllSensorConfig(
                         (byte) itemClicked);
@@ -101,7 +102,8 @@ public class CollectionRateSettingsActivity extends BaseActivity {
     // Android 6.0 permission request
     public void requestPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            if (!
+                    ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 ActivityCompat.requestPermissions(
                         this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -120,4 +122,37 @@ public class CollectionRateSettingsActivity extends BaseActivity {
         }
     }
 
+    public void showInfo(View view) {
+        String title = "Sensor Collection Rate Settings:";
+
+        // Includes the updates as well so users know what changed.
+        String message = "\n\n- Settings to control the frequency of Sensors " +
+                "\n- Various levels of frequency can be selected" +
+                "\n          - HIGH, MEDIUM, LOW or OFF" +
+                "\n";
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", new Dialog.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        dialogInterface.dismiss();
+
+                    }
+                });
+        builder.setCancelable(false);
+
+        AlertDialog alert = builder.create();
+        alert.show();
+
+        alert.getWindow().getAttributes();
+
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(12);
+    }
 }
+
+

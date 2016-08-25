@@ -28,7 +28,8 @@ public class TrafficDataDao extends AbstractDao<TrafficData, Long> {
         public final static Property AppName = new Property(2, String.class, "appName", false, "APP_NAME");
         public final static Property TxBytes = new Property(3, Long.class, "txBytes", false, "TX_BYTES");
         public final static Property RxBytes = new Property(4, Long.class, "rxBytes", false, "RX_BYTES");
-        public final static Property ShareFlag = new Property(5, Boolean.class, "ShareFlag", false, "SHARE_FLAG");
+        public final static Property Volatility = new Property(5, long.class, "Volatility", false, "VOLATILITY");
+        public final static Property ShareFlag = new Property(6, Boolean.class, "ShareFlag", false, "SHARE_FLAG");
     };
 
 
@@ -49,7 +50,8 @@ public class TrafficDataDao extends AbstractDao<TrafficData, Long> {
                 "'APP_NAME' TEXT," + // 2: appName
                 "'TX_BYTES' INTEGER," + // 3: txBytes
                 "'RX_BYTES' INTEGER," + // 4: rxBytes
-                "'SHARE_FLAG' INTEGER);"); // 5: ShareFlag
+                "'VOLATILITY' INTEGER NOT NULL ," + // 5: Volatility
+                "'SHARE_FLAG' INTEGER);"); // 6: ShareFlag
     }
 
     /** Drops the underlying database table. */
@@ -87,10 +89,11 @@ public class TrafficDataDao extends AbstractDao<TrafficData, Long> {
         if (rxBytes != null) {
             stmt.bindLong(5, rxBytes);
         }
+        stmt.bindLong(6, entity.getVolatility());
  
         Boolean ShareFlag = entity.getShareFlag();
         if (ShareFlag != null) {
-            stmt.bindLong(6, ShareFlag ? 1l: 0l);
+            stmt.bindLong(7, ShareFlag ? 1l: 0l);
         }
     }
 
@@ -109,7 +112,8 @@ public class TrafficDataDao extends AbstractDao<TrafficData, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // appName
             cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // txBytes
             cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // rxBytes
-            cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0 // ShareFlag
+            cursor.getLong(offset + 5), // Volatility
+            cursor.isNull(offset + 6) ? null : cursor.getShort(offset + 6) != 0 // ShareFlag
         );
         return entity;
     }
@@ -122,7 +126,8 @@ public class TrafficDataDao extends AbstractDao<TrafficData, Long> {
         entity.setAppName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setTxBytes(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
         entity.setRxBytes(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
-        entity.setShareFlag(cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0);
+        entity.setVolatility(cursor.getLong(offset + 5));
+        entity.setShareFlag(cursor.isNull(offset + 6) ? null : cursor.getShort(offset + 6) != 0);
      }
     
     /** @inheritdoc */

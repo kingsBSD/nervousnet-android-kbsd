@@ -32,19 +32,23 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v13.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.LocationReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.vm.NNLog;
+import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
 public class LocationFragment extends BaseFragment {
 
@@ -57,11 +61,60 @@ public class LocationFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_location, container, false);
+        return inflater.inflate(R.layout.fragment_location, container, false);
 
-        return rootView;
     }
 
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        sensorStatusTV = (TextView) getView().findViewById(R.id.sensorStatus);
+
+        radioGroup = (RadioGroup) getView().findViewById(R.id.radioRateSensor);
+        lastCollectionRate = ((((Application) ((Activity) getContext()).getApplication()).nn_VM.getSensorState(LibConstants.SENSOR_LOCATION)));
+
+        ((RadioButton)radioGroup.getChildAt(lastCollectionRate)).setChecked(true);
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch(checkedId){
+                    case R.id.radioOff:
+                        if(lastCollectionRate > NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_LOCATION,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF);
+                        }
+                        break;
+                    case R.id.radioLow:
+                        if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_LOCATION,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_LOW);
+                        }
+                        break;
+                    case R.id.radioMed:
+                        if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_LOCATION,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_MED);
+                        }
+                        break;
+                    case R.id.radioHigh:
+                        if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_LOCATION,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
+                        }
+                        break;
+                }
+            }
+        });
+
+        if((((Application) ((Activity) getContext()).getApplication()).nn_VM.getState() == NervousnetVMConstants.STATE_PAUSED)) {
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                ((RadioButton) radioGroup.getChildAt(i)).setEnabled(false);
+            }
+            sensorStatusTV.setText(R.string.local_service_paused);
+        }
+
+    }
     /*
      * (non-Javadoc)
      *
@@ -80,6 +133,8 @@ public class LocationFragment extends BaseFragment {
             handleError((ErrorReading) reading);
         } else {
 
+            sensorStatusTV.setText(R.string.sensor_status_connected);
+
             double[] location = ((LocationReading) reading).getLatnLong();
             Activity fragAct = getActivity();
             if (fragAct == null)
@@ -97,20 +152,20 @@ public class LocationFragment extends BaseFragment {
     @Override
     public void handleError(ErrorReading reading) {
         NNLog.d("LocationFragment", "handleError called");
-        TextView status = (TextView) getActivity().findViewById(R.id.sensor_status_loc);
-        status.setText("Error: code = " + reading.getErrorCode() + ", message = " + reading.getErrorString());
+        sensorStatusTV.setText(reading.getErrorString());
 
-        // Android 6.0 permission request
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(
-                        getActivity(),
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        REQUEST_CODE_ASK_PERMISSIONS_LOC
-                );
-            }
-        }
+//        // Android 6.0 permission request
+//        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+//                ActivityCompat.requestPermissions(
+//                        getActivity(),
+//                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                        REQUEST_CODE_ASK_PERMISSIONS_LOC
+//                );
+//            }
+//        }
 
     }
+
 
 }

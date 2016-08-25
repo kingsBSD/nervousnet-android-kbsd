@@ -43,7 +43,7 @@ public class LightmeterActivity extends Activity implements NervousnetServiceCon
 
     SensorReading lReading;
 
-    Callback cb;
+//    Callback cb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +85,22 @@ public class LightmeterActivity extends Activity implements NervousnetServiceCon
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
     }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method first
+        nervousnetServiceController.disconnect();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+        nervousnetServiceController.connect();
+
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -150,18 +166,18 @@ public class LightmeterActivity extends Activity implements NervousnetServiceCon
     @Override
     public void onServiceConnected() {
         Log.d("LightmeterActivity", "onServiceConnected");
-//        startRepeatingTask();
-        cb = new Callback();
-
-        if (nervousnetServiceController != null) {
-            try {
-
-                Log.d("LightmeterActivity", "Before requesting getReadings callback : Timestamp = "+(System.currentTimeMillis() - 20000 )+ "<<>>"+System.currentTimeMillis());
-                nervousnetServiceController.getReadings(LibConstants.SENSOR_LIGHT, System.currentTimeMillis() - 1000000, System.currentTimeMillis(), cb);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        startRepeatingTask();
+//        cb = new Callback();
+//
+//        if (nervousnetServiceController != null) {
+//            try {
+//
+//                Log.d("LightmeterActivity", "Before requesting getReadings callback : Timestamp = "+(System.currentTimeMillis() - 20000 )+ "<<>>"+System.currentTimeMillis());
+//                nervousnetServiceController.getReadings(LibConstants.SENSOR_LIGHT, System.currentTimeMillis() - 1000000, System.currentTimeMillis(), cb);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override
@@ -190,42 +206,42 @@ public class LightmeterActivity extends Activity implements NervousnetServiceCon
     }
 
 
-    class Callback extends RemoteCallback.Stub {
-
-        @Override
-        public void success(final List<SensorReading> list) throws RemoteException {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    Log.d("LightmeterActivity", "callback success "+list.size());
-//                                successImpl(result);
-
-
-                        Iterator<SensorReading> iterator;
-                        iterator = list.iterator();
-                        while (iterator.hasNext()) {
-                            SensorReading reading = iterator.next();
-
-                            Log.d("LightmeterActivity", "Light Reading found - " + ((LightReading) reading).getLuxValue());
-                        }
-
-                }
-            });
-        }
-
-        @Override
-        public void failure(final ErrorReading reading) throws RemoteException {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    Log.d("LightmeterActivity", "callback failure "+reading.getErrorString());
-                }
-            });
-        }
+//    class Callback extends RemoteCallback.Stub {
 //
 //        @Override
-//        public IBinder asBinder() {
-//            return super.asBinder();
+//        public void success(final List<SensorReading> list) throws RemoteException {
+//            runOnUiThread(new Runnable() {
+//                public void run() {
+//                    Log.d("LightmeterActivity", "callback success "+list.size());
+////                                successImpl(result);
+//
+//
+//                        Iterator<SensorReading> iterator;
+//                        iterator = list.iterator();
+//                        while (iterator.hasNext()) {
+//                            SensorReading reading = iterator.next();
+//
+//                            Log.d("LightmeterActivity", "Light Reading found - " + ((LightReading) reading).getLuxValue());
+//                        }
+//
+//                }
+//            });
 //        }
-    }
+//
+//        @Override
+//        public void failure(final ErrorReading reading) throws RemoteException {
+//            runOnUiThread(new Runnable() {
+//                public void run() {
+//                    Log.d("LightmeterActivity", "callback failure "+reading.getErrorString());
+//                }
+//            });
+//        }
+////
+////        @Override
+////        public IBinder asBinder() {
+////            return super.asBinder();
+////        }
+//    }
 
 }
 

@@ -15,5 +15,8 @@
     <dimen name="padding_faq">10dp</dimen>
     <dimen name="paddingLeftQ_faq">40dp</dimen>
     <dimen name="paddingLeftA_faq">50dp</dimen>
+    <dimen name="padding_sensor_values">10dp</dimen>
+    <dimen name="rate_switch_label_size">10sp</dimen>
+    <dimen name="viewpager_label_size">12sp</dimen>
 
 </resources>

@@ -60,6 +60,8 @@ import ch.ethz.coss.nervousnet.vm.NNLog;
  */
 public abstract class BaseActivity extends Activity implements ActionBarImplementation {
 
+    private static final String LOG_TAG = BaseActivity.class.getSimpleName();
+
     protected View parentView;
 
     @Override
@@ -93,7 +95,7 @@ public abstract class BaseActivity extends Activity implements ActionBarImplemen
         mainSwitch = (Switch) findViewById(R.id.mainSwitch);
 
         byte state = ((Application) getApplication()).getState();
-        NNLog.d("BaseActivity", "state = " + state);
+        NNLog.d(LOG_TAG, "state = " + state);
         mainSwitch.setChecked(state == 0 ? false : true);
 
         mainSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -133,10 +135,7 @@ public abstract class BaseActivity extends Activity implements ActionBarImplemen
         } else {
             ((Application) getApplication()).stopService(this);
         }
-        ((Application) getApplication()).setState(this, on ? (byte) 1 : (byte) 0);
-//		finish();
-//		startActivity(getIntent());
-//		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
     }
 
     protected void startNextActivity(Intent intent) {

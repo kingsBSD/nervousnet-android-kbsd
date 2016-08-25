@@ -34,7 +34,6 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import ch.ethz.coss.nervousnet.lib.LocationReading;
@@ -93,7 +92,7 @@ public class LocationSensor extends BaseSensor implements LocationListener {
     }
 
     @Override
-    public boolean updateAndRestart(byte state) {
+    public boolean stopAndRestart(byte state) {
 
         if (state == NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE) {
             NNLog.d(LOG_TAG, "Cancelled Starting Location sensor as Sensor is not available.");

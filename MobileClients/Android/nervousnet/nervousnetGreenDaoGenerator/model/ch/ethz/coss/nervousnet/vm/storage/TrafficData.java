@@ -14,6 +14,7 @@ public class TrafficData implements SensorDataImpl {
     private String appName;
     private Long txBytes;
     private Long rxBytes;
+    private long Volatility;
     private Boolean ShareFlag;
 
     // KEEP FIELDS - put your custom fields here
@@ -26,12 +27,13 @@ public class TrafficData implements SensorDataImpl {
         this.id = id;
     }
 
-    public TrafficData(Long id, Long TimeStamp, String appName, Long txBytes, Long rxBytes, Boolean ShareFlag) {
+    public TrafficData(Long id, Long TimeStamp, String appName, Long txBytes, Long rxBytes, long Volatility, Boolean ShareFlag) {
         this.id = id;
         this.TimeStamp = TimeStamp;
         this.appName = appName;
         this.txBytes = txBytes;
         this.rxBytes = rxBytes;
+        this.Volatility = Volatility;
         this.ShareFlag = ShareFlag;
     }
 
@@ -73,6 +75,14 @@ public class TrafficData implements SensorDataImpl {
 
     public void setRxBytes(Long rxBytes) {
         this.rxBytes = rxBytes;
+    }
+
+    public long getVolatility() {
+        return Volatility;
+    }
+
+    public void setVolatility(long Volatility) {
+        this.Volatility = Volatility;
     }
 
     public Boolean getShareFlag() {

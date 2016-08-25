@@ -18,7 +18,7 @@ ext {
     siteUrl = 'https://github.com/nervousnet/nervousnet-android'
     gitUrl = 'https://github.com/nervousnet/nervousnet-android.git'
 
-    libraryVersion = '0.7.33'
+    libraryVersion = '0.7.35'
 
     developerId = 'ppulikal'
     developerName = 'Prasad Pulikal'
@@ -36,8 +36,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 38
-        versionName '0.7.33 - alpha'
+        versionCode 42
+        versionName '0.7.35 - alpha'
     }
     buildTypes {
         release {
@@ -52,7 +52,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 }
-
 
 //apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
 //apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

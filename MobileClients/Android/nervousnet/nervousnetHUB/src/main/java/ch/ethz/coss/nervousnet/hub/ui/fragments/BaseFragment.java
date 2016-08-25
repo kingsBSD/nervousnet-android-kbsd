@@ -29,6 +29,9 @@
 package ch.ethz.coss.nervousnet.hub.ui.fragments;
 
 import android.app.Fragment;
+import android.widget.RadioGroup;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
@@ -36,7 +39,16 @@ import ch.ethz.coss.nervousnet.vm.NNLog;
 
 public abstract class BaseFragment extends Fragment {
 
+    private static final String LOG_TAG = BaseFragment.class.getSimpleName();
+
     public int type = 0;
+
+    Switch sensorSwitch;
+    TextView sensorStatusTV;
+
+    RadioGroup radioGroup;
+    byte lastCollectionRate;
+
 
     public BaseFragment() {
 
@@ -54,13 +66,13 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onResume() {
-        NNLog.d("BaseFragment", "onResume of BaseFragment");
+        NNLog.d(LOG_TAG, "onResume of BaseFragment");
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        NNLog.d("BaseFragment", "OnPause of BaseFragment");
+        NNLog.d(LOG_TAG, "onPause of BaseFragment");
         super.onPause();
     }
 

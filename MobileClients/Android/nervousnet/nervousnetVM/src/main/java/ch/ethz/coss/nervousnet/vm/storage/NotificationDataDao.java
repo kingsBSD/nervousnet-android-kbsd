@@ -26,7 +26,8 @@ public class NotificationDataDao extends AbstractDao<NotificationData, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property TimeStamp = new Property(1, Long.class, "TimeStamp", false, "TIME_STAMP");
         public final static Property AppName = new Property(2, String.class, "appName", false, "APP_NAME");
-        public final static Property ShareFlag = new Property(3, Boolean.class, "ShareFlag", false, "SHARE_FLAG");
+        public final static Property Volatility = new Property(3, long.class, "Volatility", false, "VOLATILITY");
+        public final static Property ShareFlag = new Property(4, Boolean.class, "ShareFlag", false, "SHARE_FLAG");
     };
 
 
@@ -45,7 +46,8 @@ public class NotificationDataDao extends AbstractDao<NotificationData, Long> {
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "'TIME_STAMP' INTEGER," + // 1: TimeStamp
                 "'APP_NAME' TEXT," + // 2: appName
-                "'SHARE_FLAG' INTEGER);"); // 3: ShareFlag
+                "'VOLATILITY' INTEGER NOT NULL ," + // 3: Volatility
+                "'SHARE_FLAG' INTEGER);"); // 4: ShareFlag
     }
 
     /** Drops the underlying database table. */
@@ -73,10 +75,11 @@ public class NotificationDataDao extends AbstractDao<NotificationData, Long> {
         if (appName != null) {
             stmt.bindString(3, appName);
         }
+        stmt.bindLong(4, entity.getVolatility());
  
         Boolean ShareFlag = entity.getShareFlag();
         if (ShareFlag != null) {
-            stmt.bindLong(4, ShareFlag ? 1l: 0l);
+            stmt.bindLong(5, ShareFlag ? 1l: 0l);
         }
     }
 
@@ -93,7 +96,8 @@ public class NotificationDataDao extends AbstractDao<NotificationData, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // TimeStamp
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // appName
-            cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0 // ShareFlag
+            cursor.getLong(offset + 3), // Volatility
+            cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0 // ShareFlag
         );
         return entity;
     }
@@ -104,7 +108,8 @@ public class NotificationDataDao extends AbstractDao<NotificationData, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setTimeStamp(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
         entity.setAppName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setShareFlag(cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0);
+        entity.setVolatility(cursor.getLong(offset + 3));
+        entity.setShareFlag(cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0);
      }
     
     /** @inheritdoc */

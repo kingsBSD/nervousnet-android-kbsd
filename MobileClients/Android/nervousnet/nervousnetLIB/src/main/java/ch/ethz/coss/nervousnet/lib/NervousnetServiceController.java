@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -51,49 +52,69 @@ public class NervousnetServiceController {
     }
 
     public void connect() {
-        if (mServiceConnection == null) {
-            initConnection();
-        }
 
-        if (mService == null) {
-            try {
-                doBindService();
-                Log.d(LOG_TAG, bindFlag.toString());
-                if (!bindFlag) {
-                    Utils.displayAlert(context, "Alert",
-                            "Nervousnet HUB application is required to be installed and running to use this app. If not installed please download it from the App Store. If already installed, please turn on the Data Collection option inside the Nervousnet HUB application.",
-                            "Download Now", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    try {
-                                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=ch.ethz.coss.nervousnet.hub")));
-                                    } catch (android.content.ActivityNotFoundException anfe) {
-                                        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=ch.ethz.coss.nervousnet.hub")));
-                                    }
+        if (isAppInstalled("ch.ethz.coss.nervousnet.hub") || isAppInstalled("ch.ethz.coss.nervousnet.hub.debug")) {
 
-                                }
-                            }, "Exit", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    System.exit(0);
-                                }
-                            });
-                }
-            } catch (SecurityException e) {
-                e.printStackTrace();
-                Log.e(LOG_TAG, "SecurityException - cannot bind to nervousnet service due to missing permission or permission denied. use 'ch.ethz.coss.nervousnet.hub.BIND_PERM' in your manifest to connect to nervousnet HUB Service");
-                doUnbindService();
-
-                listener.onServiceConnectionFailed(new ErrorReading(new String[]{"303","Security Exception - Cannot bind to nervousnet HUB service. Missing or denied Permission."}));
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(LOG_TAG, "Exception - not able to bind ! ");
-                doUnbindService();
-
-                listener.onServiceConnectionFailed(new ErrorReading(new String[]{"301","Unable to bind to nervousnet HUB service"}));
+            if (mServiceConnection == null) {
+                initConnection();
             }
 
+            if (mService == null) {
+                try {
+                    doBindService();
+                    Log.d(LOG_TAG, "bindflag : " + bindFlag.toString());
+                    if (!bindFlag) {
+//                    Utils.displayAlert(context, "Alert",
+//                            "Nervousnet HUB application is required running to use this app. Please turn on the Data Collection option inside the Nervousnet HUB application. ",
+//                            "Launch Nervousnet", new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    context.startActivity(context.getPackageManager().getLaunchIntentForPackage("ch.ethz.coss.nervousnet.hub"));
+//
+//                                }
+//                            }, "Exit", new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    System.exit(0);
+//                                }
+//                            });
 
+                        listener.onServiceConnectionFailed(Utils.getErrorReading(101));
+
+                    }
+                } catch (SecurityException e) {
+                    e.printStackTrace();
+                    Log.e(LOG_TAG, "SecurityException - cannot bind to nervousnet service due to missing permission or permission denied. use 'ch.ethz.coss.nervousnet.hub.BIND_PERM' in your manifest to connect to nervousnet HUB Service");
+                    doUnbindService();
+
+                    listener.onServiceConnectionFailed(Utils.getErrorReading(102));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(LOG_TAG, "Exception - not able to bind ! ");
+                    doUnbindService();
+
+                    listener.onServiceConnectionFailed(Utils.getErrorReading(103));
+                }
+
+
+            }
+
+        } else {
+            Utils.displayAlert(context, "Alert",
+                    "Nervousnet HUB application is required to be installed for running this app. If not installed please download it from the App Store.",
+                    "Download Now", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            try {
+                                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=ch.ethz.coss.nervousnet.hub")));
+                            } catch (android.content.ActivityNotFoundException anfe) {
+                                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=ch.ethz.coss.nervousnet.hub")));
+                            }
+
+                        }
+                    }, "Exit", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            System.exit(0);
+                        }
+                    });
         }
-
     }
 
 
@@ -124,11 +145,28 @@ public class NervousnetServiceController {
 
                 mService = NervousnetRemote.Stub.asInterface(service);
 
-                Toast.makeText(context, "Nervousnet Remote Service Connected", Toast.LENGTH_SHORT)
-                        .show();
-                Log.d(LOG_TAG, "Binding is done - Service connected");
-                if(listener != null)
-                listener.onServiceConnected();
+                try {
+                    if(mService != null) {
+                        if (mService.getNervousnetHubStatus()) {
+                            Toast.makeText(context, "Nervousnet Remote Service Connected", Toast.LENGTH_SHORT)
+                                    .show();
+                            Log.d(LOG_TAG, "Binding is done - Service connected");
+                            if (listener != null)
+                                listener.onServiceConnected();
+                        } else {
+                            if (listener != null)
+                                listener.onServiceConnectionFailed(Utils.getErrorReading(101));
+                        }
+                    }
+
+                } catch (RemoteException e) {
+                    if (listener != null)
+                        listener.onServiceConnectionFailed(Utils.getErrorReading(104));
+
+                    e.printStackTrace();
+                }
+
+
             }
         };
 
@@ -141,15 +179,16 @@ public class NervousnetServiceController {
         it.setClassName("ch.ethz.coss.nervousnet.hub", "ch.ethz.coss.nervousnet.hub.NervousnetHubApiService");
         bindFlag = context.bindService(it, mServiceConnection, 0);
 
-        if(!bindFlag && listener != null) {
-            listener.onServiceConnectionFailed(new ErrorReading(new String[]{"302","Cannot bind to nervousnet HUB service."}));
+        if (!bindFlag && listener != null) {
+            listener.onServiceConnectionFailed(Utils.getErrorReading(103));
         }
 
     }
 
     private void doUnbindService() {
-        if(mServiceConnection != null)
-         context.unbindService(mServiceConnection);
+        Log.d(LOG_TAG, "doUnbindService successfull");
+        if (mServiceConnection != null)
+            context.unbindService(mServiceConnection);
 
         bindFlag = false;
         mService = null;
@@ -168,26 +207,31 @@ public class NervousnetServiceController {
             return new ErrorReading(new String[]{"003", "Service not bound."});
 
 
-
     }
 
 
     public SensorReading getReadings(long sensorID, long startTime, long endTime, RemoteCallback cb) throws RemoteException {
         if (bindFlag) {
-            if (mService != null){
+            if (mService != null) {
 
-                mService.getReadings(sensorID,startTime, endTime, cb);
+                mService.getReadings(sensorID, startTime, endTime, cb);
                 return null;
             } else
-                return new ErrorReading(new String[]{"002", "Service not connected."});
+                return new ErrorReading(new String[]{"002", "Nervousnet Service not connected."});
         } else
-            return new ErrorReading(new String[]{"003", "Service not bound."});
-
+            return new ErrorReading(new String[]{"003", "Nervousnet Service not bound."});
 
 
     }
 
-
+    private boolean isAppInstalled(String packageName) {
+        try {
+            context.getPackageManager().getApplicationInfo(packageName, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 
 
 //    /**

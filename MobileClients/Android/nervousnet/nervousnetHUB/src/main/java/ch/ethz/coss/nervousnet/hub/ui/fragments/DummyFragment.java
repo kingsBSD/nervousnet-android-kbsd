@@ -36,6 +36,7 @@ import android.view.ViewGroup;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
+import ch.ethz.coss.nervousnet.vm.NNLog;
 
 /**
  * @author prasad
@@ -64,13 +65,12 @@ public class DummyFragment extends BaseFragment {
      */
     @Override
     public void updateReadings(SensorReading reading) {
-        // TODO Auto-generated method stub
+        NNLog.d("DummyFragment", "updateReadings called");
     }
+
 
     @Override
     public void handleError(ErrorReading reading) {
-        // TODO Auto-generated method stub
-
+        NNLog.d("DummyFragment", "handleError called");
     }
-
 }

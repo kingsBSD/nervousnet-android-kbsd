@@ -31,7 +31,7 @@ public class NotificationSensor extends BaseSensor {
     }
 
     @Override
-    public boolean updateAndRestart(byte state) {
+    public boolean stopAndRestart(byte state) {
         return true;
     }
 

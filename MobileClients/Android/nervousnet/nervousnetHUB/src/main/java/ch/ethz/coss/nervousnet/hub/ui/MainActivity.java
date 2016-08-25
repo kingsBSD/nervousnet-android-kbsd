@@ -31,7 +31,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -53,7 +52,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         parentView = findViewById(R.id.main_grid);
         GridView gridview = (GridView) parentView.findViewById(R.id.main_grid);
-         
+
         gridview.setAdapter(new ImageAdapter(MainActivity.this, getResources().getStringArray(R.array.main_grid),
                 Constants.icons_main_screen));
         gridview.setOnItemClickListener(new OnItemClickListener() {

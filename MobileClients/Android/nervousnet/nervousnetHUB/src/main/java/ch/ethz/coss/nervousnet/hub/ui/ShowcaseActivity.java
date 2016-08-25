@@ -44,11 +44,14 @@ import java.util.HashMap;
 import ch.ethz.coss.nervousnet.hub.Constants;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.hub.ui.adapters.ImageAdapter;
+import ch.ethz.coss.nervousnet.vm.NNLog;
 
 /**
  * @author prasad
  */
 public class ShowcaseActivity extends BaseActivity {
+
+    private static final String LOG_TAG = ShowcaseActivity.class.getSimpleName();
 
     public static String parseJSONFile(String res, Context context) throws IOException {
         AssetManager manager = context.getAssets();
@@ -73,7 +76,7 @@ public class ShowcaseActivity extends BaseActivity {
             JSONObject formArray = (new JSONObject(spaceJson)).getJSONObject("apps");
             String app = formArray.getString("app");
             String packageName = formArray.getString("package");
-            System.out.println("App - " + app + ", Package - " + packageName);
+            NNLog.d(LOG_TAG, "App - " + app + ", Package - " + packageName);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {

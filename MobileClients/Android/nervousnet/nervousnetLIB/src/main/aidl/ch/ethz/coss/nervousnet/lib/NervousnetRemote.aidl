@@ -7,6 +7,22 @@ import java.util.List;
 
 interface NervousnetRemote
 	{
+
+	 /*
+           	 	* Returns the current state of Nervousnet HUB - RUNNING or PAUSED
+           	    * returns boolean
+           	    */
+         boolean getNervousnetHubStatus();
+
+	   	/*
+       	 	* Returns latest Sensor values.
+       	    * sensorType = type of Sensor. Check LibConstants.java for types.
+       	    * startTime = from time , endTime = to time
+       	    * returns SensorReading object
+       	    */
+       	 SensorReading getLatestReading(long sensorType);
+
+
 		/*
 	 	* Returns latest Sensor value (single reading) using callback
 	    * sensorType = type of Sensor. Check LibConstants for types.
@@ -23,14 +39,7 @@ interface NervousnetRemote
 	    */
 	    void getReadings(long sensorType, long startTime, long endTime,  RemoteCallback cb);
 	    
-	       
-	   	/*
-       	 	* Returns latest Sensor values.
-       	    * sensorType = type of Sensor. Check LibConstants for types.
-       	    * startTime = from time , endTime = to time
-       	    * returns SensorReading object
-       	    */
-       	 SensorReading getLatestReading(long sensorType);
+
 	}
 	/*Methods to be added
 	getAverage, getCorrelation, getEntropy, getKMeans,

@@ -69,7 +69,7 @@ public class CollectionRateSettingItemAdapter extends ArrayAdapter<String> {
 
     public Dialog createDialog(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Choose sensor collection rate:");
+        builder.setTitle(R.string.choose_sensor_rate_label);
         builder.setItems(NervousnetVMConstants.sensor_freq_labels, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int itemClicked) {

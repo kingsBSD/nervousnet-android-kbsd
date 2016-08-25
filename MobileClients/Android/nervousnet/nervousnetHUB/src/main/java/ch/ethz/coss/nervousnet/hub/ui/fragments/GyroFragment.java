@@ -28,19 +28,25 @@
  */
 package ch.ethz.coss.nervousnet.hub.ui.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
-import ch.ethz.coss.nervousnet.hub.ui.views.GyroscopeSensorView;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.GyroReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.vm.NNLog;
+import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
 /**
  * @author prasad
@@ -52,10 +58,59 @@ public class GyroFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_gyro, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.fragment_gyro, container, false);
+
     }
 
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        sensorStatusTV = (TextView) getView().findViewById(R.id.sensorStatus);
+
+        radioGroup = (RadioGroup) getView().findViewById(R.id.radioRateSensor);
+        lastCollectionRate = ((((Application) ((Activity) getContext()).getApplication()).nn_VM.getSensorState(LibConstants.SENSOR_GYROSCOPE)));
+
+        ((RadioButton)radioGroup.getChildAt(lastCollectionRate)).setChecked(true);
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch(checkedId){
+                    case R.id.radioOff:
+                        if(lastCollectionRate > NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_GYROSCOPE,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF);
+                        }
+                        break;
+                    case R.id.radioLow:
+                        if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_GYROSCOPE,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_LOW);
+                        }
+                        break;
+                    case R.id.radioMed:
+                        if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_GYROSCOPE,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_MED);
+                        }
+                        break;
+                    case R.id.radioHigh:
+                        if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_GYROSCOPE,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
+                        }
+                        break;
+                }
+            }
+        });
+
+        if((((Application) ((Activity) getContext()).getApplication()).nn_VM.getState() == NervousnetVMConstants.STATE_PAUSED)) {
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                ((RadioButton) radioGroup.getChildAt(i)).setEnabled(false);
+            }
+            sensorStatusTV.setText(R.string.local_service_paused);
+        }
+    }
     /*
      * (non-Javadoc)
      *
@@ -73,6 +128,7 @@ public class GyroFragment extends BaseFragment {
             handleError((ErrorReading) reading);
         } else {
 
+            sensorStatusTV.setText(R.string.sensor_status_connected);
             TextView x_value = (TextView) getActivity().findViewById(R.id.gyro_x);
             TextView y_value = (TextView) getActivity().findViewById(R.id.gyro_y);
             TextView z_value = (TextView) getActivity().findViewById(R.id.gyro_z);
@@ -92,8 +148,8 @@ public class GyroFragment extends BaseFragment {
     @Override
     public void handleError(ErrorReading reading) {
         NNLog.d("GyroFragment", "handleError called");
-        TextView status = (TextView) getActivity().findViewById(R.id.sensor_status_gyro);
-        status.setText("Error: code = " + reading.getErrorCode() + ", message = " + reading.getErrorString());
+        sensorStatusTV.setText(reading.getErrorString());
     }
+
 
 }

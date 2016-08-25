@@ -5,20 +5,28 @@
 Professorship of Computational Social Science (COSS)\n
 Clausiusstrasse 50,\n 8092 Zürich,\n Switzerland\n</string>
     <string name="rate_app_label">Rate App</string>
-    <string name="app_name">nervousnet</string>
+    <string name="app_name">Nervousnet</string>
     <string name="button_accept_label">Accept</string>
-    <string name="local_service_started">nervousnet Service Running</string>
-    <string name="local_service_label">nervousnet</string>
+    <string name="local_service_started">Nervousnet Service Running</string>
+	<string name="local_service_paused">Nervousnet Service Paused</string>
+    <string name="local_service_label">Nervousnet</string>
 
     <string-array name="main_grid">
         <item>Sensors</item>
         <item>Sensor Analytics</item>
-        <item>nervousnet Space</item>
+        <item>Nervousnet Space</item>
         <item>Settings</item>
         <item>Help</item>
         <item>About</item>
     </string-array>
 
+	<string-array name="collection_rate_global_options">
+		<item>Switch off all Sensors</item>
+		<item>Set all Sensors to High</item>
+		<item>Set all Sensors to Medium</item>
+		<item>Set all Sensors to low</item>
+	</string-array>
+	<string name="terms_label">Terms of Use</string>
     <string name="terms_of_use"> &lt;b>TERMS OF USE&lt;/b>&lt;br>&lt;br>
 
 		This
@@ -141,6 +149,19 @@ Clausiusstrasse 50,\n 8092 Zürich,\n Switzerland\n</string>
     <string name="title_activity_sensors">SensorsActivity</string>
     <string name="title_activity_space">SpaceActivity</string>
     <string name="api_perm_desc">Permissions to allow external apps to connect to Nervousnet HUB API Service</string>
+	<string name="toast_service_started">Service Started</string>
+	<string name="toast_service_stopped">Service Stopped</string>
+	<string name="str_debug_build">Debug build</string>
+	<string name="url_playstore_app">market://details?id=ch.ethz.coss.nervousnet.hub</string>
+	<string name="url_playstore_website">https://play.google.com/store/apps/details?id=ch.ethz.coss.nervousnet.hub</string>
+	<string name="sensor_status_connected">Service connected and sensor is running</string>
+	<string name="yes">YES</string>
+	<string name="no">NO</string>
+	<string name="choose_sensor_rate_label">Choose sensor collection rate:</string>
+	<string name="radio_med">MEDIUM</string>
+	<string name="radio_low">LOW</string>
+	<string name="radio_off">OFF</string>
+	<string name="radio_High">HIGH</string>
 
 	<string name="accessibility_service_description">Enable this service to allow NervousNet to record when net-enabled apps send notifications. Notification
 	contents are not recorded</string>

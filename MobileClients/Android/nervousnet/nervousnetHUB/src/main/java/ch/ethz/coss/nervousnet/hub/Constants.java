@@ -40,6 +40,5 @@ public final class Constants {
             R.drawable.ic_noise, R.drawable.ic_notification, R.drawable.ic_proxim};
 
 
-    public static String[] collection_rate_global_options = {"Switch off all Sensors", "Set all Sensors to High", "Set all Sensors to Medium", "Set all Sensors to low"};
 
 }

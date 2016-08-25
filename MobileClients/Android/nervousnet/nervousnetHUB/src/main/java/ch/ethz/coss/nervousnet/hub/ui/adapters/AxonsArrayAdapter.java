@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import ch.ethz.coss.nervousnet.hub.R;
 
@@ -32,12 +31,12 @@ public class AxonsArrayAdapter extends ArrayAdapter<NervousnetAxon> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 
-        if(convertView == null){
+        if (convertView == null) {
             convertView = inflater.inflate(R.layout.axon_list_item, null);
         }
 
-        TextView txtAxonName = (TextView)convertView.findViewById(R.id.txt_axon_name);
-        ImageView imgAxon = (ImageView)convertView.findViewById(R.id.img_axon);
+        TextView txtAxonName = (TextView) convertView.findViewById(R.id.txt_axon_name);
+        ImageView imgAxon = (ImageView) convertView.findViewById(R.id.img_axon);
         txtAxonName.setText(data[position].axonName);
         imgAxon.setImageResource(data[position].axonImgResource);
         return convertView;

@@ -55,7 +55,7 @@ public class TermsOfUse {
         this.mActivity = context;
     }
 
-    public void showTerms() {
+    public void showTerms(boolean showApproveButtons) {
 
         final String versionKey;
         PackageInfo pkgInfo = null;
@@ -71,7 +71,7 @@ public class TermsOfUse {
         versionKey = TERMS_PREFIX + pkgInfo.versionCode;
         boolean termsShownFlag = PreferenceManager.getDefaultSharedPreferences(mActivity).getBoolean(versionKey, false);
 
-        if (!termsShownFlag && pkgInfo != null) {
+        if (!termsShownFlag && pkgInfo != null || !showApproveButtons) {
             // Show the Eula
             String title = mActivity.getString(R.string.app_name) + " v" + pkgInfo.versionName;
 
@@ -79,35 +79,47 @@ public class TermsOfUse {
             String message = "\n\n" + mActivity.getString(R.string.terms_of_use);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity).setTitle(title)
-                    .setMessage(Html.fromHtml(message))
-                    .setPositiveButton(R.string.button_accept_label, new Dialog.OnClickListener() {
+                    .setMessage(Html.fromHtml(message));
+                    if(showApproveButtons){
+                        builder.setPositiveButton(R.string.button_accept_label, new Dialog.OnClickListener() {
 
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mActivity)
-                                    .edit();
-                            editor.putBoolean(versionKey, true);
-                            editor.commit();
-                            dialogInterface.dismiss();
-                            // Intent intent = new Intent(mActivity,
-                            // SplashActivity.class);
-                            // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                            //
-                            // mActivity.startActivity(intent);
-                            ((SplashActivity) mActivity).startThread();
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mActivity)
+                                        .edit();
+                                editor.putBoolean(versionKey, true);
+                                editor.commit();
+                                dialogInterface.dismiss();
+                                // Intent intent = new Intent(mActivity,
+                                // SplashActivity.class);
+                                // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                //
+                                // mActivity.startActivity(intent);
+                                ((SplashActivity) mActivity).startThread();
 
-                        }
-                    }).setNegativeButton(android.R.string.cancel, new Dialog.OnClickListener() {
+                            }
+                        });
+                        builder.setNegativeButton(android.R.string.cancel, new Dialog.OnClickListener() {
 
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Close the activity as they have declined the EULA
-                            ((SplashActivity) mActivity).finish();
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Close the activity as they have declined the EULA
+                                ((SplashActivity) mActivity).finish();
 
-                        }
+                            }
 
-                    });
-            builder.setCancelable(false);
+                        });
+                        builder.setCancelable(false);
+                    } else {
+                        builder.setPositiveButton("OK", new Dialog.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                    }
+
 
             AlertDialog alert = builder.create();
             alert.show();

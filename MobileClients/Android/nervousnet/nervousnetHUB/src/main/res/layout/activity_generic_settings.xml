@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -9,13 +8,13 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:gravity="top"
         android:text="Generic Settings"
-        android:textColor="@color/gray"
-        android:id="@+id/textView" />
+        android:textColor="@color/gray" />
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -31,7 +30,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -40,33 +38,74 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="30dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="UUID :"
                     android:layout_weight="0.1"
-                    android:layout_gravity="center"
-                    android:gravity="center" />
+                    android:gravity="left|bottom"
+                    android:text="UUID :"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+                <ImageButton
+                    android:id="@+id/info_prompt"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:scaleType="centerInside"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_info_prompt"
+                    android:layout_gravity="center_vertical"
+                    android:onClick="showInfo"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/round_rect">
+
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/uuid_TV"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
             <Button
-                style="?android:attr/buttonStyleSmall"
+                android:id="@+id/uuid_gen_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Generate new UUID"
-                android:id="@+id/uuid_gen_button"
-                android:layout_below="@+id/view"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="5dp" />
+                android:layout_below="@+id/view"
+                android:layout_margin="5dp"
+                android:text="Generate new UUID" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/scrollView1"
+                android:background="@drawable/border_gradient" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_weight="0.1"
+                android:gravity="left|bottom"
+                android:text="Sensor :"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
         </LinearLayout>
+
     </ScrollView>
 
     <View
@@ -75,7 +114,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/scrollView1"
-        android:background="@drawable/border_gradient"
-        android:id="@+id/view" />
+        android:background="@drawable/border_gradient" />
 
 </RelativeLayout>

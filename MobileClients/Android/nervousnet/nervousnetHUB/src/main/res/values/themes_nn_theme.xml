@@ -4,8 +4,10 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="nn_Theme" parent="@style/_nn_Theme" />
+
     <style name="nn_Theme_No_Title_bar" parent="@style/nn_Theme">
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="_nn_Theme" parent="android:Theme.Holo.Light">

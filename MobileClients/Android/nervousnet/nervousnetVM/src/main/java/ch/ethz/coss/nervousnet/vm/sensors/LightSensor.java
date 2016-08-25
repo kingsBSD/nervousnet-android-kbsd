@@ -66,7 +66,7 @@ public class LightSensor extends BaseSensor implements SensorEventListener {
     }
 
     @Override
-    public boolean updateAndRestart(byte state) {
+    public boolean stopAndRestart(byte state) {
 
         if (state == NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE) {
             NNLog.d(LOG_TAG, "Cancelled Starting Light sensor as Sensor is not available.");

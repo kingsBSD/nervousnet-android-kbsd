@@ -8,16 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-
 import ch.ethz.coss.nervousnet.hub.R;
 
 /**
  * Created by Patrick on 02/08/2016.
  */
-public class NodesArrayAdapter extends ArrayAdapter<NervousnetNode>{
+public class NodesArrayAdapter extends ArrayAdapter<NervousnetNode> {
 
     Context context;
     int layoutResourceID;
@@ -33,8 +29,8 @@ public class NodesArrayAdapter extends ArrayAdapter<NervousnetNode>{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-        if (convertView == null){
-            convertView = inflater.inflate(R.layout.node_list_item,null);
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.node_list_item, null);
         }
 
         TextView txtNodeName = (TextView) convertView.findViewById(R.id.txt_node_name);

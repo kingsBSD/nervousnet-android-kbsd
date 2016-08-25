@@ -26,16 +26,18 @@
 
 package ch.ethz.coss.nervousnet.hub.ui;
 
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
 import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
-import ch.ethz.coss.nervousnet.hub.SensorPermissionsActivity;
-import ch.ethz.coss.nervousnet.hub.SharingNodeActivity;
-import ch.ethz.coss.nervousnet.vm.storage.SQLHelper;
 
 /**
  * @author prasad
@@ -61,4 +63,37 @@ public class GenericSettingsActivity extends BaseActivity {
         });
     }
 
+
+    public void showInfo(View view) {
+        String title = "UUID:";
+
+        // Includes the updates as well so users know what changed.
+        String message = "\n\n- is the Unique ID associated with data stored and shared from a specific installation on your device. " +
+                "\n- It can be used to view data shared from your device." +
+                "\n- Use the 'Generate new UUID' button to generate a new UUID for your installation." +
+                "\n- Every time you uninstall and reinstall the Nervousnet App, a new UUID is generated." +
+                "\n- Every time a new UUID is generated, any link to you old UUID and data is lost.";
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", new Dialog.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        dialogInterface.dismiss();
+
+                    }
+                });
+        builder.setCancelable(false);
+
+        AlertDialog alert = builder.create();
+        alert.show();
+
+        alert.getWindow().getAttributes();
+
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(12);
+    }
 }

@@ -28,22 +28,29 @@
  */
 package ch.ethz.coss.nervousnet.hub.ui.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
-import ch.ethz.coss.nervousnet.hub.ui.views.BatterySensorView;
 import ch.ethz.coss.nervousnet.lib.BatteryReading;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.vm.NNLog;
+import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
 public class BatteryFragment extends BaseFragment {
 
+    private static final String LOG_TAG = BatteryFragment.class.getSimpleName();
     public BatteryFragment() {
         super(LibConstants.SENSOR_BATTERY);
     }
@@ -51,9 +58,61 @@ public class BatteryFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_battery, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.fragment_battery, container, false);
     }
+
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        sensorStatusTV = (TextView) getView().findViewById(R.id.sensorStatus);
+        radioGroup = (RadioGroup) getView().findViewById(R.id.radioRateSensor);
+        lastCollectionRate = ((((Application) ((Activity) getContext()).getApplication()).nn_VM.getSensorState(LibConstants.SENSOR_BATTERY)));
+
+        ((RadioButton)radioGroup.getChildAt(lastCollectionRate)).setChecked(true);
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                NNLog.d(LOG_TAG, "Inside radioGroup onCheckedChanged ");
+
+                switch(checkedId){
+                    case R.id.radioOff:
+                        if(lastCollectionRate > NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_BATTERY,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF);
+                        }
+                        break;
+                    case R.id.radioLow:
+                        if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_BATTERY,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_LOW);
+                        }
+                        break;
+                    case R.id.radioMed:
+                        if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_BATTERY,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_MED);
+                        }
+                        break;
+                    case R.id.radioHigh:
+                        if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_BATTERY,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
+                        }
+                        break;
+                }
+            }
+        });
+
+        if((((Application) ((Activity) getContext()).getApplication()).nn_VM.getState() == NervousnetVMConstants.STATE_PAUSED)) {
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                ((RadioButton) radioGroup.getChildAt(i)).setEnabled(false);
+            }
+            sensorStatusTV.setText(R.string.local_service_paused);
+        }
+    }
+
 
     /*
      * (non-Javadoc)
@@ -64,23 +123,25 @@ public class BatteryFragment extends BaseFragment {
      */
     @Override
     public void updateReadings(SensorReading reading) {
-        NNLog.d("BatteryFragment", "Inside updateReadings");
+        NNLog.d(LOG_TAG, "Inside updateReadings");
         if (reading instanceof ErrorReading) {
 
-            NNLog.d("BatteryFragment", "Inside updateReadings - ErrorReading");
+            NNLog.d(LOG_TAG, "Inside updateReadings - ErrorReading");
             handleError((ErrorReading) reading);
         } else {
+            sensorStatusTV.setText(R.string.sensor_status_connected);
+
             TextView percent = (TextView) getActivity().findViewById(R.id.battery_percent);
             percent.setText("" + ((BatteryReading) reading).getPercent() * 100 + " %");
 
             TextView isCharging = (TextView) getActivity().findViewById(R.id.battery_isCharging);
-            isCharging.setText("" + ((BatteryReading) reading).isCharging());
+            isCharging.setText((((BatteryReading) reading).isCharging()) ? "YES" : "NO");
 
             TextView USB_Charging = (TextView) getActivity().findViewById(R.id.battery_isUSB);
-            USB_Charging.setText(((BatteryReading) reading).getCharging_type() == 1 ? "YES" : "NO");
+            USB_Charging.setText(((BatteryReading) reading).getCharging_type() == 1 ? getContext().getString(R.string.yes) : getContext().getString(R.string.no));
 
             TextView AC_charging = (TextView) getActivity().findViewById(R.id.battery_isAC);
-            AC_charging.setText(((BatteryReading) reading).getCharging_type() == 0 ? "YES" : "NO");
+            AC_charging.setText(((BatteryReading) reading).getCharging_type() == 2 ? getContext().getString(R.string.yes) : getContext().getString(R.string.no));
 
 
         }
@@ -88,9 +149,9 @@ public class BatteryFragment extends BaseFragment {
 
     @Override
     public void handleError(ErrorReading reading) {
-        NNLog.d("BatteryFragment", "handleError called");
-        TextView status = (TextView) getActivity().findViewById(R.id.sensor_status_batt);
-        status.setText("Error: code = " + reading.getErrorCode() + ", message = " + reading.getErrorString());
+        NNLog.d(LOG_TAG, "handleError called");
+        sensorStatusTV.setText(reading.getErrorString());
     }
+
 
 }

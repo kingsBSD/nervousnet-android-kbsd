@@ -24,12 +24,12 @@
         android:paddingTop="@dimen/activity_vertical_margin" />
 
     <Switch
+        android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accelerometer"
-        android:id="@+id/switch1"
         android:layout_gravity="center_vertical"
+        android:layout_weight="0.37"
         android:checked="false"
-        android:layout_weight="0.37" />
+        android:text="Accelerometer" />
 
 </LinearLayout>

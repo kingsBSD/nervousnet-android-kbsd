@@ -1,10 +1,9 @@
-package ch.ethz.coss.nervousnet.hub;
+package ch.ethz.coss.nervousnet.hub.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import ch.ethz.coss.nervousnet.hub.ui.BaseActivity;
+import ch.ethz.coss.nervousnet.hub.R;
 
 public class AxonSensorsActivity extends BaseActivity {
 

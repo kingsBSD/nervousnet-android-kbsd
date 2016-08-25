@@ -12,6 +12,7 @@ public class NotificationData implements SensorDataImpl {
     private Long id;
     private Long TimeStamp;
     private String appName;
+    private long Volatility;
     private Boolean ShareFlag;
 
     // KEEP FIELDS - put your custom fields here
@@ -25,10 +26,11 @@ public class NotificationData implements SensorDataImpl {
         this.id = id;
     }
 
-    public NotificationData(Long id, Long TimeStamp, String appName, Boolean ShareFlag) {
+    public NotificationData(Long id, Long TimeStamp, String appName, long Volatility, Boolean ShareFlag) {
         this.id = id;
         this.TimeStamp = TimeStamp;
         this.appName = appName;
+        this.Volatility = Volatility;
         this.ShareFlag = ShareFlag;
     }
 
@@ -54,6 +56,14 @@ public class NotificationData implements SensorDataImpl {
 
     public void setAppName(String appName) {
         this.appName = appName;
+    }
+
+    public long getVolatility() {
+        return Volatility;
+    }
+
+    public void setVolatility(long Volatility) {
+        this.Volatility = Volatility;
     }
 
     public Boolean getShareFlag() {

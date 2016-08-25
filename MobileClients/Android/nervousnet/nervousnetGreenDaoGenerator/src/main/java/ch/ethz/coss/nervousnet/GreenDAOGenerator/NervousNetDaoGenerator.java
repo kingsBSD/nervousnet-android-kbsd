@@ -187,6 +187,7 @@ public class NervousNetDaoGenerator {
         notificationData.addIdProperty().autoincrement().primaryKey();
         notificationData.addLongProperty("TimeStamp");
         notificationData.addStringProperty("appName");
+        notificationData.addLongProperty("Volatility").notNull();
         notificationData.addBooleanProperty("ShareFlag");
 
         Entity pressureData = schema.addEntity("PressureData");
@@ -220,6 +221,7 @@ public class NervousNetDaoGenerator {
         trafficData.addStringProperty("appName");
         trafficData.addLongProperty("txBytes");
         trafficData.addLongProperty("rxBytes");
+        trafficData.addLongProperty("Volatility").notNull();
         trafficData.addBooleanProperty("ShareFlag");
 
         Entity nnPacket = schema.addEntity("Packet");

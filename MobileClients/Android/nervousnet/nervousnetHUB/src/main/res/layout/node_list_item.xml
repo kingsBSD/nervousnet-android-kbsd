@@ -32,12 +32,12 @@
         android:text="Nervousnet" />
 
     Button
-        android:id="@+id/sensor_level_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="14sp" />
+    android:id="@+id/sensor_level_button"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_weight="1"
+    android:textAppearance="?android:attr/textAppearanceSmall"
+    android:textSize="14sp" />
 
 </LinearLayout>
