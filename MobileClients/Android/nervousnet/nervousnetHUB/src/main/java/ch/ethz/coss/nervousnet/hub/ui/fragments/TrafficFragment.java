@@ -38,7 +38,11 @@ public class TrafficFragment extends BaseFragment {
             handleError((ErrorReading) reading);
         } else {
             TextView appName = (TextView) getActivity().findViewById(R.id.app_name);
-            appName.setText("" + ((TrafficReading) reading).getAppName());
+            appName.setText(((TrafficReading) reading).getAppName());
+            TextView txBytes = (TextView) getActivity().findViewById(R.id.tx_bytes);
+            txBytes.setText((Long.toString(((TrafficReading) reading).getTxBytes())));
+            TextView rxBytes = (TextView) getActivity().findViewById(R.id.rx_bytes);
+            rxBytes.setText((Long.toString(((TrafficReading) reading).getRxBytes())));
         }
 
     }

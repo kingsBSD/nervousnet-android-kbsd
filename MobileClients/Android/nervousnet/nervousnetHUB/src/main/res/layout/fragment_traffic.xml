@@ -69,6 +69,30 @@
                         android:layout_height="wrap_content"
                         android:hint="App name value comes here" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Tx bytes : " />
+
+                    <TextView
+                        android:id="@+id/tx_bytes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Tx bytes comes here" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Rx bytes : " />
+
+                    <TextView
+                        android:id="@+id/rx_bytes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Rx bytes comes here" />
+
+
+
                 </LinearLayout>
 
             </LinearLayout>

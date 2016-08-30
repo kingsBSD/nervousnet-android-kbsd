@@ -39,6 +39,7 @@ import android.support.v4.view.ViewPager;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
+//import android.util.Log;
 import android.view.View;
 
 import android.widget.TextView;
@@ -58,6 +59,7 @@ import ch.ethz.coss.nervousnet.hub.ui.fragments.LocationFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.NoiseFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.NotificationFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.ProximityFragment;
+import ch.ethz.coss.nervousnet.hub.ui.fragments.TrafficFragment;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.NervousnetServiceConnectionListener;
@@ -104,6 +106,7 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
         if (reading != null) {
             if (reading instanceof ErrorReading) {
                 fragment.handleError((ErrorReading) reading);
+
             } else {
                 fragment.updateReadings(reading);
             }
@@ -141,6 +144,7 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
             public void run() {
                 boolean errorFlag;
                 NNLog.d("SensorDisplayActivity", "before updating");
+
                 update(); // this function can change value of m_interval.
 
 
@@ -158,6 +162,7 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
     }
 
     protected void update() {
+
         try {
             int index = viewPager.getCurrentItem();
             NNLog.d("SensorDisplayActivity", "Inside update : index  = " + index);
@@ -187,20 +192,24 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
                 case 7:
                     updateStatus(nervousnetServiceController.getLatestReading(LibConstants.SENSOR_PROXIMITY), index);
                     break;
+                case 8:
+                    updateStatus(nervousnetServiceController.getLatestReading(LibConstants.SENSOR_TRAFFIC), index);
+                    break;
                 default:
                     break;
             }
 
             viewPager.getAdapter().notifyDataSetChanged();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
     @Override
     public void onServiceConnected() {
+
         startRepeatingTask();
+
     }
 
     @Override
@@ -218,12 +227,12 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
 
         public SensorDisplayPagerAdapter(Context context, FragmentManager fm) {
             super(fm);
+
             this.context = context;
         }
 
         @Override
         public Fragment getItem(int i) {
-
             switch (i) {
                 case 0:
                     fragment = new AccelFragment();
@@ -249,10 +258,14 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
                 case 7:
                     fragment = new ProximityFragment();
                     break;
+                case 8:
+                    fragment = new TrafficFragment();
+                    break;
                 default:
                     fragment = new DummyFragment();
                     break;
             }
+
             return fragment;
         }
 
@@ -287,14 +300,17 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
         @SuppressWarnings("unchecked")
         public Fragment getFragment(int position) {
             try {
+
                 Field f = FragmentStatePagerAdapter.class.getDeclaredField("mFragments");
                 f.setAccessible(true);
+
                 ArrayList<Fragment> fragments = (ArrayList<Fragment>) f.get(this);
                 if (fragments.size() > position) {
                     return fragments.get(position);
                 }
                 return null;
             } catch (Exception e) {
+
                 throw new RuntimeException(e);
             }
         }
