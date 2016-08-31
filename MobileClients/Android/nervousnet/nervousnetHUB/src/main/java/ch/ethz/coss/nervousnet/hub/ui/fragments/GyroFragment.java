@@ -69,7 +69,7 @@ public class GyroFragment extends BaseFragment {
         sensorStatusTV = (TextView) getView().findViewById(R.id.sensorStatus);
 
         radioGroup = (RadioGroup) getView().findViewById(R.id.radioRateSensor);
-        lastCollectionRate = ((((Application) ((Activity) getContext()).getApplication()).nn_VM.getSensorState(LibConstants.SENSOR_GYROSCOPE)));
+        lastCollectionRate = ((Application) (getActivity().getApplication())).nn_VM.getSensorState(LibConstants.SENSOR_GYROSCOPE);
 
         ((RadioButton)radioGroup.getChildAt(lastCollectionRate)).setChecked(true);
 
@@ -82,29 +82,29 @@ public class GyroFragment extends BaseFragment {
                 switch(checkedId){
                     case R.id.radioOff:
                         if(lastCollectionRate > NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
-                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_GYROSCOPE,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF);
+                            ((Application) (getActivity().getApplication())).nn_VM.updateSensorConfig(LibConstants.SENSOR_GYROSCOPE,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF);
                         }
                         break;
                     case R.id.radioLow:
                         if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
-                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_GYROSCOPE,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_LOW);
+                            ((Application) (getActivity().getApplication())).nn_VM.updateSensorConfig(LibConstants.SENSOR_GYROSCOPE,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_LOW);
                         }
                         break;
                     case R.id.radioMed:
                         if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
-                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_GYROSCOPE,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_MED);
+                            ((Application) (getActivity().getApplication())).nn_VM.updateSensorConfig(LibConstants.SENSOR_GYROSCOPE,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_MED);
                         }
                         break;
                     case R.id.radioHigh:
                         if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
-                            ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorConfig(LibConstants.SENSOR_GYROSCOPE,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
+                            ((Application) (getActivity().getApplication())).nn_VM.updateSensorConfig(LibConstants.SENSOR_GYROSCOPE,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
                         }
                         break;
                 }
             }
         });
 
-        if((((Application) ((Activity) getContext()).getApplication()).nn_VM.getState() == NervousnetVMConstants.STATE_PAUSED)) {
+        if ((((Application) (getActivity().getApplication())).nn_VM.getState() == NervousnetVMConstants.STATE_PAUSED)) {
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 ((RadioButton) radioGroup.getChildAt(i)).setEnabled(false);
             }

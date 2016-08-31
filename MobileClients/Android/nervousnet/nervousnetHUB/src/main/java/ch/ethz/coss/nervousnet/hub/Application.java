@@ -54,12 +54,12 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
 
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread thread, Throwable e) {
-                handleUncaughtException(thread, e);
-            }
-        });
+//        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+//            @Override
+//            public void uncaughtException(Thread thread, Throwable e) {
+//                handleUncaughtException(thread, e);
+//            }
+//        });
 
         init();
 
@@ -77,12 +77,12 @@ public class Application extends android.app.Application {
         initNotification();
     }
 
-    private void handleUncaughtException(Thread thread, Throwable e) {
-        Log.e(LOG_TAG, "Inside handleUncaughtException: Exception thrown here.");
-
-        e.printStackTrace();
-        System.exit(0);
-    }
+//    private void handleUncaughtException(Thread thread, Throwable e) {
+//        Log.e(LOG_TAG, "Inside handleUncaughtException: Exception thrown here.");
+//
+//        e.printStackTrace();
+//        System.exit(0);
+//    }
 
     public byte getState() {
         return nn_VM.getState();

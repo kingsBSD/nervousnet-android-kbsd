@@ -100,6 +100,7 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
 
     protected void updateStatus(SensorReading reading, int index) {
 
+        //BaseFragment fragment = (BaseFragment) sapAdapter.getItem(index);
         BaseFragment fragment = (BaseFragment) sapAdapter.getFragment(index);
         NNLog.d("SensorDisplayActivity", "Inside updateStatus, index =  " + index);
 
