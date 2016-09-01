@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ch.ethz.coss.nervousnet.hub"
-    android:versionCode="43"
-    android:versionName="0.7.36 alpha">
+    android:versionCode="45"
+    android:versionName="0.7.38 alpha">
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -140,7 +140,7 @@
             android:label="@string/title_activity_space" />
         <activity android:name=".ui.SharingNodeActivity" />
         <activity android:name=".ui.SensorPermissionsActivity" />
-        <activity android:name=".ui.AxonSensorsActivity"/>
+        <activity android:name=".ui.AxonSensorsActivity" />
     </application>
 
 </manifest>

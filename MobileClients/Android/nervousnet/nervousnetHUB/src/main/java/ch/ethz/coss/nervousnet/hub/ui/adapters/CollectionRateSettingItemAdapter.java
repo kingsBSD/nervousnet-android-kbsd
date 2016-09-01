@@ -13,10 +13,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.vm.NNLog;
 import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
+import ch.ethz.coss.nervousnet.vm.events.NNEvent;
 
 public class CollectionRateSettingItemAdapter extends ArrayAdapter<String> {
 
@@ -75,10 +78,12 @@ public class CollectionRateSettingItemAdapter extends ArrayAdapter<String> {
             public void onClick(DialogInterface dialog, int itemClicked) {
                 String[] option_array = NervousnetVMConstants.sensor_freq_labels;
                 String optionSelected = option_array[itemClicked];
-                ((Application) context.getApplicationContext()).nn_VM.updateSensorConfig((long) position,
-                        (byte) itemClicked);
-                ((Activity) context).finish();
-                context.startActivity(((Activity) context).getIntent());
+
+                EventBus.getDefault().post(new NNEvent((long) position, (byte) itemClicked, NervousnetVMConstants.EVENT_CHANGE_SENSOR_STATE_REQUEST));
+//                ((Application) context.getApplicationContext()).nn_VM.updateSensorConfig((long) position,
+//                        (byte) itemClicked);
+//                ((Activity) context).finish();
+//                context.startActivity(((Activity) context).getIntent());
             }
         });
         return builder.create();

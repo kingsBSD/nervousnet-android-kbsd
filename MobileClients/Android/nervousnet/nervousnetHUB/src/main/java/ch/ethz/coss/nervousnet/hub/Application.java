@@ -33,10 +33,13 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import ch.ethz.coss.nervousnet.hub.ui.MainActivity;
 import ch.ethz.coss.nervousnet.vm.NNLog;
 import ch.ethz.coss.nervousnet.vm.NervousnetVM;
 import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
+import ch.ethz.coss.nervousnet.vm.events.NNEvent;
 
 public class Application extends android.app.Application {
 
@@ -88,16 +91,13 @@ public class Application extends android.app.Application {
         return nn_VM.getState();
     }
 
-    public void setState(Context context, byte state) {
-        nn_VM.storeNervousnetState(state);
-    }
 
     public void startService(Context context) {
         NNLog.d(LOG_TAG, "inside startService");
         Toast.makeText(context, R.string.toast_service_started, Toast.LENGTH_SHORT).show();
         Intent sensorIntent = new Intent(context, NervousnetHubApiService.class);
         context.startService(sensorIntent);
-        setState(this, NervousnetVMConstants.STATE_RUNNING);
+        EventBus.getDefault().post(new NNEvent(NervousnetVMConstants.EVENT_START_NERVOUSNET_REQUEST));
         showNotification();
     }
 
@@ -107,7 +107,7 @@ public class Application extends android.app.Application {
         nn_VM.stopSensors();
         Intent sensorIntent = new Intent(context, NervousnetHubApiService.class);
         context.stopService(sensorIntent);
-        setState(this, NervousnetVMConstants.STATE_PAUSED);
+        EventBus.getDefault().post(new NNEvent(NervousnetVMConstants.EVENT_PAUSE_NERVOUSNET_REQUEST));
         removeNotification();
 
     }

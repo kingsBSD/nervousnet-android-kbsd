@@ -44,6 +44,9 @@ import android.view.View;
 
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -68,10 +71,11 @@ import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.lib.Utils;
 import ch.ethz.coss.nervousnet.vm.NNLog;
 import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
+import ch.ethz.coss.nervousnet.vm.events.NNEvent;
 
 public class SensorDisplayActivity extends BaseActivity implements ActionBarImplementation, NervousnetServiceConnectionListener {
     private static BaseFragment fragment;
-    int m_interval = 100; // 100 milliseconds by default, can be changed later
+    int m_interval = 300; // 100 milliseconds by default, can be changed later
     Handler m_handler = new Handler();
     Runnable m_statusChecker;
     NervousnetServiceController nervousnetServiceController;
@@ -89,13 +93,27 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(sapAdapter);
 //        if (savedInstanceState == null) {
-            initServiceConnection();
+        initServiceConnection();
 //        }
     }
 
     private void initServiceConnection() {
         nervousnetServiceController = new NervousnetServiceController(SensorDisplayActivity.this, this);
         nervousnetServiceController.connect();
+    }
+
+
+    @Subscribe
+    public void onNNEvent(NNEvent event) {
+        NNLog.d("SensorDisplayActivityon", "onNNEvent called ");
+
+        if (event.eventType == NervousnetVMConstants.EVENT_SENSOR_STATE_UPDATED || event.eventType == NervousnetVMConstants.EVENT_NERVOUSNET_STATE_UPDATED) {
+//            getSupportFragmentManager().beginTransaction().detach(sapAdapter.getItem(viewPager.getCurrentItem())).commit();
+            finish();
+            startActivity(getIntent());
+            NNLog.d("SensorDisplayActivityon", "onNNEvent 2 called ");
+        }
+
     }
 
     protected void updateStatus(SensorReading reading, int index) {
@@ -114,6 +132,21 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
 
         }
 
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+        nervousnetServiceController.connect();
+    }
+
+    @Override
+    public void onStop() {
+        nervousnetServiceController.disconnect();
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override
@@ -223,6 +256,39 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
 
     }
 
+    public void showInfo(View view) {
+        String title = "Sensor Frequency:";
+
+        // Includes the updates as well so users know what changed.
+        String message = "\n\n- Settings to control the frequency of Sensors." +
+                "\nClick on the options to switch off or change the frequency." +
+                "\n- Various levels of frequency can be selected" +
+                "\n          - HIGH, MEDIUM, LOW or OFF" +
+                "\n Please note if the Nervousnet Service is Paused, this control is disabled.";
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", new Dialog.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        dialogInterface.dismiss();
+
+                    }
+                });
+        builder.setCancelable(false);
+
+        AlertDialog alert = builder.create();
+        alert.show();
+
+        alert.getWindow().getAttributes();
+
+        TextView textView = (TextView) alert.findViewById(android.R.id.message);
+        textView.setTextSize(12);
+    }
+
     public static class SensorDisplayPagerAdapter extends FragmentStatePagerAdapter {
         Context context;
 
@@ -317,38 +383,5 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
         }
     }
 
-
-    public void showInfo(View view) {
-        String title = "Sensor Frequency:";
-
-        // Includes the updates as well so users know what changed.
-        String message = "\n\n- Settings to control the frequency of Sensors." +
-                "\nClick on the options to switch off or change the frequency." +
-                "\n- Various levels of frequency can be selected" +
-                "\n          - HIGH, MEDIUM, LOW or OFF" +
-                "\n Please note if the Nervousnet Service is Paused, this control is disabled.";
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("OK", new Dialog.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        dialogInterface.dismiss();
-
-                    }
-                });
-        builder.setCancelable(false);
-
-        AlertDialog alert = builder.create();
-        alert.show();
-
-        alert.getWindow().getAttributes();
-
-        TextView textView = (TextView) alert.findViewById(android.R.id.message);
-        textView.setTextSize(12);
-    }
 
 }

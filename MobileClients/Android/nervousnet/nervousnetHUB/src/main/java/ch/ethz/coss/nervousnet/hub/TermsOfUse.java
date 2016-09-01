@@ -80,45 +80,45 @@ public class TermsOfUse {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity).setTitle(title)
                     .setMessage(Html.fromHtml(message));
-                    if(showApproveButtons){
-                        builder.setPositiveButton(R.string.button_accept_label, new Dialog.OnClickListener() {
+            if (showApproveButtons) {
+                builder.setPositiveButton(R.string.button_accept_label, new Dialog.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mActivity)
-                                        .edit();
-                                editor.putBoolean(versionKey, true);
-                                editor.commit();
-                                dialogInterface.dismiss();
-                                // Intent intent = new Intent(mActivity,
-                                // SplashActivity.class);
-                                // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                //
-                                // mActivity.startActivity(intent);
-                                ((SplashActivity) mActivity).startThread();
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mActivity)
+                                .edit();
+                        editor.putBoolean(versionKey, true);
+                        editor.commit();
+                        dialogInterface.dismiss();
+                        // Intent intent = new Intent(mActivity,
+                        // SplashActivity.class);
+                        // intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        //
+                        // mActivity.startActivity(intent);
+                        ((SplashActivity) mActivity).startThread();
 
-                            }
-                        });
-                        builder.setNegativeButton(android.R.string.cancel, new Dialog.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Close the activity as they have declined the EULA
-                                ((SplashActivity) mActivity).finish();
-
-                            }
-
-                        });
-                        builder.setCancelable(false);
-                    } else {
-                        builder.setPositiveButton("OK", new Dialog.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        });
                     }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new Dialog.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Close the activity as they have declined the EULA
+                        ((SplashActivity) mActivity).finish();
+
+                    }
+
+                });
+                builder.setCancelable(false);
+            } else {
+                builder.setPositiveButton("OK", new Dialog.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+            }
 
 
             AlertDialog alert = builder.create();

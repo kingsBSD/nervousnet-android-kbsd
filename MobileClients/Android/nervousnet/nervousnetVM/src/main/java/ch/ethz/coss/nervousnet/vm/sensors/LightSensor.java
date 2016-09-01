@@ -109,7 +109,7 @@ public class LightSensor extends BaseSensor implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        NNLog.d(LOG_TAG, "Lux = " + event.values[0] +", TimeStamp = "+System.currentTimeMillis());
+        NNLog.d(LOG_TAG, "Lux = " + event.values[0] + ", TimeStamp = " + System.currentTimeMillis());
         reading = new LightReading(System.currentTimeMillis(), event.values[0]);
         if (reading != null)
             dataReady(reading);

@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/round_rect">
+    android:background="@drawable/round_rect"
+    android:orientation="vertical">
 
     <RadioGroup
         android:id="@+id/radioRateSensor"
@@ -16,9 +16,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
             android:background="@drawable/radio_button_background"
             android:button="@android:color/transparent"
+            android:gravity="center"
             android:text="@string/radio_off"
             android:textSize="@dimen/rate_switch_label_size" />
 
@@ -28,9 +28,9 @@
             android:layout_height="wrap_content"
 
             android:layout_weight="1"
-            android:gravity="center"
             android:background="@drawable/radio_button_background"
             android:button="@android:color/transparent"
+            android:gravity="center"
             android:text="@string/radio_low"
             android:textSize="@dimen/rate_switch_label_size" />
 
@@ -41,22 +41,22 @@
 
             android:layout_weight="1"
 
-            android:gravity="center"
             android:background="@drawable/radio_button_background"
             android:button="@android:color/transparent"
+            android:gravity="center"
             android:text="@string/radio_med"
-            android:textSize="@dimen/rate_switch_label_size"/>
+            android:textSize="@dimen/rate_switch_label_size" />
 
         <RadioButton
             android:id="@+id/radioHigh"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-
-
             android:background="@drawable/radio_button_background"
+
+
             android:button="@android:color/transparent"
+            android:gravity="center"
             android:text="@string/radio_High"
             android:textSize="@dimen/rate_switch_label_size" />
 

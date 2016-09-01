@@ -1,28 +1,10 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <item
-        android:drawable="@drawable/radio_normal"
-        android:state_checked="true"
-        android:state_pressed="true" />
-    <item
-        android:drawable="@drawable/radio_sel"
-        android:state_pressed="true" />
-    <item
-        android:drawable="@drawable/radio_sel"
-        android:state_enabled="true"
-        android:state_checked="true" />
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <item android:drawable="@drawable/radio_normal" android:state_checked="true" android:state_pressed="true" />
+    <item android:drawable="@drawable/radio_sel" android:state_pressed="true" />
+    <item android:drawable="@drawable/radio_sel" android:state_checked="true" android:state_enabled="true" />
 
-    <item
-        android:drawable="@drawable/radio_normal"
-        android:state_enabled="true"/>
+    <item android:drawable="@drawable/radio_normal" android:state_enabled="true" />
 
-    <item
-        android:drawable="@drawable/radio_disabled"
-        android:state_enabled="false"
-        android:state_checked="true"/>
-    <item
-        android:drawable="@drawable/radio_disabled"
-        android:state_enabled="false"
-        android:state_checked="false"/>
+    <item android:drawable="@drawable/radio_disabled" android:state_checked="true" android:state_enabled="false" />
+    <item android:drawable="@drawable/radio_disabled" android:state_checked="false" android:state_enabled="false" />
 </selector>

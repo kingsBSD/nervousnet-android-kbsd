@@ -132,6 +132,7 @@ public class SQLHelper implements BaseSensorListener {
         proxDataArrList.clear();
         trafficDataArrList.clear();
     }
+
     public synchronized Config loadVMConfig() {
         NNLog.d(LOG_TAG, "Inside loadVMConfig");
 
@@ -191,7 +192,7 @@ public class SQLHelper implements BaseSensorListener {
         new StoreTask(type).execute(sensorDataList);
     }
 
-    public synchronized boolean storeSensor(int type, ArrayList sensorDataList) {
+    public boolean storeSensor(int type, ArrayList sensorDataList) {
         NNLog.d(LOG_TAG, "Inside storeSensor ");
 
         if (sensorDataList == null) {
@@ -199,12 +200,6 @@ public class SQLHelper implements BaseSensorListener {
             return false;
         }
         NNLog.d(LOG_TAG, "sensorDataList (Type = " + type + ")"); // ,
-        // Timestamp
-        // =
-        // "+sensorData.getTimeStamp()+",
-        // Volatility
-        // =
-        // "+sensorData.getVolatility());
 
         switch (type) {
             case LibConstants.SENSOR_ACCELEROMETER:
@@ -293,7 +288,6 @@ public class SQLHelper implements BaseSensorListener {
                 qb.where(GyroDataDao.Properties.TimeStamp.between(startTime, endTime));
 
 
-
                 break;
 
             case LibConstants.SENSOR_LIGHT:
@@ -339,7 +333,7 @@ public class SQLHelper implements BaseSensorListener {
 
         }
         try {
-            if(cb == null || list == null)
+            if (cb == null || list == null)
                 NNLog.d(LOG_TAG, "getSensorReadings with callback, Callback instance or list is  null");
             NNLog.d(LOG_TAG, "getSensorReadings with callback - SUCCESS");
 
@@ -559,7 +553,7 @@ public class SQLHelper implements BaseSensorListener {
 
     public String getUUID() {
 
-        return ((Config)loadVMConfig()).getUUID();
+        return ((Config) loadVMConfig()).getUUID();
     }
 
     class StoreTask extends AsyncTask<ArrayList<SensorDataImpl>, Integer, Void> {

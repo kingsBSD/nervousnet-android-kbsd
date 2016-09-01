@@ -69,19 +69,18 @@ public class AccelerometerSensor extends BaseSensor implements SensorEventListen
     }
 
     @Override
-    public boolean stopAndRestart(byte state) {
+    public boolean stopAndRestart(byte newState) {
 
-        if (state == NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE) {
-            NNLog.d(LOG_TAG, "Cancelled stopAndRestart accelerometer sensor as Sensor is not available.");
-            return false;
-        } else if (state == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_PERMISSION_DENIED) {
-            NNLog.d(LOG_TAG, "Cancelled stopAndRestart accelerometer sensor as permission denied by user.");
-            return false;
-        }
+//        if (state == NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE) {
+//            NNLog.d(LOG_TAG, "Cancelled stopAndRestart accelerometer sensor as Sensor is not available.");
+//            return false;
+//        } else if (state == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_PERMISSION_DENIED) {
+//            NNLog.d(LOG_TAG, "Cancelled stopAndRestart accelerometer sensor as permission denied by user.");
+//            return false;
+//        }
 
         stop(false);
-
-        setSensorState(state);
+        setSensorState(newState);
         NNLog.d(LOG_TAG, "Restarting accelerometer sensor with state = " + sensorState);
 
         start();

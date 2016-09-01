@@ -15,7 +15,7 @@
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
         android:textColor="@color/black"
-        android:textSize="@dimen/viewpager_label_size"/>
+        android:textSize="@dimen/viewpager_label_size" />
 
 
     <!--android.support.v4.view.PagerTabStrip

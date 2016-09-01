@@ -25,21 +25,21 @@
         android:id="@+id/globalOptionsButton"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_global_options"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_global_options" />
 
     <ImageButton
         android:id="@+id/info_prompt"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_alignParentRight="true"
-        android:scaleType="centerInside"
-        android:background="@color/white"
-        android:src="@drawable/ic_info_prompt"
         android:layout_gravity="center_vertical"
-        android:onClick="showInfo"/>
+        android:background="@color/white"
+        android:onClick="showInfo"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_info_prompt" />
 
     <View
         android:layout_width="fill_parent"

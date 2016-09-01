@@ -25,9 +25,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="@drawable/round_rect"
                 android:gravity="fill_horizontal|center_vertical|center|center_horizontal"
-                android:orientation="vertical"
-                android:background="@drawable/round_rect">
+                android:orientation="vertical">
 
 
                 <LinearLayout
@@ -38,19 +38,19 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="Battery Level :"
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="Battery Level :"
+                        android:padding="@dimen/padding_sensor_values" />
 
                     <TextView
                         android:id="@+id/battery_percent"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="battery level comes here"
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="battery level comes here"
+                        android:padding="@dimen/padding_sensor_values" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -61,21 +61,21 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="Charging :"
-
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="Charging :"
+                        android:padding="@dimen/padding_sensor_values" />
 
                     <TextView
                         android:id="@+id/battery_isCharging"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="battery charging state comes here"
-
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="battery charging state comes here"
+                        android:padding="@dimen/padding_sensor_values" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -86,21 +86,21 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="USB Charging :"
-
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="USB Charging :"
+                        android:padding="@dimen/padding_sensor_values" />
 
                     <TextView
                         android:id="@+id/battery_isUSB"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="USB charging state comes here"
-
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="USB charging state comes here"
+                        android:padding="@dimen/padding_sensor_values" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -111,25 +111,25 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="AC Charging :"
-
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="AC Charging :"
+                        android:padding="@dimen/padding_sensor_values" />
 
                     <TextView
                         android:id="@+id/battery_isAC"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="AC charging state comes here"
-
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
-                </LinearLayout>
-        </LinearLayout>
 
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="AC charging state comes here"
+                        android:padding="@dimen/padding_sensor_values" />
+                </LinearLayout>
             </LinearLayout>
+
+        </LinearLayout>
 
     </ScrollView>
 

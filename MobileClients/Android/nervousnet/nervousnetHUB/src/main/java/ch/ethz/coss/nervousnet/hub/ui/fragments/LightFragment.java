@@ -33,10 +33,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import ch.ethz.coss.nervousnet.hub.Application;
@@ -57,10 +55,9 @@ public class LightFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       return inflater.inflate(R.layout.fragment_light, container, false);
+        return inflater.inflate(R.layout.fragment_light, container, false);
 
     }
-
 
 
     @Override
@@ -72,16 +69,16 @@ public class LightFragment extends BaseFragment {
         radioGroup = (RadioGroup) getView().findViewById(R.id.radioRateSensor);
         lastCollectionRate = ((Application) (getActivity().getApplication())).nn_VM.getSensorState(LibConstants.SENSOR_LIGHT);
 
-        ((RadioButton)radioGroup.getChildAt(lastCollectionRate)).setChecked(true);
+        ((RadioButton) radioGroup.getChildAt(lastCollectionRate)).setChecked(true);
 
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                switch(checkedId){
+                switch (checkedId) {
                     case R.id.radioOff:
+
                         if(lastCollectionRate > NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
                             ((Application) (getActivity().getApplication())).nn_VM.updateSensorConfig(LibConstants.SENSOR_LIGHT,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF);
                         }
@@ -99,6 +96,7 @@ public class LightFragment extends BaseFragment {
                     case R.id.radioHigh:
                         if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
                             ((Application) (getActivity().getApplication())).nn_VM.updateSensorConfig(LibConstants.SENSOR_LIGHT,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
+
                         }
                         break;
                 }
@@ -106,12 +104,14 @@ public class LightFragment extends BaseFragment {
         });
 
         if ((((Application) (getActivity().getApplication())).nn_VM.getState() == NervousnetVMConstants.STATE_PAUSED)) {
+
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 ((RadioButton) radioGroup.getChildAt(i)).setEnabled(false);
             }
             sensorStatusTV.setText(R.string.local_service_paused);
         }
     }
+
     /*
      * (non-Javadoc)
      *

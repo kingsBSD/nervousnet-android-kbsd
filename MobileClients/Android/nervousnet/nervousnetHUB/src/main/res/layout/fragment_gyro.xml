@@ -21,13 +21,14 @@
 
 
             <include layout="@layout/fragment_top_layout" />
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="@drawable/round_rect"
                 android:gravity="fill_horizontal|center_vertical|center|center_horizontal"
-                android:orientation="vertical"
-                android:background="@drawable/round_rect">
+                android:orientation="vertical">
 
 
                 <LinearLayout
@@ -38,19 +39,19 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="X axis"
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="X axis"
+                        android:padding="@dimen/padding_sensor_values" />
 
                     <TextView
                         android:id="@+id/gyro_x"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="Gyroscope X value comes here"
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="Gyroscope X value comes here"
+                        android:padding="@dimen/padding_sensor_values" />
 
                 </LinearLayout>
 
@@ -62,19 +63,19 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="Y axis"
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="Y axis"
+                        android:padding="@dimen/padding_sensor_values" />
 
                     <TextView
                         android:id="@+id/gyro_y"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="Gyroscope Y value comes here"
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="Gyroscope Y value comes here"
+                        android:padding="@dimen/padding_sensor_values" />
 
                 </LinearLayout>
 
@@ -86,19 +87,19 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="Z axis"
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="Z axis"
+                        android:padding="@dimen/padding_sensor_values" />
 
                     <TextView
                         android:id="@+id/gyro_z"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="Gyroscope Z value comes here"
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="Gyroscope Z value comes here"
+                        android:padding="@dimen/padding_sensor_values" />
                 </LinearLayout>
 
             </LinearLayout>

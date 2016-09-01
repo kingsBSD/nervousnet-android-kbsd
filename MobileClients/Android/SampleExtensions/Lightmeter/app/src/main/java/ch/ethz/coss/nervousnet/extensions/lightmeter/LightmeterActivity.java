@@ -167,7 +167,12 @@ public class LightmeterActivity extends Activity implements NervousnetServiceCon
     public void onServiceConnected() {
         Log.d("LightmeterActivity", "onServiceConnected");
         startRepeatingTask();
-//        cb = new Callback();
+//        cb = new Callback(){
+//            @Override
+//            public IBinder success() {
+//                return super.asBinder();
+//            }
+//        };
 //
 //        if (nervousnetServiceController != null) {
 //            try {

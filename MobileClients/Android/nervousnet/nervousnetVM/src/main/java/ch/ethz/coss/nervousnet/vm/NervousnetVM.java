@@ -7,6 +7,9 @@ import android.location.LocationManager;
 import android.os.Handler;
 import android.os.RemoteException;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.UUID;
@@ -18,6 +21,7 @@ import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.RemoteCallback;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.lib.Utils;
+import ch.ethz.coss.nervousnet.vm.events.NNEvent;
 import ch.ethz.coss.nervousnet.vm.sensors.AccelerometerSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.BaseSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.BatterySensor;
@@ -32,7 +36,6 @@ import ch.ethz.coss.nervousnet.vm.storage.Config;
 import ch.ethz.coss.nervousnet.vm.storage.SQLHelper;
 import ch.ethz.coss.nervousnet.vm.storage.SensorConfig;
 
-//import ch.ethz.coss.nervousnet.lib.RemoteCallback;
 
 public class NervousnetVM {
 
@@ -82,8 +85,9 @@ public class NervousnetVM {
 
         if (state == NervousnetVMConstants.STATE_RUNNING)
             startSensors();
-    }
 
+        EventBus.getDefault().register(this);
+    }
 
 
     private void initSensors() {
@@ -150,13 +154,10 @@ public class NervousnetVM {
         for (Long key : hSensors.keySet()) {
             NNLog.d(LOG_TAG, "Inside startSensors Sensor ID = " + key);
             BaseSensor sensor = hSensors.get(NervousnetVMConstants.sensor_ids[count]);
-            sensor.setSensorState(hSensorConfig.get(NervousnetVMConstants.sensor_ids[count++]).getState());
             if (sensor != null) {
-                sensor.start();
+                sensor.stopAndRestart(hSensorConfig.get(NervousnetVMConstants.sensor_ids[count++]).getState());
             }
         }
-
-
         dataCollectionHandler.postDelayed(runnable, 1000);
     }
 
@@ -173,25 +174,26 @@ public class NervousnetVM {
         dataCollectionHandler.removeCallbacks(runnable);
     }
 
-    public void startSensor(long sensorID) {
-
-        BaseSensor sensor = hSensors.get(sensorID);
-        if(sensor != null) {
-            SensorConfig sensorConfig = hSensorConfig.get(sensorID);
-            sensorConfig.setState(NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
-            hSensorConfig.put(sensorConfig.getID(), sensorConfig);
-            updateSensorConfig();
-            sensor.setSensorState(NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
-            sensor.start();
-        }
-
-
-    }
+//    public void startSensor(long sensorID) {
+//
+//        BaseSensor sensor = hSensors.get(sensorID);
+//        if(sensor != null) {
+//            SensorConfig sensorConfig = hSensorConfig.get(sensorID);
+//            sensorConfig.setState(NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
+//            hSensorConfig.put(sensorConfig.getID(), sensorConfig);
+//            updateSensorConfig();
+//            sensor.stopAndRestart(NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
+////            sensor.setSensorState(NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
+////            sensor.start();
+//        }
+//
+//
+//    }
 
     public void stopSensor(long sensorID, boolean changeStateFlag) {
         BaseSensor sensor = hSensors.get(sensorID);
-        if(sensor != null)
-        sensor.stop(true);
+        if (sensor != null)
+            sensor.stop(true);
     }
 
     public synchronized UUID getUUID() {
@@ -209,7 +211,6 @@ public class NervousnetVM {
         newUUID();
         sqlHelper.resetDatabase();
     }
-
 
 
     public void storeNervousnetState(byte state) {
@@ -236,27 +237,22 @@ public class NervousnetVM {
             e.printStackTrace();
         }
 
-//		reInitSensor(id);
-
-        BaseSensor sensor = hSensors.get(sensorConfig.getID());
-        sensor.stopAndRestart(state);
-
     }
 
-    public synchronized void updateSensorConfig() {
-        NNLog.d(LOG_TAG, "UpdateSensorConfig called with state = " + state);
-
-        try {
-            sqlHelper.updateAllSensorConfig(hSensorConfig.values());
-
-        } catch (Exception e) {
-            NNLog.d(LOG_TAG, "Exception while calling updateSensorConfig ");
-            e.printStackTrace();
-        }
-
-
-
-    }
+//    public synchronized void updateSensorConfig() {
+//        NNLog.d(LOG_TAG, "UpdateSensorConfig called with state = " + state);
+//
+//        try {
+//            sqlHelper.updateAllSensorConfig(hSensorConfig.values());
+//
+//        } catch (Exception e) {
+//            NNLog.d(LOG_TAG, "Exception while calling updateSensorConfig ");
+//            e.printStackTrace();
+//        }
+//
+//
+//
+//    }
 
 
     public synchronized void updateAllSensorConfig(byte state) {
@@ -273,29 +269,12 @@ public class NervousnetVM {
             sqlHelper.updateAllSensorConfig(hSensorConfig.values());
 
         } catch (Exception e) {
-            NNLog.d(LOG_TAG, "Exception while calling updateSensorConfig ");
+            NNLog.d(LOG_TAG, "Exception while calling updateAllSensorConfig ");
             e.printStackTrace();
         }
 
-        stopSensors();
-        initSensors();
-
-        if (state > NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF) {
-            startSensors();
-        }
-
-
     }
 
-    private void reInitSensor(long id) {
-        NNLog.d(LOG_TAG, "reInitSensor sensor after settings changed ");
-        SensorConfig sensorConfig = hSensorConfig.get(id);
-        BaseSensor sensor = hSensors.get(sensorConfig.getID());
-        sensor.stop(false);
-        sensor.setSensorState(sensorConfig.getState());
-        sensor.start();
-
-    }
 
     public byte getState() {
         return state;
@@ -334,10 +313,10 @@ public class NervousnetVM {
                 e.printStackTrace();
             } catch (Exception e) {
                 try {
-                cb.failure(Utils.getErrorReading(301));
-            } catch (RemoteException re) {
-                re.printStackTrace();
-            }
+                    cb.failure(Utils.getErrorReading(301));
+                } catch (RemoteException re) {
+                    re.printStackTrace();
+                }
             }
         }
 
@@ -362,4 +341,30 @@ public class NervousnetVM {
         return hSensorConfig.get(id).getState();
     }
 
+
+    @Subscribe
+    public void onNNEvent(NNEvent event) {
+        NNLog.d(LOG_TAG, "onSensorStateEvent called ");
+
+        if (event.eventType == NervousnetVMConstants.EVENT_CHANGE_SENSOR_STATE_REQUEST) {
+            updateSensorConfig(event.sensorID, event.state);
+            BaseSensor sensor = hSensors.get(event.sensorID);
+            sensor.stopAndRestart(state);
+            EventBus.getDefault().post(new NNEvent(NervousnetVMConstants.EVENT_SENSOR_STATE_UPDATED));
+
+
+        } else if (event.eventType == NervousnetVMConstants.EVENT_CHANGE_ALL_SENSORS_STATE_REQUEST) {
+            updateAllSensorConfig(event.state);
+            stopSensors();
+            startSensors();
+            EventBus.getDefault().post(new NNEvent(NervousnetVMConstants.EVENT_SENSOR_STATE_UPDATED));
+        } else if (event.eventType == NervousnetVMConstants.EVENT_PAUSE_NERVOUSNET_REQUEST) {
+            storeNervousnetState(NervousnetVMConstants.STATE_PAUSED);
+            EventBus.getDefault().post(new NNEvent(NervousnetVMConstants.EVENT_NERVOUSNET_STATE_UPDATED));
+        } else if (event.eventType == NervousnetVMConstants.EVENT_START_NERVOUSNET_REQUEST) {
+            storeNervousnetState(NervousnetVMConstants.STATE_RUNNING);
+            EventBus.getDefault().post(new NNEvent(NervousnetVMConstants.EVENT_NERVOUSNET_STATE_UPDATED));
+        }
+
+    }
 }

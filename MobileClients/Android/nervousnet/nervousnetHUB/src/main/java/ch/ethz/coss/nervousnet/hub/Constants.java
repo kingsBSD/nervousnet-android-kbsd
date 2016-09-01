@@ -40,5 +40,4 @@ public final class Constants {
             R.drawable.ic_noise, R.drawable.ic_notification, R.drawable.ic_proxim, R.drawable.ic_traffic};
 
 
-
 }

@@ -29,6 +29,7 @@
 package ch.ethz.coss.nervousnet.hub.ui.fragments;
 
 import android.app.Fragment;
+
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;

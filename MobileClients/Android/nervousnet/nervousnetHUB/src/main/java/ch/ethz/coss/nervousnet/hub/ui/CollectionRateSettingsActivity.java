@@ -26,18 +26,17 @@
 
 package ch.ethz.coss.nervousnet.hub.ui;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.Constants;
@@ -45,6 +44,7 @@ import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.hub.ui.adapters.CollectionRateSettingItemAdapter;
 import ch.ethz.coss.nervousnet.vm.NNLog;
 import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
+import ch.ethz.coss.nervousnet.vm.events.NNEvent;
 
 /**
  * @author prasad
@@ -52,8 +52,6 @@ import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
 public class CollectionRateSettingsActivity extends BaseActivity {
 
-    final private int REQUEST_CODE_ASK_PERMISSIONS_LOC = 1;
-    final private int REQUEST_CODE_ASK_PERMISSIONS_NOISE = 2;
     ImageButton globalButton;
 
     @Override
@@ -81,6 +79,18 @@ public class CollectionRateSettingsActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
     public Dialog createDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(R.array.collection_rate_global_options, new DialogInterface.OnClickListener() {
@@ -88,39 +98,18 @@ public class CollectionRateSettingsActivity extends BaseActivity {
             public void onClick(DialogInterface dialog, int itemClicked) {
                 String[] option_array = getResources().getStringArray(R.array.collection_rate_global_options);
                 String optionSelected = option_array[itemClicked];
-                ((Application) getApplication()).nn_VM.updateAllSensorConfig(
-                        (byte) itemClicked);
 
-                finish();
-                startActivity(getIntent());
-                requestPermissions();
+                EventBus.getDefault().post(new NNEvent((byte) itemClicked, NervousnetVMConstants.EVENT_CHANGE_ALL_SENSORS_STATE_REQUEST));
+
+//                ((Application) getApplication()).nn_VM.updateAllSensorConfig(
+//                        (byte) itemClicked);
+
+
             }
         });
         return builder.create();
     }
 
-    // Android 6.0 permission request
-    public void requestPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (!
-                    ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(
-                        this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        REQUEST_CODE_ASK_PERMISSIONS_LOC
-                );
-            }
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
-                ActivityCompat.requestPermissions(
-                        this,
-                        new String[]{Manifest.permission.RECORD_AUDIO},
-                        REQUEST_CODE_ASK_PERMISSIONS_NOISE
-                );
-            }
-        }
-    }
 
     public void showInfo(View view) {
         String title = "Sensor Collection Rate Settings:";
@@ -152,6 +141,26 @@ public class CollectionRateSettingsActivity extends BaseActivity {
 
         TextView textView = (TextView) alert.findViewById(android.R.id.message);
         textView.setTextSize(12);
+    }
+
+    @Subscribe
+    public void onNNEvent(NNEvent event) {
+        NNLog.d("CollectionRateSettingsActivity", "onSensorStateEvent called ");
+
+        if (event.eventType == NervousnetVMConstants.EVENT_SENSOR_STATE_UPDATED) {
+            finish();
+            startActivity(getIntent());
+        } else if (event.eventType == NervousnetVMConstants.EVENT_NERVOUSNET_STATE_UPDATED) {
+
+            if (((Application) getApplication()).nn_VM.getState() == NervousnetVMConstants.STATE_PAUSED) {
+                finish();
+                startActivity(getIntent());
+            } else {
+                finish();
+                startActivity(getIntent());
+            }
+        }
+
     }
 }
 

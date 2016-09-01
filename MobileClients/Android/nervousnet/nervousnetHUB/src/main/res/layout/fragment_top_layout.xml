@@ -1,60 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="top"
         android:orientation="horizontal">
-<TextView
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="0.5"
-    android:hint="Sensor Frequency : "
-    android:paddingTop="@dimen/padding_sensor_values"
-    android:gravity="left"
-    android:layout_gravity="left" />
-    <ImageButton
-    android:id="@+id/info_prompt"
-    android:layout_width="20dp"
-    android:layout_height="20dp"
-    android:layout_alignParentRight="true"
-    android:scaleType="centerInside"
-    android:background="@color/white"
-    android:src="@drawable/ic_info_prompt"
-    android:layout_gravity="right"
-    android:onClick="showInfo"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_weight="0.5"
+            android:gravity="left"
+            android:hint="Sensor Frequency : "
+            android:paddingTop="@dimen/padding_sensor_values" />
+
+        <ImageButton
+            android:id="@+id/info_prompt"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:background="@color/white"
+            android:onClick="showInfo"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_info_prompt" />
     </LinearLayout>
-<LinearLayout
-android:layout_width="fill_parent"
-android:layout_height="wrap_content"
-android:layout_gravity="center_horizontal"
-android:gravity="top"
-android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="top"
+        android:orientation="vertical">
 
 
-<ch.ethz.coss.nervousnet.hub.ui.views.RateSwitch
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    />
+        <ch.ethz.coss.nervousnet.hub.ui.views.RateSwitch
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
 
-</LinearLayout>
+    </LinearLayout>
 
 
-<TextView
-android:id="@+id/sensorStatus"
-android:layout_width="fill_parent"
-android:layout_height="wrap_content"
-android:layout_gravity="center"
-android:gravity="center_horizontal"
-android:hint=" ***** "
-android:padding="@dimen/padding_sensor_values"/>
+    <TextView
+        android:id="@+id/sensorStatus"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:hint=" ***** "
+        android:padding="@dimen/padding_sensor_values" />
 
-<TextView
-android:layout_width="fill_parent"
-android:layout_height="wrap_content"
-android:layout_gravity="left"
-android:gravity="left"
-android:hint="Values : "
-android:paddingTop="@dimen/padding_sensor_values"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:gravity="left"
+        android:hint="Values : "
+        android:paddingTop="@dimen/padding_sensor_values" />
 </merge>

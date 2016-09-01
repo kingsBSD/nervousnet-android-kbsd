@@ -31,9 +31,9 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -51,20 +51,20 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignParentRight="true"
-                    android:scaleType="centerInside"
-                    android:background="@color/white"
-                    android:src="@drawable/ic_info_prompt"
                     android:layout_gravity="center_vertical"
-                    android:onClick="showInfo"/>
+                    android:background="@color/white"
+                    android:onClick="showInfo"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_info_prompt" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-
                 android:layout_marginBottom="20dp"
-                android:background="@drawable/round_rect">
+
+                android:background="@drawable/round_rect"
+                android:orientation="horizontal">
 
 
                 <TextView
@@ -72,8 +72,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:gravity="center" />
 
             </LinearLayout>
 

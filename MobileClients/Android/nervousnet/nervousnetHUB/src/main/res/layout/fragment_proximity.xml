@@ -20,13 +20,14 @@
             android:orientation="vertical">
 
             <include layout="@layout/fragment_top_layout" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="@drawable/round_rect"
                 android:gravity="fill_horizontal|center_vertical|center|center_horizontal"
-                android:orientation="vertical"
-                android:background="@drawable/round_rect">
+                android:orientation="vertical">
 
 
                 <LinearLayout
@@ -39,11 +40,10 @@
                         android:id="@+id/proxValue"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="Proximity value comes here"
                         android:layout_weight="0.50"
-                        android:padding="@dimen/padding_sensor_values"
                         android:background="@drawable/shape_rect_border"
-                        />
+                        android:hint="Proximity value comes here"
+                        android:padding="@dimen/padding_sensor_values" />
                 </LinearLayout>
             </LinearLayout>
 

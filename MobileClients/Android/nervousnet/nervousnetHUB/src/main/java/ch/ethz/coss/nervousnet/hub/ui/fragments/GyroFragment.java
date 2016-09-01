@@ -33,10 +33,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import ch.ethz.coss.nervousnet.hub.Application;
@@ -71,15 +69,14 @@ public class GyroFragment extends BaseFragment {
         radioGroup = (RadioGroup) getView().findViewById(R.id.radioRateSensor);
         lastCollectionRate = ((Application) (getActivity().getApplication())).nn_VM.getSensorState(LibConstants.SENSOR_GYROSCOPE);
 
-        ((RadioButton)radioGroup.getChildAt(lastCollectionRate)).setChecked(true);
+        ((RadioButton) radioGroup.getChildAt(lastCollectionRate)).setChecked(true);
 
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                switch(checkedId){
+                switch (checkedId) {
                     case R.id.radioOff:
                         if(lastCollectionRate > NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
                             ((Application) (getActivity().getApplication())).nn_VM.updateSensorConfig(LibConstants.SENSOR_GYROSCOPE,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF);
@@ -105,12 +102,14 @@ public class GyroFragment extends BaseFragment {
         });
 
         if ((((Application) (getActivity().getApplication())).nn_VM.getState() == NervousnetVMConstants.STATE_PAUSED)) {
+
             for (int i = 0; i < radioGroup.getChildCount(); i++) {
                 ((RadioButton) radioGroup.getChildAt(i)).setEnabled(false);
             }
             sensorStatusTV.setText(R.string.local_service_paused);
         }
     }
+
     /*
      * (non-Javadoc)
      *

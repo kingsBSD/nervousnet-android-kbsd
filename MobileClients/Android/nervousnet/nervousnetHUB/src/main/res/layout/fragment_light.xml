@@ -25,9 +25,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="@drawable/round_rect"
                 android:gravity="fill_horizontal|center_vertical|center|center_horizontal"
-                android:orientation="vertical"
-                android:background="@drawable/round_rect">
+                android:orientation="vertical">
 
 
                 <LinearLayout
@@ -38,19 +38,19 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="Lux : "
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="Lux : "
+                        android:padding="@dimen/padding_sensor_values" />
 
                     <TextView
                         android:id="@+id/lux"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="Lux value comes here"
                         android:layout_weight="0.5"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="Lux value comes here"
+                        android:padding="@dimen/padding_sensor_values" />
 
 
                 </LinearLayout>

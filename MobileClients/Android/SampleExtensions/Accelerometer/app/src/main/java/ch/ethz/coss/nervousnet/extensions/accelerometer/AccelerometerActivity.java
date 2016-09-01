@@ -79,6 +79,22 @@ public class AccelerometerActivity extends Activity implements NervousnetService
 
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();  // Always call the superclass method first
+        nervousnetServiceController.disconnect();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+        nervousnetServiceController.connect();
+
+    }
+
+
     @Override
     public void onBackPressed() {
         nervousnetServiceController.disconnect();
@@ -158,12 +174,15 @@ public class AccelerometerActivity extends Activity implements NervousnetService
     }
 
     @Override
-    public void onServiceConnectionFailed() {
+    public void onServiceConnectionFailed(ErrorReading errorReading) {
+
+        Log.d("AccelerometerActivity", "onServiceConnectionFailed");
         errorView.setText("Service Connection Failed" +"\n"
-        +"Nervousnet HUB application is required running to use this app. If already installed, please turn on the Data Collection option inside the Nervousnet HUB application.");
+                +""+errorReading.getErrorCode()+" - "+errorReading.getErrorString());
         reading.setVisibility(View.INVISIBLE);
         error.setVisibility(View.VISIBLE);
     }
+
 
     @Override
     public void onSensorDataReady(SensorReading reading) {

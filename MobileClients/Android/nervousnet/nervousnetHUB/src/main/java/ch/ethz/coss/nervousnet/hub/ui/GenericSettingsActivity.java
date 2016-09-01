@@ -29,10 +29,7 @@ package ch.ethz.coss.nervousnet.hub.ui;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 

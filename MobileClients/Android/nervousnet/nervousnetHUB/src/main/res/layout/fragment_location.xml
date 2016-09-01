@@ -18,15 +18,16 @@
             android:layout_height="match_parent"
             android:layout_gravity="top"
             android:orientation="vertical">
+
             <include layout="@layout/fragment_top_layout" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="@drawable/round_rect"
                 android:gravity="fill_horizontal|center_vertical|center|center_horizontal"
-                android:orientation="vertical"
-                android:background="@drawable/round_rect">
+                android:orientation="vertical">
 
 
                 <LinearLayout
@@ -37,19 +38,19 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="Latitude : "
                         android:layout_weight="0.40"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="Latitude : "
+                        android:padding="@dimen/padding_sensor_values" />
 
                     <TextView
                         android:id="@+id/latitude"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="Latitude value comes here"
                         android:layout_weight="0.60"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="Latitude value comes here"
+                        android:padding="@dimen/padding_sensor_values" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -60,19 +61,19 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint="Longitude : "
                         android:layout_weight="0.40"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint="Longitude : "
+                        android:padding="@dimen/padding_sensor_values" />
 
                     <TextView
                         android:id="@+id/longitude"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:hint=" Longitude value comes here"
                         android:layout_weight="0.60"
-                        android:padding="@dimen/padding_sensor_values"
-                        android:background="@drawable/shape_rect_border"/>
+                        android:background="@drawable/shape_rect_border"
+                        android:hint=" Longitude value comes here"
+                        android:padding="@dimen/padding_sensor_values" />
                 </LinearLayout>
 
             </LinearLayout>

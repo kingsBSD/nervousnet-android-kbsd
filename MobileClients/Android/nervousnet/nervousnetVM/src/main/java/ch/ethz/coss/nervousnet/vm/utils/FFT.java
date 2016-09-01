@@ -71,13 +71,13 @@ public class FFT {
     /***************************************************************
      * fft.c Douglas L. Jones University of Illinois at Urbana-Champaign January
      * 19, 1992 http://cnx.rice.edu/content/m12016/latest/
-     * <p>
+     * <p/>
      * fft: in-place radix-2 DIT DFT of a complex input
-     * <p>
+     * <p/>
      * input: n: length of FFT: must be a power of two m: n = 2**m input/output
      * x: double array of length n with real part of data y: double array of
      * length n with imag part of data
-     * <p>
+     * <p/>
      * Permission to copy and use this program is granted as long as this header
      * is included.
      ****************************************************************/

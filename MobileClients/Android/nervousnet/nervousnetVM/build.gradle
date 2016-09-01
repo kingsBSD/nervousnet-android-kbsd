@@ -22,4 +22,5 @@ dependencies {
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile files('libs/greendao-2.1.0-2.jar')
+    compile 'org.greenrobot:eventbus:3.0.0'
 }

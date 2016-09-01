@@ -146,7 +146,7 @@ public class NervousnetServiceController {
                 mService = NervousnetRemote.Stub.asInterface(service);
 
                 try {
-                    if(mService != null) {
+                    if (mService != null) {
                         if (mService.getNervousnetHubStatus()) {
                             Toast.makeText(context, "Nervousnet Remote Service Connected", Toast.LENGTH_SHORT)
                                     .show();
