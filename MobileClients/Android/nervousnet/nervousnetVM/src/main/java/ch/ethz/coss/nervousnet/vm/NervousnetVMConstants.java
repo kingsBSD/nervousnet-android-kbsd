@@ -54,23 +54,17 @@ public class NervousnetVMConstants {
             SENSOR_STATE_AVAILABLE_DELAY_HIGH
     };
 
-
-//	public static long[] sensor_ids = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-//
-//	public static String[] sensor_labels = { "Accelerometer", "Battery", "Beacons", "Connectivity", "Gyroscope",
-//			"Humidity", "Location", "Light", "Magnetic", "Noise", "Pressure", "Proximity", "Temperature" };
-
     public static String[] sensor_freq_labels = {"Off", "High", "Medium", "Low"};
 
-    public static int[][] sensor_freq_constants = {{-1, 60000, 120000, 300000},
-            {-1, 60000, 120000, 300000},
-            {-1, 60000, 120000, 300000},
-            {-1, 60000, 120000, 300000},
-            {-1, 60000, 120000, 300000},
-            {-1, 60000, 120000, 300000},
-            {-1, 60000, 120000, 300000},
-            {-1, 60000, 120000, 300000},
-            {-1, 60000, 120000, 300000}
+    public static int[][] sensor_freq_constants = {{-1, 60000, 120000, 300000}, // ACCELEROMETER
+            {-1, 60000, 120000, 300000}, // BATTERY
+            {-1, 60000, 120000, 300000}, // GYROSCOPE
+            {-1, 60000, 120000, 300000}, // LOCATION
+            {-1, 60000, 120000, 300000}, // LIGHT
+            {-1, 60000, 120000, 300000}, // NOISE
+            {-1, 60000, 120000, 300000}, // NOTIFICATION
+            {-1, 60000, 120000, 300000}, // PROXIMITY
+            {-1, 30000, 120000, 300000}  // NETWORK TRAFFIC
     };
 
 }

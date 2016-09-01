@@ -31,6 +31,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import ch.ethz.coss.nervousnet.lib.AccelerometerReading;
+import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.vm.NNLog;
 import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
@@ -62,7 +63,7 @@ public class AccelerometerSensor extends BaseSensor implements SensorEventListen
         NNLog.d(LOG_TAG, "Starting accelerometer sensor with state = " + sensorState);
 
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                NervousnetVMConstants.sensor_freq_constants[0][sensorState]);
+                NervousnetVMConstants.sensor_freq_constants[LibConstants.SENSOR_ACCELEROMETER][sensorState]);
 
         return true;
     }
