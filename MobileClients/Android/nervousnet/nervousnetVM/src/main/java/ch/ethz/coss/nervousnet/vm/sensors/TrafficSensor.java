@@ -68,6 +68,7 @@ public class TrafficSensor extends BaseSensor {
 
     @Override
     public boolean stopAndRestart(byte state) {
+        interval = NervousnetVMConstants.sensor_freq_constants[LibConstants.SENSOR_TRAFFIC][state];
         return true;
     }
 

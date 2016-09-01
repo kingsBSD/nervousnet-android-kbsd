@@ -46,7 +46,6 @@ public class LocationSensor extends BaseSensor implements LocationListener {
 
     private LocationManager locationManager;
     private float MIN_UPDATE_DISTANCE = 1; // Minimum Distance between
-    private float MIN_UPDATE_DISTANCE = 1; // Minimum Distance between
     // updates in meters
     private long MIN_TIME_BW_UPDATES = 100; // Minimum Time between
     // updates in milliseconds.
