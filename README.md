@@ -62,9 +62,7 @@ https://developer.android.com/guide/components/aidl.html<br><br>
 ### GitHub structure
 <small>
 Root <br>
- |<br>
- &nbsp; -- <b>Deliverables</b> <i>( Contains installables, apk files for nervousnet mobile app.)</i><br>
- |<br>
+|<br>
  &nbsp; -- <b>Documents</b> <i>(Contains all documentation related to nervousnet and the Android Project)</i><br>
  |<br>
  &nbsp; -- <b>Mobile Clients</b> <i>( Contains nervousnet mobile app Android Project)</i><br>
@@ -82,5 +80,20 @@ Root <br>
  &nbsp; -- <b>Resources</b> <i>( Contains all resource, raw images and final images that are used for the nervousnet Android Project)</i><br>
 </small>
 
+## Google Play Store Links:
+1. Nervousnet Mobile App <br>
+   https://play.google.com/store/apps/details?id=ch.ethz.coss.nervousnet.hub<br><br>
+2. Nervousnet – Sample Native Axon App List<br>
+       * LightMeter: <br>
+https://play.google.com/store/apps/details?id=ch.ethz.coss.nervousnet.extensions.lightmeter
+       * NoiseMeter: <br>
+https://play.google.com/store/apps/details?id=ch.ethz.coss.nervousnet.extensions.noisemeter
+       * Accelerometer: <br>
+https://play.google.com/store/apps/details?id=ch.ethz.coss.nervousnet.extensions. 
+
+### Wiki 
+A detailed explanation of Nervousnet, the platform, its architecture and components, Android project details, sample Axon project and a step by step guide to build nervousnet Axon apps can be found on the Wiki of this Github project at the following link: <br>
+https://github.com/nervousnet/nervousnet-android/wiki/Nervousnet
+
 ### Support or Contact
-For more information or support check out our website http://www.nervousnet.info
+For more information or support check out our website http://www.nervousnet.info or email us at nervousnet@ethz.ch

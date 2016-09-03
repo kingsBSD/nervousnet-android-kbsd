@@ -71,8 +71,8 @@ public class MainActivity extends BaseActivity {
                 startNextActivity(new Intent(MainActivity.this, SensorDisplayActivity.class));
                 break;
             case 1:
-                startNextActivity(new Intent(MainActivity.this,
-                        AnalyticsActivity.class));
+//                startNextActivity(new Intent(MainActivity.this,
+//                        AnalyticsActivity.class));
                 break;
             case 2:
                 startNextActivity(new Intent(MainActivity.this, SpaceActivity.class));

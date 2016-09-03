@@ -94,7 +94,7 @@
                     android:layout_gravity="center|center_horizontal"
                     android:layout_weight="0.5"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/ic_nodes"></ImageView>
+                    android:src="@drawable/ic_nodes_disabled"></ImageView>
 
                 <TextView
                     android:layout_width="0dp"
@@ -119,7 +119,7 @@
                     android:layout_gravity="center|center_horizontal"
                     android:layout_weight="0.5"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/ic_perm"></ImageView>
+                    android:src="@drawable/ic_perm_disabled"></ImageView>
 
                 <TextView
                     android:layout_width="0dp"

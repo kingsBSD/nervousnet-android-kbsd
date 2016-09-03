@@ -17,7 +17,6 @@ interface NervousnetRemote
 	   	/*
        	 	* Returns latest Sensor values.
        	    * sensorType = type of Sensor. Check LibConstants.java for types.
-       	    * startTime = from time , endTime = to time
        	    * returns SensorReading object
        	    */
        	 SensorReading getLatestReading(long sensorType);
