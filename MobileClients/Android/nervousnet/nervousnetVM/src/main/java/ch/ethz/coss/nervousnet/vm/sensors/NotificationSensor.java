@@ -32,6 +32,8 @@ public class NotificationSensor extends BaseSensor {
 
     @Override
     public boolean stopAndRestart(byte state) {
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(notificationReceiver);
+        LocalBroadcastManager.getInstance(context).registerReceiver(notificationReceiver, new IntentFilter("nervousnet-notification-sensor-event"));
         return true;
     }
 

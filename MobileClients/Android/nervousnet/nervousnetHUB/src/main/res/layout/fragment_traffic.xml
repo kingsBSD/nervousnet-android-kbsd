@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="ch.ethz.coss.nervousnet.hub.ui.fragments.NotificationFragment">
+    tools:context="ch.ethz.coss.nervousnet.hub.ui.fragments.TrafficFragment">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -19,85 +19,90 @@
             android:layout_gravity="top"
             android:orientation="vertical">
 
+
+            <include layout="@layout/fragment_top_layout" />
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Sensor Status: " />
-
-                <TextView
-                    android:id="@+id/sensor_status_traffic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Sensor Status comes here" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:gravity="fill_horizontal|center_vertical|center|center_horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Reading"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:layout_gravity="center_horizontal" />
+                android:background="@drawable/round_rect"
+                android:gravity="fill_horizontal|center_vertical|center|center_horizontal"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="App name : " />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.40"
+                        android:hint="App : "
+                        android:padding="@dimen/padding_sensor_values" />
 
                     <TextView
                         android:id="@+id/app_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="App name value comes here" />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:layout_weight="0.60"
+                        android:gravity="right"
+                        android:hint="***"
+                        android:padding="@dimen/padding_sensor_values" />
+
+             </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Tx bytes : " />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.40"
+                        android:hint="TX bytes : "
+                        android:padding="@dimen/padding_sensor_values" />
 
                     <TextView
                         android:id="@+id/tx_bytes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Tx bytes comes here" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Rx bytes : " />
-
-                    <TextView
-                        android:id="@+id/rx_bytes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="Rx bytes comes here" />
-
-
-
-                </LinearLayout>
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.60"
+                        android:gravity="right"
+                        android:hint="***"
+                        android:padding="@dimen/padding_sensor_values" />
 
             </LinearLayout>
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.40"
+                        android:hint="RX bytes : "
+                        android:padding="@dimen/padding_sensor_values" />
+
+                    <TextView
+                        android:id="@+id/rx_bytes"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.60"
+                        android:gravity="right"
+                        android:hint="***"
+                        android:padding="@dimen/padding_sensor_values" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
 
     </ScrollView>
 
