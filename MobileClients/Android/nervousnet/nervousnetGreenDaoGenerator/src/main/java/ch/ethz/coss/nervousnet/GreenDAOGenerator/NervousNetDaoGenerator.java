@@ -224,6 +224,16 @@ public class NervousNetDaoGenerator {
         trafficData.addLongProperty("Volatility").notNull();
         trafficData.addBooleanProperty("ShareFlag");
 
+        Entity socketData = schema.addEntity("SocketData");
+        socketData.implementsInterface("SensorDataImpl");
+        socketData.addIdProperty().autoincrement().primaryKey();
+        socketData.addLongProperty("TimeStamp");
+        socketData.addStringProperty("appName");
+        socketData.addStringProperty("protocol");
+        socketData.addIntProperty("port");
+        socketData.addLongProperty("Volatility").notNull();
+        socketData.addBooleanProperty("ShareFlag");
+
         Entity nnPacket = schema.addEntity("Packet");
         nnPacket.addIdProperty().autoincrement().primaryKey();
         nnPacket.addLongProperty("TimeStamp");

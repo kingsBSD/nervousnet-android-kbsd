@@ -33,7 +33,8 @@ public class NervousnetVMConstants {
             LibConstants.SENSOR_NOISE,
             LibConstants.SENSOR_NOTIFICATION,
             LibConstants.SENSOR_PROXIMITY,
-            LibConstants.SENSOR_TRAFFIC
+            LibConstants.SENSOR_TRAFFIC,
+            LibConstants.SENSOR_SOCKET
     };
 
     public static String[] sensor_labels = {"ACCELEROMETER",
@@ -44,17 +45,19 @@ public class NervousnetVMConstants {
             "NOISE",
             "NOTIFICATION",
             "PROXIMITY",
-            "NETWORK TRAFFIC"};
+            "NETWORK TRAFFIC",
+            "NETWORK SOCKETS"};
 
-    public static byte[] sensor_default_states = {SENSOR_STATE_AVAILABLE_DELAY_HIGH,
-            SENSOR_STATE_AVAILABLE_DELAY_HIGH,
-            SENSOR_STATE_AVAILABLE_DELAY_HIGH,
-            SENSOR_STATE_AVAILABLE_BUT_OFF,
-            SENSOR_STATE_AVAILABLE_DELAY_HIGH,
-            SENSOR_STATE_AVAILABLE_BUT_OFF,
-            SENSOR_STATE_AVAILABLE_DELAY_HIGH,
-            SENSOR_STATE_AVAILABLE_DELAY_HIGH,
-            SENSOR_STATE_AVAILABLE_DELAY_HIGH
+    public static byte[] sensor_default_states = {SENSOR_STATE_AVAILABLE_DELAY_HIGH, // ACCELEROMETER
+            SENSOR_STATE_AVAILABLE_DELAY_HIGH, // BATTERY
+            SENSOR_STATE_AVAILABLE_DELAY_HIGH, // GYROSCOPE
+            SENSOR_STATE_AVAILABLE_BUT_OFF, // LOCATION
+            SENSOR_STATE_AVAILABLE_DELAY_HIGH, // LIGHT
+            SENSOR_STATE_AVAILABLE_BUT_OFF, // NOISE
+            SENSOR_STATE_AVAILABLE_DELAY_HIGH, // NOTIFICATION
+            SENSOR_STATE_AVAILABLE_DELAY_HIGH, // PROXIMITY
+            SENSOR_STATE_AVAILABLE_DELAY_HIGH, // NETWORK TRAFFIC
+            SENSOR_STATE_AVAILABLE_BUT_OFF // NETWORK SOCKETS
     };
 
     public static String[] sensor_freq_labels = {"Off", "Low", "Medium", "High"};
@@ -67,7 +70,8 @@ public class NervousnetVMConstants {
             {-1, 60000, 120000, 300000}, // NOISE
             {-1, 60000, 120000, 300000}, // NOTIFICATION
             {-1, 60000, 120000, 300000}, // PROXIMITY
-            {-1, 30000, 120000, 300000}  // NETWORK TRAFFIC
+            {-1, 30000, 120000, 300000},  // NETWORK TRAFFIC
+            {-1, 60000, 120000, 300000} // NETWORK SOCKETS
     };
 
     public static byte EVENT_PAUSE_NERVOUSNET_REQUEST = 0;

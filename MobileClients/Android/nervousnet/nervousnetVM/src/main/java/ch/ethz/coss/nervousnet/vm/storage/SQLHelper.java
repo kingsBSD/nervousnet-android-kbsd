@@ -22,6 +22,7 @@ import ch.ethz.coss.nervousnet.lib.NoiseReading;
 import ch.ethz.coss.nervousnet.lib.NotificationReading;
 import ch.ethz.coss.nervousnet.lib.ProximityReading;
 import ch.ethz.coss.nervousnet.lib.RemoteCallback;
+import ch.ethz.coss.nervousnet.lib.SocketReading;
 import ch.ethz.coss.nervousnet.lib.TrafficReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.vm.NNLog;
@@ -48,9 +49,10 @@ public class SQLHelper implements BaseSensorListener {
     GyroDataDao gyroDao;
     ProximityDataDao proximityDao;
     TrafficDataDao trafficDao;
+    SocketDataDao socketDao;
 
     ArrayList<SensorDataImpl> accelDataArrList, battDataArrList, gyroDataArrList, lightDataArrList, locDataArrList, noiseDataArrList,
-            notificationDataArrList, proxDataArrList, trafficDataArrList;
+            notificationDataArrList, proxDataArrList, trafficDataArrList, socketDataArrList;
 
     public SQLHelper() {
 
@@ -82,6 +84,7 @@ public class SQLHelper implements BaseSensorListener {
         notificationDao = daoSession.getNotificationDataDao();
         proximityDao = daoSession.getProximityDataDao();
         trafficDao = daoSession.getTrafficDataDao();
+        socketDao = daoSession.getSocketDataDao();
 
         populateSensorConfig();
 
@@ -94,6 +97,7 @@ public class SQLHelper implements BaseSensorListener {
         notificationDataArrList = new ArrayList<SensorDataImpl>();
         proxDataArrList = new ArrayList<SensorDataImpl>();
         trafficDataArrList = new ArrayList<SensorDataImpl>();
+        socketDataArrList = new ArrayList<SensorDataImpl>();
 
     }
 
@@ -121,6 +125,7 @@ public class SQLHelper implements BaseSensorListener {
         notificationDao.deleteAll();
         proximityDao.deleteAll();
         trafficDao.deleteAll();
+        socketDao.deleteAll();
 
         accelDataArrList.clear();
         battDataArrList.clear();
@@ -131,6 +136,7 @@ public class SQLHelper implements BaseSensorListener {
         notificationDataArrList.clear();
         proxDataArrList.clear();
         trafficDataArrList.clear();
+        socketDataArrList.clear();
     }
 
     public synchronized Config loadVMConfig() {
@@ -226,6 +232,7 @@ public class SQLHelper implements BaseSensorListener {
                 NNLog.d(LOG_TAG, "GYRO_DATA table count = " + gyroDao.count());
                 gyroDao.insertInTx(sensorDataList);
                 return true;
+
             case LibConstants.SENSOR_LIGHT:
                 NNLog.d(LOG_TAG, "LIGHT_DATA table count = " + lightDao.count());
                 lightDao.insertInTx(sensorDataList);
@@ -251,6 +258,11 @@ public class SQLHelper implements BaseSensorListener {
                 trafficDao.insertInTx(sensorDataList);
                 return true;
 
+            case LibConstants.SENSOR_SOCKET:
+                NNLog.d(LOG_TAG, "SocketData table count = " + socketDao.count());
+                socketDao.insertInTx(sensorDataList);
+                return true;
+
         }
         return false;
     }
@@ -266,12 +278,11 @@ public class SQLHelper implements BaseSensorListener {
             case LibConstants.SENSOR_ACCELEROMETER:
                 qb = accDao.queryBuilder();
                 qb.where(AccelDataDao.Properties.TimeStamp.between(startTime, endTime));
-
                 break;
+
             case LibConstants.SENSOR_BATTERY:
                 qb = battDao.queryBuilder();
                 qb.where(BatteryDataDao.Properties.TimeStamp.between(startTime, endTime));
-
                 break;
 //		case LibConstants.DEVICE_INFO:
 //
@@ -280,21 +291,16 @@ public class SQLHelper implements BaseSensorListener {
             case LibConstants.SENSOR_LOCATION:
                 qb = locDao.queryBuilder();
                 qb.where(LocationDataDao.Properties.TimeStamp.between(startTime, endTime));
-
                 break;
 
             case LibConstants.SENSOR_GYROSCOPE:
                 qb = gyroDao.queryBuilder();
                 qb.where(GyroDataDao.Properties.TimeStamp.between(startTime, endTime));
-
-
                 break;
 
             case LibConstants.SENSOR_LIGHT:
                 qb = lightDao.queryBuilder();
                 qb.where(LightDataDao.Properties.TimeStamp.between(startTime, endTime));
-
-
                 break;
 
             case LibConstants.SENSOR_NOISE:
@@ -315,6 +321,11 @@ public class SQLHelper implements BaseSensorListener {
             case LibConstants.SENSOR_TRAFFIC:
                 qb = trafficDao.queryBuilder();
                 qb.where(TrafficDataDao.Properties.TimeStamp.between(startTime, endTime));
+                break;
+
+            case LibConstants.SENSOR_SOCKET:
+                qb = socketDao.queryBuilder();
+                qb.where(SocketDataDao.Properties.TimeStamp.between(startTime, endTime));
                 break;
 
             default:
@@ -363,7 +374,6 @@ public class SQLHelper implements BaseSensorListener {
                 return reading;
 
             case LibConstants.SENSOR_BATTERY:
-
                 BatteryData bdata = (BatteryData) data;
                 reading = new BatteryReading(bdata.getTimeStamp(),
                         bdata.getPercent(), false, false, false, 0f, 0, (byte) 0,
@@ -416,6 +426,11 @@ public class SQLHelper implements BaseSensorListener {
                 reading.type = LibConstants.SENSOR_TRAFFIC;
                 return reading;
 
+            case LibConstants.SENSOR_SOCKET:
+                SocketData sockdata = (SocketData) data;
+                reading = new SocketReading(sockdata.getTimeStamp(), sockdata.getAppName(), sockdata.getProtocol(), sockdata.getPort());
+                reading.type = LibConstants.SENSOR_SOCKET;
+                return reading;
 
             default:
                 return null;
@@ -536,6 +551,17 @@ public class SQLHelper implements BaseSensorListener {
             case LibConstants.SENSOR_TRAFFIC:
                 TrafficReading trafficReading = (TrafficReading) reading;
                 sensorData = new TrafficData(null, trafficReading.timestamp, trafficReading.getAppName(), trafficReading.getTxBytes(), trafficReading.getRxBytes(), trafficReading.volatility, trafficReading.isShare);
+                sensorData.setType(LibConstants.SENSOR_PROXIMITY);
+                proxDataArrList.add((SensorDataImpl) sensorData);
+                if (proxDataArrList.size() > 100) {
+                    storeSensorAsync(LibConstants.SENSOR_PROXIMITY, new ArrayList<SensorDataImpl>(proxDataArrList));
+                    proxDataArrList.clear();
+                }
+                break;
+
+            case LibConstants.SENSOR_SOCKET:
+                SocketReading socketReading = (SocketReading) reading;
+                sensorData = new SocketData(null, socketReading.timestamp, socketReading.getAppName(), socketReading.getProtocol(), socketReading.getPort(), socketReading.volatility, socketReading.isShare);
                 sensorData.setType(LibConstants.SENSOR_PROXIMITY);
                 proxDataArrList.add((SensorDataImpl) sensorData);
                 if (proxDataArrList.size() > 100) {

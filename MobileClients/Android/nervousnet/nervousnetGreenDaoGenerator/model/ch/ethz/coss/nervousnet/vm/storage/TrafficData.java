@@ -18,6 +18,7 @@ public class TrafficData implements SensorDataImpl {
     private Boolean ShareFlag;
 
     // KEEP FIELDS - put your custom fields here
+    private int type;
     // KEEP FIELDS END
 
     public TrafficData() {
@@ -94,6 +95,16 @@ public class TrafficData implements SensorDataImpl {
     }
 
     // KEEP METHODS - put your custom methods here
+    public Integer getType() {
+        // TODO Auto-generated method stub
+        return type;
+    }
+
+    @Override
+    public void setType(Integer type) {
+        // TODO Auto-generated method stub
+        this.type = type;
+    }
     // KEEP METHODS END
 
 }

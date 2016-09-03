@@ -31,6 +31,7 @@ import ch.ethz.coss.nervousnet.vm.sensors.LocationSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.NoiseSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.NotificationSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.ProximitySensor;
+import ch.ethz.coss.nervousnet.vm.sensors.SocketSensor;
 import ch.ethz.coss.nervousnet.vm.sensors.TrafficSensor;
 import ch.ethz.coss.nervousnet.vm.storage.Config;
 import ch.ethz.coss.nervousnet.vm.storage.SQLHelper;
@@ -136,6 +137,8 @@ public class NervousnetVM {
                 sensor = new NotificationSensor(context, sensorConfig.getState());
             } else if (sensorConfig.getID() == LibConstants.SENSOR_TRAFFIC) {
                 sensor = new TrafficSensor(context, sensorConfig.getState());
+            } else if (sensorConfig.getID() == LibConstants.SENSOR_SOCKET) {
+                sensor = new SocketSensor(context, sensorConfig.getState());
             }
 
             if (sensor != null) {
@@ -173,22 +176,6 @@ public class NervousnetVM {
 
         dataCollectionHandler.removeCallbacks(runnable);
     }
-
-//    public void startSensor(long sensorID) {
-//
-//        BaseSensor sensor = hSensors.get(sensorID);
-//        if(sensor != null) {
-//            SensorConfig sensorConfig = hSensorConfig.get(sensorID);
-//            sensorConfig.setState(NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
-//            hSensorConfig.put(sensorConfig.getID(), sensorConfig);
-//            updateSensorConfig();
-//            sensor.stopAndRestart(NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
-////            sensor.setSensorState(NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
-////            sensor.start();
-//        }
-//
-//
-//    }
 
     public void stopSensor(long sensorID, boolean changeStateFlag) {
         BaseSensor sensor = hSensors.get(sensorID);
@@ -239,22 +226,6 @@ public class NervousnetVM {
 
     }
 
-//    public synchronized void updateSensorConfig() {
-//        NNLog.d(LOG_TAG, "UpdateSensorConfig called with state = " + state);
-//
-//        try {
-//            sqlHelper.updateAllSensorConfig(hSensorConfig.values());
-//
-//        } catch (Exception e) {
-//            NNLog.d(LOG_TAG, "Exception while calling updateSensorConfig ");
-//            e.printStackTrace();
-//        }
-//
-//
-//
-//    }
-
-
     public synchronized void updateAllSensorConfig(byte state) {
         NNLog.d(LOG_TAG, "updateAllSensorConfig called with state = " + state);
         int count = 0;
@@ -274,7 +245,6 @@ public class NervousnetVM {
         }
 
     }
-
 
     public byte getState() {
         return state;

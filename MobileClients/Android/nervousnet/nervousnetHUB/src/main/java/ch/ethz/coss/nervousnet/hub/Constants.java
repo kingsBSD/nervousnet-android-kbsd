@@ -37,7 +37,7 @@ public final class Constants {
 
     public static Integer[] icon_array_sensors = {R.drawable.ic_accel, R.drawable.ic_batt,
             R.drawable.ic_gyro, R.drawable.ic_loc, R.drawable.ic_light,
-            R.drawable.ic_noise, R.drawable.ic_notification, R.drawable.ic_proxim, R.drawable.ic_traffic};
+            R.drawable.ic_noise, R.drawable.ic_notification, R.drawable.ic_proxim, R.drawable.ic_traffic, R.drawable.ic_socket};
 
 
 }
