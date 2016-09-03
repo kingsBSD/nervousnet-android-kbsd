@@ -15,6 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.os.Handler;
 import android.text.TextUtils;
+//import android.util.Log;
 
 import ch.ethz.coss.nervousnet.lib.SocketReading;
 
@@ -22,7 +23,7 @@ import ch.ethz.coss.nervousnet.lib.SocketReading;
 /**
  * Created by grg on 02/09/16.
  */
-public class SocketSensor extends BaseSensor{
+public class SocketSensor extends BaseSensor {
 
     private String[] protocols = new String[]{"tcp","tcp6","udp","udp6"};
     private Context context;
@@ -37,6 +38,7 @@ public class SocketSensor extends BaseSensor{
 
     public SocketSensor(Context ctx, byte sensorState) {
         context = ctx;
+        running = false;
         scanHandle = new Handler();
         processes = new ConcurrentHashMap<String, Process>();
         am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -46,6 +48,7 @@ public class SocketSensor extends BaseSensor{
             public void run() {
                 if (running) {
                     scan();
+                    //Log.d("socket","tick");
                     scanHandle.postDelayed(this, 500);
                 }
             }
@@ -55,6 +58,7 @@ public class SocketSensor extends BaseSensor{
 
     @Override
     public boolean start() {
+        //Log.d("socket","start");
         running = true;
         scanHandle.post(socketWorker);
         return true;
@@ -62,6 +66,9 @@ public class SocketSensor extends BaseSensor{
 
     @Override
     public boolean stopAndRestart(byte state) {
+        if (!running) {
+            start();
+        }
         return true;
     }
 
@@ -255,6 +262,7 @@ public class SocketSensor extends BaseSensor{
             String key = protocol+addr;
             int port = Integer.parseInt(addr.split(":")[1]);
             reading = new SocketReading(openingTimes.get(key), name, protocol, port);
+            //Log.d("socket",name+" "+addr);
             dataReady(reading);
 
             sockets.get(protocol).remove(addr);
