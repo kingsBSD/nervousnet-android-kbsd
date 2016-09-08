@@ -72,6 +72,7 @@ public class TrafficSensor extends BaseSensor {
         if (!running) {
             start();
         }
+        setSensorState(state);
         return true;
     }
 

@@ -72,6 +72,7 @@ public class SocketSensor extends BaseSensor {
     public boolean stopAndRestart(byte state) {
         if (!running) {
             interval = NervousnetVMConstants.sensor_freq_constants[LibConstants.SENSOR_SOCKET][state];
+            setSensorState(state);
             start();
         }
         return true;
