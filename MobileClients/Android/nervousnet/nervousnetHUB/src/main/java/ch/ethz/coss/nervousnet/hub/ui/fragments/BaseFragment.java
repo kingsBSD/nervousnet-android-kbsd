@@ -30,13 +30,19 @@ package ch.ethz.coss.nervousnet.hub.ui.fragments;
 
 import android.app.Fragment;
 
+import android.os.Bundle;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import ch.ethz.coss.nervousnet.hub.Application;
+import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
+import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.vm.NNLog;
+import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -59,6 +65,59 @@ public abstract class BaseFragment extends Fragment {
         // TODO Auto-generated constructor stub
 
         this.type = type;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        sensorStatusTV = (TextView) getView().findViewById(R.id.sensorStatus);
+
+        radioGroup = (RadioGroup)  getView().findViewById(R.id.radioRateSensor);
+        lastCollectionRate = ((Application) (getActivity().getApplication())).nn_VM.getSensorState(type);
+
+        ((RadioButton) radioGroup.getChildAt(lastCollectionRate)).setChecked(true);
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                NNLog.d(LOG_TAG, "Inside radioGroup onCheckedChanged ");
+
+                switch (checkedId) {
+                    case R.id.radioOff:
+                        if(lastCollectionRate > NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) (getActivity().getApplication())).nn_VM.updateSensorConfig(type,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF);
+                        }
+                        break;
+                    case R.id.radioLow:
+                        if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) (getActivity().getApplication())).nn_VM.updateSensorConfig(type,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_LOW);
+                        }
+                        break;
+                    case R.id.radioMed:
+                        if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) (getActivity().getApplication())).nn_VM.updateSensorConfig(type,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_MED);
+                        }
+                        break;
+                    case R.id.radioHigh:
+                        if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) (getActivity().getApplication())).nn_VM.updateSensorConfig(type,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
+                        }
+                        break;
+                }
+            }
+        });
+
+        if ((((Application) (getActivity().getApplication())).nn_VM.getState() == NervousnetVMConstants.STATE_PAUSED)) {
+
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                ((RadioButton) radioGroup.getChildAt(i)).setEnabled(false);
+            }
+            sensorStatusTV.setText(R.string.local_service_paused);
+        }
+
+
     }
 
     public abstract void updateReadings(SensorReading reading);
