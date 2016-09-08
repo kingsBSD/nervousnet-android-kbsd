@@ -91,6 +91,9 @@ public class TrafficFragment extends BaseFragment {
             NNLog.d("TrafficFragment", "Inside updateReadings - ErrorReading");
             handleError((ErrorReading) reading);
         } else {
+
+            sensorStatusTV.setText(R.string.sensor_status_connected);
+
             TextView appName = (TextView) getActivity().findViewById(R.id.app_name);
             appName.setText(((TrafficReading) reading).getAppName());
             TextView txBytes = (TextView) getActivity().findViewById(R.id.tx_bytes);

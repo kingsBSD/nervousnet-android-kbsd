@@ -91,6 +91,9 @@ public class SocketFragment extends BaseFragment {
             NNLog.d("SocketFragment", "Inside updateReadings - ErrorReading");
             handleError((ErrorReading) reading);
         } else {
+
+            sensorStatusTV.setText(R.string.sensor_status_connected);
+
             TextView appName = (TextView) getActivity().findViewById(R.id.app_name);
             appName.setText(((SocketReading) reading).getAppName());
             TextView protocol = (TextView) getActivity().findViewById(R.id.protocol);
