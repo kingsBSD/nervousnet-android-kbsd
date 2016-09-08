@@ -117,6 +117,7 @@ public class NotificationFragment extends BaseFragment {
             NNLog.d("NotificationFragment", "Inside updateReadings - ErrorReading");
             handleError((ErrorReading) reading);
         } else {
+            sensorStatusTV.setText(R.string.sensor_status_connected);
             TextView appName = (TextView) getActivity().findViewById(R.id.app_name);
             appName.setText("" + ((NotificationReading) reading).getAppName());
         }
