@@ -62,6 +62,7 @@ import ch.ethz.coss.nervousnet.hub.ui.fragments.LocationFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.NoiseFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.NotificationFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.ProximityFragment;
+import ch.ethz.coss.nervousnet.hub.ui.fragments.SocketFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.TrafficFragment;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
@@ -229,6 +230,9 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
                 case 8:
                     updateStatus(nervousnetServiceController.getLatestReading(LibConstants.SENSOR_TRAFFIC), index);
                     break;
+                case 9:
+                    updateStatus(nervousnetServiceController.getLatestReading(LibConstants.SENSOR_SOCKET), index);
+                    break;
                 default:
                     break;
             }
@@ -327,6 +331,9 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
                     break;
                 case 8:
                     fragment = new TrafficFragment();
+                    break;
+                case 9:
+                    fragment = new SocketFragment();
                     break;
                 default:
                     fragment = new DummyFragment();

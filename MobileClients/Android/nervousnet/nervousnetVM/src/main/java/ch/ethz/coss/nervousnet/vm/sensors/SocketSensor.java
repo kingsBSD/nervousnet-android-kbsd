@@ -17,7 +17,9 @@ import android.os.Handler;
 import android.text.TextUtils;
 //import android.util.Log;
 
+import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.SocketReading;
+import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
 
 /**
@@ -29,6 +31,7 @@ public class SocketSensor extends BaseSensor {
     private Context context;
     private Handler scanHandle;
     private boolean running;
+    private int interval;
     private ActivityManager am;
     // http://www.javacodegeeks.com/2011/05/avoid-concurrentmodificationexception.html
     private ConcurrentHashMap<String, Process> processes;
@@ -39,6 +42,7 @@ public class SocketSensor extends BaseSensor {
     public SocketSensor(Context ctx, byte sensorState) {
         context = ctx;
         running = false;
+        interval = NervousnetVMConstants.sensor_freq_constants[LibConstants.SENSOR_SOCKET][sensorState];
         scanHandle = new Handler();
         processes = new ConcurrentHashMap<String, Process>();
         am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
@@ -49,7 +53,7 @@ public class SocketSensor extends BaseSensor {
                 if (running) {
                     scan();
                     //Log.d("socket","tick");
-                    scanHandle.postDelayed(this, 500);
+                    scanHandle.postDelayed(this, interval);
                 }
             }
         };
@@ -67,6 +71,7 @@ public class SocketSensor extends BaseSensor {
     @Override
     public boolean stopAndRestart(byte state) {
         if (!running) {
+            interval = NervousnetVMConstants.sensor_freq_constants[LibConstants.SENSOR_SOCKET][state];
             start();
         }
         return true;

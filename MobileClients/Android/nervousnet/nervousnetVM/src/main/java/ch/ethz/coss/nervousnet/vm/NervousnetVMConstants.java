@@ -71,7 +71,7 @@ public class NervousnetVMConstants {
             {-1, 60000, 120000, 300000}, // NOTIFICATION
             {-1, 60000, 120000, 300000}, // PROXIMITY
             {-1, 30000, 120000, 300000},  // NETWORK TRAFFIC
-            {-1, 60000, 120000, 300000} // NETWORK SOCKETS
+            {-1, 500, 1000, 2000} // NETWORK SOCKETS
     };
 
     public static byte EVENT_PAUSE_NERVOUSNET_REQUEST = 0;
