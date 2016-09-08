@@ -128,10 +128,10 @@ public abstract class BaseActivity extends Activity implements ActionBarImplemen
 
     public void startStopSensorService(boolean on) {
         if (on) {
-            ((Application) getApplication()).startService(this);
             if (!accessibilityEnabled()) {
                 accessibilityPrompt();
             }
+            ((Application) getApplication()).startService(this);
         } else {
             ((Application) getApplication()).stopService(this);
         }
