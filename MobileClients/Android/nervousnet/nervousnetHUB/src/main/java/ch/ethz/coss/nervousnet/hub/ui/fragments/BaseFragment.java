@@ -105,6 +105,11 @@ public abstract class BaseFragment extends Fragment {
                             ((Application) (getActivity().getApplication())).nn_VM.updateSensorConfig(type,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH);
                         }
                         break;
+                    case R.id.radioOn:
+                        if(lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF){
+                            ((Application) (getActivity().getApplication())).nn_VM.updateSensorConfig(type,NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_LOW);
+                        }
+                        break;
                 }
             }
         });

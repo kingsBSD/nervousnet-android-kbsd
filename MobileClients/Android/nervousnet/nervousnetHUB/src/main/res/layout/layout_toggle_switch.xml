@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_rect"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/radioRateSensor"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioOff"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/radio_button_background"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="@string/radio_off"
+            android:textSize="@dimen/rate_switch_label_size" />
+
+        <RadioButton
+            android:id="@+id/radioOn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+            android:background="@drawable/radio_button_background"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:text="@string/radio_On"
+            android:textSize="@dimen/rate_switch_label_size" />
+
+    </RadioGroup>
+</LinearLayout>

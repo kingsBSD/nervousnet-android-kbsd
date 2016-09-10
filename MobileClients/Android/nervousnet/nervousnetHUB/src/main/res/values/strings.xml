@@ -162,6 +162,7 @@ Clausiusstrasse 50,\n 8092 Zürich,\n Switzerland\n</string>
     <string name="radio_low">LOW</string>
     <string name="radio_off">OFF</string>
     <string name="radio_High">HIGH</string>
+	<string name="radio_On">ON</string>
 
 	<string name="accessibility_service_description">Enable this service to allow NervousNet to record when net-enabled apps send notifications. Notification
 	contents are not recorded</string>
