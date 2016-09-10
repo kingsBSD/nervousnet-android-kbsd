@@ -53,7 +53,9 @@ import android.widget.Switch;
 import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.DbDumpTask;
 import ch.ethz.coss.nervousnet.hub.R;
+import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.vm.NNLog;
+import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
 /**
  * @author prasad
@@ -128,7 +130,8 @@ public abstract class BaseActivity extends Activity implements ActionBarImplemen
 
     public void startStopSensorService(boolean on) {
         if (on) {
-            if (!accessibilityEnabled()) {
+            int notification_state = ((Application) (this.getApplication())).nn_VM.getSensorState(LibConstants.SENSOR_NOTIFICATION);
+            if (notification_state !=  NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF && !accessibilityEnabled()) {
                 accessibilityPrompt();
             }
             ((Application) getApplication()).startService(this);
