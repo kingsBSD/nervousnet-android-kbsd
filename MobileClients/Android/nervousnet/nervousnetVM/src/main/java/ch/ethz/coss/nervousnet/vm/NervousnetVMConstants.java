@@ -61,6 +61,7 @@ public class NervousnetVMConstants {
     };
 
     public static String[] sensor_freq_labels = {"Off", "Low", "Medium", "High"};
+    public static String sensor_on = "On";
 
     public static int[][] sensor_freq_constants = {{-1, 60000, 120000, 300000}, // ACCELEROMETER
             {-1, 60000, 120000, 300000}, // BATTERY
