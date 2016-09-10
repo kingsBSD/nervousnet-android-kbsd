@@ -56,12 +56,14 @@ public class NotificationService extends AccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
+        String appName = (String) event.getPackageName();
 
-        Intent intent = new Intent("nervousnet-notification-sensor-event");
-        intent.putExtra("appName", (String) event.getPackageName());
-        intent.putExtra("timestamp",System.currentTimeMillis());
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-
+        if (!appName.equals("ch.ethz.coss.nervousnet.hub")) {
+            Intent intent = new Intent("nervousnet-notification-sensor-event");
+            intent.putExtra("appName", appName);
+            intent.putExtra("timestamp", System.currentTimeMillis());
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        }
     }
 
     @Override

@@ -531,7 +531,7 @@ public class SQLHelper implements BaseSensorListener {
                 sensorData = new NotificationData(null, reading.timestamp, notificationReading.getAppName(), notificationReading.volatility, notificationReading.isShare);
                 sensorData.setType(LibConstants.SENSOR_NOTIFICATION);
                 notificationDataArrList.add((SensorDataImpl) sensorData);
-                if (notificationDataArrList.size() > 100) {
+                if (notificationDataArrList.size() > 10) {
                     storeSensorAsync(LibConstants.SENSOR_NOTIFICATION, new ArrayList<SensorDataImpl>(notificationDataArrList));
                     notificationDataArrList.clear();
                 }
@@ -551,22 +551,22 @@ public class SQLHelper implements BaseSensorListener {
             case LibConstants.SENSOR_TRAFFIC:
                 TrafficReading trafficReading = (TrafficReading) reading;
                 sensorData = new TrafficData(null, trafficReading.timestamp, trafficReading.getAppName(), trafficReading.getTxBytes(), trafficReading.getRxBytes(), trafficReading.volatility, trafficReading.isShare);
-                sensorData.setType(LibConstants.SENSOR_PROXIMITY);
-                proxDataArrList.add((SensorDataImpl) sensorData);
-                if (proxDataArrList.size() > 100) {
-                    storeSensorAsync(LibConstants.SENSOR_PROXIMITY, new ArrayList<SensorDataImpl>(proxDataArrList));
-                    proxDataArrList.clear();
+                sensorData.setType(LibConstants.SENSOR_TRAFFIC);
+                trafficDataArrList.add((SensorDataImpl) sensorData);
+                if (trafficDataArrList.size() > 10) {
+                    storeSensorAsync(LibConstants.SENSOR_TRAFFIC, new ArrayList<SensorDataImpl>(trafficDataArrList));
+                    trafficDataArrList.clear();
                 }
                 break;
 
             case LibConstants.SENSOR_SOCKET:
                 SocketReading socketReading = (SocketReading) reading;
                 sensorData = new SocketData(null, socketReading.timestamp, socketReading.getAppName(), socketReading.getProtocol(), socketReading.getPort(), socketReading.volatility, socketReading.isShare);
-                sensorData.setType(LibConstants.SENSOR_PROXIMITY);
-                proxDataArrList.add((SensorDataImpl) sensorData);
-                if (proxDataArrList.size() > 100) {
-                    storeSensorAsync(LibConstants.SENSOR_PROXIMITY, new ArrayList<SensorDataImpl>(proxDataArrList));
-                    proxDataArrList.clear();
+                sensorData.setType(LibConstants.SENSOR_SOCKET);
+                socketDataArrList.add((SensorDataImpl) sensorData);
+                if (socketDataArrList.size() > 10) {
+                    storeSensorAsync(LibConstants.SENSOR_SOCKET, new ArrayList<SensorDataImpl>(socketDataArrList));
+                    socketDataArrList.clear();
                 }
                 break;
 
