@@ -16,6 +16,7 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 
 import ch.ethz.coss.nervousnet.hub.Application;
+import ch.ethz.coss.nervousnet.hub.IconLoader;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.vm.NNLog;
@@ -47,7 +48,13 @@ public class CollectionRateSettingItemAdapter extends ArrayAdapter<String> {
         TextView textView = (TextView) convertView.findViewById(R.id.sensor_name);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.sensor_icon);
         textView.setText(labels[position]);
-        imageView.setImageResource(icons[position]);
+
+        IconLoader loader = new IconLoader(context);
+
+        int icon_width = (int) context.getResources().getDimension(R.dimen.rate_icon_width);
+        int icon_height = (int) context.getResources().getDimension(R.dimen.rate_icon_height);
+
+        imageView.setImageBitmap(loader.getIcon(icons[position], icon_width, icon_height));
 
         button = (Button) convertView.findViewById(R.id.sensor_level_button);
         int sensorState = ((Application) context.getApplicationContext()).nn_VM.getSensorState(position);
