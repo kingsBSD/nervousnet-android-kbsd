@@ -8,19 +8,90 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.util.LruCache;
+import android.widget.ImageView;
 
-//https://developer.android.com/training/displaying-bitmaps/load-bitmap.html
+import java.lang.ref.WeakReference;
+
+// https://developer.android.com/training/displaying-bitmaps/index.html
 
 public class IconLoader {
 
     private Context ctx;
+    private LruCache<String, Bitmap> bitmapCache;
 
     public IconLoader(Context context) {
         ctx = context;
+
+        final int cacheSize = (int) (Runtime.getRuntime().maxMemory() / 1024) / 16;
+
+        bitmapCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                // The cache size will be measured in kilobytes rather than
+                // number of items.
+                return bitmap.getByteCount() / 1024;
+            }
+        };
+
     }
 
-    public android.graphics.Bitmap getIcon(int id,int width, int height) {
-        return decodeSampledBitmapFromResource(ctx.getResources(), id, width, height);
+    public android.graphics.Bitmap getIcon(int id, int width, int height, ImageView target) {
+
+        final String key = String.valueOf(id) + String.valueOf(width) + String.valueOf(height);
+
+        final Bitmap bitmap = getBitmapFromMemCache(key);
+
+        if (bitmap != null) {
+            target.setImageBitmap(bitmap);
+
+        } else {
+            BitmapWorkerTask task = new BitmapWorkerTask(key,target);
+            task.execute(id, width, height);
+        }
+
+        return bitmap;
+    }
+
+    class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
+
+        private final WeakReference<ImageView> targetRef;
+        private final String bitmapKey;
+
+        public BitmapWorkerTask(String key, ImageView target) {
+            bitmapKey = key;
+            targetRef = new WeakReference<ImageView>(target);
+        }
+
+        // Decode image in background.
+        @Override
+        protected Bitmap doInBackground(Integer... params) {
+            final Bitmap bitmap = decodeSampledBitmapFromResource(ctx.getResources(), params[0], params[1], params[2]);
+            addBitmapToMemoryCache(bitmapKey, bitmap);
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            if (targetRef != null && bitmap != null) {
+                final ImageView imageView = targetRef.get();
+                if (imageView != null) {
+                    imageView.setImageBitmap(bitmap);
+                }
+            }
+        }
+
+    }
+
+    private void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if (getBitmapFromMemCache(key) == null) {
+            bitmapCache.put(key, bitmap);
+        }
+    }
+
+    private Bitmap getBitmapFromMemCache(String key) {
+        return bitmapCache.get(key);
     }
 
     private static int calculateInSampleSize(
