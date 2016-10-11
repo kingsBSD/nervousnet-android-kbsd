@@ -54,7 +54,6 @@ public class CollectionRateSettingItemAdapter extends ArrayAdapter<String> {
         int icon_width = (int) context.getResources().getDimension(R.dimen.rate_icon_width);
         int icon_height = (int) context.getResources().getDimension(R.dimen.rate_icon_height);
 
-        //imageView.setImageBitmap(loader.getIcon(icons[position], icon_width, icon_height));
         loader.getIcon(icons[position], icon_width, icon_height, imageView);
 
         button = (Button) convertView.findViewById(R.id.sensor_level_button);

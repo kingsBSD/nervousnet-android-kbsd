@@ -170,6 +170,7 @@ public class SocketSensor extends BaseSensor {
                 try {
                     line = null;
                     // Are we allowed to read /proc/<pid>/net/<protocol> ?
+                    //Log.d("socketsensor", "Reading "+namesByPid.get(scannedPid));
                     reader = new BufferedReader (new FileReader("/proc/"+scannedPid+"/net/"+prot));
 
                     while ((line = reader.readLine()) != null) {
@@ -212,7 +213,7 @@ public class SocketSensor extends BaseSensor {
                     }
                 }
                 catch (IOException e) {
-
+                    //Log.d("socketsensor", "Can't read "+namesByPid.get(scannedPid));
                 }
             }
         }
