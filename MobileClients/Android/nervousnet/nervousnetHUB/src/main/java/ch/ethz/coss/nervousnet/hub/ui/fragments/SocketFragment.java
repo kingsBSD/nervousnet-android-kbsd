@@ -45,7 +45,7 @@ public class SocketFragment extends BaseFragment {
 
             sensorStatusTV.setText(R.string.sensor_status_connected);
 
-            TextView appName = (TextView) getActivity().findViewById(R.id.app_name);
+            TextView appName = (TextView) getActivity().findViewById(R.id.socket_app_name);
             appName.setText(((SocketReading) reading).getAppName());
             TextView protocol = (TextView) getActivity().findViewById(R.id.protocol);
             protocol.setText(((SocketReading) reading).getProtocol());

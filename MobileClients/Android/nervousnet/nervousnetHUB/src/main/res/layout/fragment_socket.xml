@@ -43,7 +43,7 @@
                         android:padding="@dimen/padding_sensor_values" />
 
                     <TextView
-                        android:id="@+id/app_name"
+                        android:id="@+id/socket_app_name"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="right"

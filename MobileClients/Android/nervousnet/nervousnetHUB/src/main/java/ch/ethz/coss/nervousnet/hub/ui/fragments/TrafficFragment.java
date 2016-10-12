@@ -45,7 +45,7 @@ public class TrafficFragment extends BaseFragment {
 
             sensorStatusTV.setText(R.string.sensor_status_connected);
 
-            TextView appName = (TextView) getActivity().findViewById(R.id.app_name);
+            TextView appName = (TextView) getActivity().findViewById(R.id.traffic_app_name);
             appName.setText(((TrafficReading) reading).getAppName());
             TextView txBytes = (TextView) getActivity().findViewById(R.id.tx_bytes);
             txBytes.setText((Long.toString(((TrafficReading) reading).getTxBytes())));
