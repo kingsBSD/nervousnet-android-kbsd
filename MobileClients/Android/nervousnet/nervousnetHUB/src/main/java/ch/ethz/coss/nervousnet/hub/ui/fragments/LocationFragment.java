@@ -33,18 +33,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.LocationReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
-import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
+//import ch.ethz.coss.nervousnet.vm.NNLog;
+
 
 public class LocationFragment extends BaseFragment {
 
@@ -73,11 +70,11 @@ public class LocationFragment extends BaseFragment {
     @Override
     public void updateReadings(SensorReading reading) {
 
-        NNLog.d("LocationFragment", "Inside updateReadings");
+        //NNLog.d("LocationFragment", "Inside updateReadings");
 
         if (reading instanceof ErrorReading) {
 
-            NNLog.d("LocationFragment", "Inside updateReadings - ErrorReading");
+            //NNLog.d("LocationFragment", "Inside updateReadings - ErrorReading");
             handleError((ErrorReading) reading);
         } else {
 
@@ -85,21 +82,21 @@ public class LocationFragment extends BaseFragment {
 
             double[] location = ((LocationReading) reading).getLatnLong();
             Activity fragAct = getActivity();
-            if (fragAct == null)
-                System.out.println("FragmentAcvitivity is null");
+
 
             TextView latitude = (TextView) fragAct.findViewById(R.id.latitude);
             latitude.setText("" + location[0]);
 
             TextView longitude = (TextView) getActivity().findViewById(R.id.longitude);
             longitude.setText("" + location[1]);
+
         }
 
     }
 
     @Override
     public void handleError(ErrorReading reading) {
-        NNLog.d("LocationFragment", "handleError called");
+        //NNLog.d("LocationFragment", "handleError called");
         sensorStatusTV.setText(reading.getErrorString());
 
 //        // Android 6.0 permission request

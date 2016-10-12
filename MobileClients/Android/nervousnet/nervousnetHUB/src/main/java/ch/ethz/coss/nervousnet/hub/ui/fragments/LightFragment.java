@@ -28,23 +28,19 @@
  */
 package ch.ethz.coss.nervousnet.hub.ui.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.LightReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
-import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
+//import ch.ethz.coss.nervousnet.vm.NNLog;
+
 
 public class LightFragment extends BaseFragment {
 
@@ -71,11 +67,11 @@ public class LightFragment extends BaseFragment {
      */
     @Override
     public void updateReadings(SensorReading reading) {
-        NNLog.d("LightFragment", "Inside updateReadings");
+        //NNLog.d("LightFragment", "Inside updateReadings");
 
         if (reading instanceof ErrorReading) {
 
-            NNLog.d("LightFragment", "Inside updateReadings - ErrorReading");
+            //NNLog.d("LightFragment", "Inside updateReadings - ErrorReading");
             handleError((ErrorReading) reading);
         } else {
 
@@ -90,7 +86,7 @@ public class LightFragment extends BaseFragment {
 
     @Override
     public void handleError(ErrorReading reading) {
-        NNLog.d("LightFragment", "handleError called");
+        //NNLog.d("LightFragment", "handleError called");
         sensorStatusTV.setText(reading.getErrorString());
     }
 

@@ -32,18 +32,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.NoiseReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
-import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
+//import ch.ethz.coss.nervousnet.vm.NNLog;
 
 public class NoiseFragment extends BaseFragment {
     final private int REQUEST_CODE_ASK_PERMISSIONS_NOISE = 2;
@@ -73,11 +69,10 @@ public class NoiseFragment extends BaseFragment {
     public void updateReadings(SensorReading reading) {
 
         if (reading instanceof ErrorReading) {
-
-            NNLog.d("NoiseFragment", "Inside updateReadings - ErrorReading");
+            //NNLog.d("NoiseFragment", "Inside updateReadings - ErrorReading");
             handleError((ErrorReading) reading);
         } else {
-            NNLog.d("NoiseFragment", "Inside updateReadings");
+            //NNLog.d("NoiseFragment", "Inside updateReadings");
             sensorStatusTV.setText(R.string.sensor_status_connected);
             db = ((NoiseReading) reading).getdbValue();
             TextView dbTV = (TextView) getActivity().findViewById(R.id.dbValue);
@@ -96,7 +91,7 @@ public class NoiseFragment extends BaseFragment {
 
     @Override
     public void handleError(ErrorReading reading) {
-        NNLog.d("NoiseFragment", "handleError called");
+        //NNLog.d("NoiseFragment", "handleError called");
         sensorStatusTV.setText(reading.getErrorString());
 
 //        // Android 6.0 permission request

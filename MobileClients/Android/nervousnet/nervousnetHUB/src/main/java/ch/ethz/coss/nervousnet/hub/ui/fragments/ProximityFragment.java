@@ -28,23 +28,18 @@
  */
 package ch.ethz.coss.nervousnet.hub.ui.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.ProximityReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
-import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
+//import ch.ethz.coss.nervousnet.vm.NNLog;
 
 public class ProximityFragment extends BaseFragment {
 
@@ -70,11 +65,11 @@ public class ProximityFragment extends BaseFragment {
          */
     @Override
     public void updateReadings(SensorReading reading) {
-        NNLog.d("ProximityFragment", "Inside updateReadings");
+        //NNLog.d("ProximityFragment", "Inside updateReadings");
 
         if (reading instanceof ErrorReading) {
 
-            NNLog.d("ProximityFragment", "Inside updateReadings - ErrorReading");
+            //NNLog.d("ProximityFragment", "Inside updateReadings - ErrorReading");
             handleError((ErrorReading) reading);
         } else {
             sensorStatusTV.setText(R.string.sensor_status_connected);
@@ -88,7 +83,7 @@ public class ProximityFragment extends BaseFragment {
 
     @Override
     public void handleError(ErrorReading reading) {
-        NNLog.d("ProximityFragment", "handleError called");
+        //NNLog.d("ProximityFragment", "handleError called");
         sensorStatusTV.setText(reading.getErrorString());
     }
 

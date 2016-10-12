@@ -4,18 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.lib.TrafficReading;
-import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
+//import ch.ethz.coss.nervousnet.vm.NNLog;
 
 /**
  * Created by grg on 23/08/16.
@@ -35,11 +31,11 @@ public class TrafficFragment extends BaseFragment {
 
     @Override
     public void updateReadings(SensorReading reading) {
-        NNLog.d("TrafficFragment", "Inside updateReadings ");
+        //NNLog.d("TrafficFragment", "Inside updateReadings ");
 
         if (reading instanceof ErrorReading) {
 
-            NNLog.d("TrafficFragment", "Inside updateReadings - ErrorReading");
+            //NNLog.d("TrafficFragment", "Inside updateReadings - ErrorReading");
             handleError((ErrorReading) reading);
         } else {
 
@@ -57,7 +53,7 @@ public class TrafficFragment extends BaseFragment {
 
     @Override
     public void handleError(ErrorReading reading) {
-        NNLog.d("TrafficFragment", "handleError called");
+        //NNLog.d("TrafficFragment", "handleError called");
         sensorStatusTV.setText(reading.getErrorString());
     }
 

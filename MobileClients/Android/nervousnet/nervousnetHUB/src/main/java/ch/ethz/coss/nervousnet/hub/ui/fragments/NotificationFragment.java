@@ -32,18 +32,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.lib.ErrorReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.NotificationReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
-import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
+//import ch.ethz.coss.nervousnet.vm.NNLog;
 
 public class NotificationFragment extends BaseFragment {
 
@@ -60,11 +56,11 @@ public class NotificationFragment extends BaseFragment {
 
     @Override
     public void updateReadings(SensorReading reading) {
-        NNLog.d("NotificationFragment", "Inside updateReadings ");
+        //NNLog.d("NotificationFragment", "Inside updateReadings ");
 
         if (reading instanceof ErrorReading) {
 
-            NNLog.d("NotificationFragment", "Inside updateReadings - ErrorReading");
+            //NNLog.d("NotificationFragment", "Inside updateReadings - ErrorReading");
             handleError((ErrorReading) reading);
         } else {
             sensorStatusTV.setText(R.string.sensor_status_connected);
@@ -76,7 +72,7 @@ public class NotificationFragment extends BaseFragment {
 
     @Override
     public void handleError(ErrorReading reading) {
-        NNLog.d("NotificationFragment", "handleError called");
+        //NNLog.d("NotificationFragment", "handleError called");
         sensorStatusTV.setText(reading.getErrorString());
     }
 
