@@ -17,10 +17,12 @@ android {
     }
 }
 
+
 dependencies {
     compile project(':nervousnetLIB')
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile files('libs/greendao-2.1.0-2.jar')
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.jaredrummler:android-processes:1.0.8'
 }

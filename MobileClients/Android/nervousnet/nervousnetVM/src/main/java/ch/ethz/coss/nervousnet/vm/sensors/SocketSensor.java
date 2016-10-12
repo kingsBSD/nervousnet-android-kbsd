@@ -17,6 +17,9 @@ import android.os.Handler;
 import android.text.TextUtils;
 //import android.util.Log;
 
+import com.jaredrummler.android.processes.AndroidProcesses;
+import com.jaredrummler.android.processes.models.AndroidAppProcess;
+
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.SocketReading;
 import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
@@ -110,7 +113,9 @@ public class SocketSensor extends BaseSensor {
 
 
     public void scan() {
-        List<ActivityManager.RunningAppProcessInfo> procs = am.getRunningAppProcesses();
+
+        List<AndroidAppProcess> procs = AndroidProcesses.getRunningAppProcesses();
+
         Integer j,digitCount,digitInc;
         ArrayList<String> pids = new ArrayList<String>(); // Process IDs.
         ArrayList<String>  names = new ArrayList<String>(); // Process names.
@@ -133,18 +138,18 @@ public class SocketSensor extends BaseSensor {
         updated = false;
 
         // Populate the HashmMaps and create the process objects.
-        for (ActivityManager.RunningAppProcessInfo p: procs) {
+        for (AndroidAppProcess p: procs) {
             thisPid = Integer.toString(p.pid);
             pids.add(thisPid);
-            names.add(p.processName);
-            namesByPid.put(thisPid, p.processName);
+            names.add(p.name);
+            namesByPid.put(thisPid, p.name);
             thisUid = Integer.toString(p.uid);
             uids.add(thisUid);
-            namesByUid.put(thisUid, p.processName);
+            namesByUid.put(thisUid, p.name);
             pidsByUid.put(thisUid, thisPid);
-            pidsByName.put(p.processName,thisPid);
+            pidsByName.put(p.name,thisPid);
 
-            if (processes.get(p.processName) == null) processes.put(p.processName, new Process(p.processName,thisPid));
+            if (processes.get(p.name) == null) processes.put(p.name, new Process(p.name,thisPid));
         }
 
         // Purge any processes that have stopped.
@@ -168,12 +173,12 @@ public class SocketSensor extends BaseSensor {
             for (String scannedPid: pids) { // For each process ID...
 
                 try {
-                    line = null;
                     // Are we allowed to read /proc/<pid>/net/<protocol> ?
                     //Log.d("socketsensor", "Reading "+namesByPid.get(scannedPid));
                     reader = new BufferedReader (new FileReader("/proc/"+scannedPid+"/net/"+prot));
 
                     while ((line = reader.readLine()) != null) {
+                        //Log.d("socketsensor", line);
                         tokens = line.split("\\s+"); // Split on whitespace...
                         remote = tokens[3].split(":"); // Maybe the fourth token is the remote address...
                         remoteAddr = remote[0];
@@ -195,6 +200,7 @@ public class SocketSensor extends BaseSensor {
                                     remoteIP = TextUtils.join(".",remoteIPchunks); // ...then assemble it and add the socket.
                                     if (discoveredSockets.get(thisName) == null) discoveredSockets.put(thisName,new ArrayList<String>());
                                     discoveredSockets.get(thisName).add(remoteIP+":"+remotePort);
+                                    //Log.d("socketsensor",namesByPid.get(scannedPid)+" "+remoteIP+":"+remotePort);
                                 }
                             }
                         }
@@ -269,7 +275,7 @@ public class SocketSensor extends BaseSensor {
             String key = protocol+addr;
             int port = Integer.parseInt(addr.split(":")[1]);
             reading = new SocketReading(openingTimes.get(key), name, protocol, port);
-            //Log.d("socket",name+" "+addr);
+            //Log.d("socketsensor",name+" "+protocol+" "+port);
             dataReady(reading);
 
             sockets.get(protocol).remove(addr);
