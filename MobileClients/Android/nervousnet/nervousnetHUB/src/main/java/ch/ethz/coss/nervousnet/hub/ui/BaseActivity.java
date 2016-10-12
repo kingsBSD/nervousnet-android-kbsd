@@ -30,6 +30,7 @@ package ch.ethz.coss.nervousnet.hub.ui;
 
 import java.util.List;
 
+import android.Manifest;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -37,8 +38,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -49,6 +53,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.DbDumpTask;
@@ -63,6 +68,8 @@ import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 public abstract class BaseActivity extends Activity implements ActionBarImplementation {
 
     private static final String LOG_TAG = BaseActivity.class.getSimpleName();
+    private static final int REQUEST_CODE_ASK_PERMISSIONS_STORAGE = 2323;
+
 
     protected View parentView;
 
@@ -121,11 +128,34 @@ public abstract class BaseActivity extends Activity implements ActionBarImplemen
 
         switch (item.getItemId()) {
             case R.id.dump_db:
-                dumpDb();
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS_STORAGE);
+                    //if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    //    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS_STORAGE);
+                    //}
+                } else {
+                    dumpDb();
+                }
+
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS_STORAGE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    dumpDb();
+                } else {
+                    Toast.makeText(BaseActivity.this, "Can't export DB, permission denied.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     public void startStopSensorService(boolean on) {
