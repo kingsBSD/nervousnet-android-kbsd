@@ -76,7 +76,15 @@ public abstract class BaseFragment extends Fragment {
         radioGroup = (RadioGroup)  getView().findViewById(R.id.radioRateSensor);
         lastCollectionRate = ((Application) (getActivity().getApplication())).nn_VM.getSensorState(type);
 
+        // This really shouldn't have to happen. Sensor states for asynchronous sensors should be 0 or 1.
+        if (type == LibConstants.SENSOR_NOTIFICATION) {
+            if (lastCollectionRate > 1) {
+                lastCollectionRate = 1;
+            }
+        }
+
         ((RadioButton) radioGroup.getChildAt(lastCollectionRate)).setChecked(true);
+
 
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
