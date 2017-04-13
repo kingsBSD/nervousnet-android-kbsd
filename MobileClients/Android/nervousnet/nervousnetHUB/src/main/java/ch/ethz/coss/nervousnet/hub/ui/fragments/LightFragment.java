@@ -39,12 +39,10 @@ import android.widget.TextView;
 
 import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
-import ch.ethz.coss.nervousnet.lib.ErrorReading;
+import ch.ethz.coss.nervousnet.lib.InfoReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
-import ch.ethz.coss.nervousnet.lib.LightReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
 public class LightFragment extends BaseFragment {
 
@@ -61,6 +59,49 @@ public class LightFragment extends BaseFragment {
 
 
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        sensorStatusTV = (TextView) getView().findViewById(R.id.sensorStatus);
+
+        radioGroup = (RadioGroup) getView().findViewById(R.id.radioRateSensor);
+        lastCollectionRate = ((((Application) ((Activity) getContext()).getApplication()).nn_VM.getSensorState(LibConstants.SENSOR_LIGHT)));
+
+        ((RadioButton) radioGroup.getChildAt(lastCollectionRate)).setChecked(true);
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                byte state;
+                switch (checkedId) {
+                    case R.id.radioOff:
+                        state = NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF; break;
+                    case R.id.radioLow:
+                        state = NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_LOW; break;
+                    case R.id.radioMed:
+                        state = NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_MED; break;
+                    case R.id.radioHigh:
+                        state = NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH; break;
+                    default: state = -1;
+                }
+                if (lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF
+                        && state >= 0) {
+                    ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorState(LibConstants.SENSOR_LIGHT, state);
+                }
+            }
+        });
+
+        if ((((Application) ((Activity) getContext()).getApplication()).nn_VM.getNervousnetState() == NervousnetVMConstants.STATE_PAUSED)) {
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                ((RadioButton) radioGroup.getChildAt(i)).setEnabled(false);
+            }
+            sensorStatusTV.setText(R.string.local_service_paused);
+        }
+    }
+
 
     /*
      * (non-Javadoc)
@@ -73,25 +114,25 @@ public class LightFragment extends BaseFragment {
     public void updateReadings(SensorReading reading) {
         NNLog.d("LightFragment", "Inside updateReadings");
 
-        if (reading instanceof ErrorReading) {
+        if (reading instanceof InfoReading) {
 
-            NNLog.d("LightFragment", "Inside updateReadings - ErrorReading");
-            handleError((ErrorReading) reading);
+            NNLog.d("LightFragment", "Inside updateReadings - InfoReading");
+            handleError((InfoReading) reading);
         } else {
 
             sensorStatusTV.setText(R.string.sensor_status_connected);
 
             TextView lux = (TextView) getActivity().findViewById(R.id.lux);
-            lux.setText("" + ((LightReading) reading).getLuxValue());
+            lux.setText("" + reading.getValues().get(0));
 
         }
     }
 
 
     @Override
-    public void handleError(ErrorReading reading) {
+    public void handleError(InfoReading reading) {
         NNLog.d("LightFragment", "handleError called");
-        sensorStatusTV.setText(reading.getErrorString());
+        sensorStatusTV.setText(reading.getInfoString());
     }
 
 

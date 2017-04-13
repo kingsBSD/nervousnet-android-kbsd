@@ -30,7 +30,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,7 +37,6 @@ import org.greenrobot.eventbus.EventBus;
 import ch.ethz.coss.nervousnet.hub.ui.MainActivity;
 import ch.ethz.coss.nervousnet.vm.NNLog;
 import ch.ethz.coss.nervousnet.vm.NervousnetVM;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 import ch.ethz.coss.nervousnet.vm.events.NNEvent;
 
 public class Application extends android.app.Application {
@@ -88,7 +86,7 @@ public class Application extends android.app.Application {
 //    }
 
     public byte getState() {
-        return nn_VM.getState();
+        return nn_VM.getNervousnetState();
     }
 
 

@@ -12,6 +12,8 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.List;
+
 /*******************************************************************************
  * *     Nervousnet - a distributed middleware software for social sensing.
  * *      It is responsible for collecting and managing data in a fully de-centralised fashion
@@ -77,7 +79,7 @@ public class NervousnetServiceController {
 //                                }
 //                            });
 
-                        listener.onServiceConnectionFailed(Utils.getErrorReading(101));
+                        listener.onServiceConnectionFailed(Utils.getInfoReading(101));
 
                     }
                 } catch (SecurityException e) {
@@ -85,13 +87,13 @@ public class NervousnetServiceController {
                     Log.e(LOG_TAG, "SecurityException - cannot bind to nervousnet service due to missing permission or permission denied. use 'ch.ethz.coss.nervousnet.hub.BIND_PERM' in your manifest to connect to nervousnet HUB Service");
                     doUnbindService();
 
-                    listener.onServiceConnectionFailed(Utils.getErrorReading(102));
+                    listener.onServiceConnectionFailed(Utils.getInfoReading(102));
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(LOG_TAG, "Exception - not able to bind ! ");
                     doUnbindService();
 
-                    listener.onServiceConnectionFailed(Utils.getErrorReading(103));
+                    listener.onServiceConnectionFailed(Utils.getInfoReading(103));
                 }
 
 
@@ -155,13 +157,13 @@ public class NervousnetServiceController {
                                 listener.onServiceConnected();
                         } else {
                             if (listener != null)
-                                listener.onServiceConnectionFailed(Utils.getErrorReading(101));
+                                listener.onServiceConnectionFailed(Utils.getInfoReading(101));
                         }
                     }
 
                 } catch (RemoteException e) {
                     if (listener != null)
-                        listener.onServiceConnectionFailed(Utils.getErrorReading(104));
+                        listener.onServiceConnectionFailed(Utils.getInfoReading(104));
 
                     e.printStackTrace();
                 }
@@ -180,7 +182,7 @@ public class NervousnetServiceController {
         bindFlag = context.bindService(it, mServiceConnection, 0);
 
         if (!bindFlag && listener != null) {
-            listener.onServiceConnectionFailed(Utils.getErrorReading(103));
+            listener.onServiceConnectionFailed(Utils.getInfoReading(103));
         }
 
     }
@@ -202,27 +204,52 @@ public class NervousnetServiceController {
             if (mService != null)
                 return mService.getLatestReading(sensorID);
             else
-                return new ErrorReading(new String[]{"002", "Service not connected."});
+               return new InfoReading(new String[]{"002", "Service not connected."});
         } else
-            return new ErrorReading(new String[]{"003", "Service not bound."});
+            return new InfoReading(new String[]{"003", "Service not bound."});
+
+
+    }
+
+    public InfoReading writeReading(SensorReading reading) throws RemoteException {
+        if (bindFlag) {
+            if (mService != null) {
+                return mService.writeReading(reading);
+            }
+
+            else
+                return new InfoReading(new String[]{"002", "Service not connected."});
+        } else
+            return new InfoReading(new String[]{"003", "Service not bound."});
 
 
     }
 
 
-    public SensorReading getReadings(long sensorID, long startTime, long endTime, RemoteCallback cb) throws RemoteException {
+    /*public SensorReading getReadings(long sensorID, long startTime, long endTime, RemoteCallback cb) throws RemoteException {
         if (bindFlag) {
             if (mService != null) {
 
                 mService.getReadings(sensorID, startTime, endTime, cb);
                 return null;
             } else
-                return new ErrorReading(new String[]{"002", "Nervousnet Service not connected."});
+                return new InfoReading(new String[]{"002", "Nervousnet Service not connected."});
         } else
-            return new ErrorReading(new String[]{"003", "Nervousnet Service not bound."});
+            return new InfoReading(new String[]{"003", "Nervousnet Service not bound."});
 
 
-    }
+    }*/
+
+    /*public List getAverage(long sensorID, long startTime, long endTime) throws RemoteException {
+        Callback cb = new Callback();
+        getReadings(sensorID, startTime, endTime, cb);
+        List list = cb.getList();
+        Aggregation aggr = new Aggregation(list);
+        return aggr.getAverage();
+    }*/
+
+
+
 
     private boolean isAppInstalled(String packageName) {
         try {
@@ -232,24 +259,23 @@ public class NervousnetServiceController {
             return false;
         }
     }
+    class Callback extends RemoteCallback.Stub {
+        private List<SensorReading> list;
 
+        public Callback(){
+        }
 
-//    /**
-//     * gets latest reading using a listener.
-//     * @param sensorID
-//     * @param nnSensorDataListener
-//     * @throws RemoteException
-//     */
-//    public void getReading(long sensorID, NervousnetSensorDataListener nnSensorDataListener) throws RemoteException {
-//        if (bindFlag) {
-//            if (mService != null)
-//                return mService.getLatestReading(sensorID);
-//            else
-//                nnSensorDataListener.onSensorDataReady(new ErrorReading(new String[]{"002", "Service not connected."}));
-//        } else
-//            nnSensorDataListener.onSensorDataReady(new ErrorReading(new String[]{"003", "Service not bound."}));
-//
-//
-//    }
+        @Override
+        public void success(final List<SensorReading> list) throws RemoteException {
+            Log.d("NERVOUSNET CALLBACK", " callback success " + list.size());
+            this.list = list;
+        }
 
+        @Override
+        public void failure(final InfoReading reading) throws RemoteException {
+            //Log.d("NERVOUSNET CALLBACK", sType + "callback failure "+reading.getInfoString());
+        }
+
+        public List getList() { return this.list; }
+    }
 }

@@ -1,46 +1,18 @@
-/*******************************************************************************
- * *     Nervousnet - a distributed middleware software for social sensing.
- * *      It is responsible for collecting and managing data in a fully de-centralised fashion
- * *
- * *     Copyright (C) 2016 ETH Zürich, COSS
- * *
- * *     This file is part of Nervousnet Framework
- * *
- * *     Nervousnet is free software: you can redistribute it and/or modify
- * *     it under the terms of the GNU General Public License as published by
- * *     the Free Software Foundation, either version 3 of the License, or
- * *     (at your option) any later version.
- * *
- * *     Nervousnet is distributed in the hope that it will be useful,
- * *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- * *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * *     GNU General Public License for more details.
- * *
- * *     You should have received a copy of the GNU General Public License
- * *     along with NervousNet. If not, see <http://www.gnu.org/licenses/>.
- * *
- * *
- * * 	Contributors:
- * * 	Prasad Pulikal - prasad.pulikal@gess.ethz.ch  -  Initial API and implementation
- *******************************************************************************/
 package ch.ethz.coss.nervousnet.vm.sensors;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder.AudioSource;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import ch.ethz.coss.nervousnet.lib.NoiseReading;
-import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
+import java.util.ArrayList;
+
+import ch.ethz.coss.nervousnet.lib.SensorReading;
+import ch.ethz.coss.nervousnet.vm.configuration.BasicSensorConfiguration;
 import ch.ethz.coss.nervousnet.vm.utils.FFT;
 
 public class NoiseSensor extends BaseSensor {
@@ -63,12 +35,12 @@ public class NoiseSensor extends BaseSensor {
     private int fftlen;
     private int buffersize;
     private AudioRecord audioRecord;
-    private Context mContext;
+    private Context context;
 
-    public NoiseSensor(byte sensorState, Context context) {
-        this.sensorState = sensorState;
-        this.mContext = context;
 
+    public NoiseSensor(Context context, BasicSensorConfiguration conf) {
+        super(context, conf);
+        this.context = context;
     }
 
     public void startRecording(long duration) {
@@ -96,28 +68,9 @@ public class NoiseSensor extends BaseSensor {
         return log + (bits >>> 1);
     }
 
+
     @Override
-    public boolean start() {
-
-        if (sensorState == NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE) {
-            NNLog.d(LOG_TAG, "Cancelled NoiseSensor sensor as Sensor is not available.");
-            return false;
-        } else if (sensorState == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_PERMISSION_DENIED) {
-            NNLog.d(LOG_TAG, "Cancelled NoiseSensor sensor as permission denied by user.");
-            return false;
-        } else if (sensorState == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF) {
-            NNLog.d(LOG_TAG, "Cancelled NoiseSensor sensor as Sensor state is switched off.");
-            return false;
-        }
-
-        if (Build.VERSION.SDK_INT >= 23
-                && ContextCompat.checkSelfPermission(mContext,
-                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            setSensorState(NervousnetVMConstants.SENSOR_STATE_AVAILABLE_PERMISSION_DENIED);
-            return false;
-        }
-
-        NNLog.d(LOG_TAG, "Starting NoiseSensor sensor with state = " + sensorState);
+    public boolean startListener() {
 
         hthread = new HandlerThread("HandlerThread");
         hthread.start();
@@ -134,46 +87,11 @@ public class NoiseSensor extends BaseSensor {
         };
 
         boolean flag = handler.postDelayed(run, 500);
-
-        return true;
+        return false;
     }
 
     @Override
-    public boolean stopAndRestart(byte state) {
-        if (state == NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE) {
-            NNLog.d(LOG_TAG, "Cancelled NoiseSensor sensor as Sensor is not available.");
-            return false;
-        } else if (state == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_PERMISSION_DENIED) {
-            NNLog.d(LOG_TAG, "Cancelled NoiseSensor sensor as permission denied by user.");
-            return false;
-        } else if (state == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF) {
-            setSensorState(state);
-            NNLog.d(LOG_TAG, "Cancelled NoiseSensor sensor as Sensor state is switched off.");
-            return false;
-        }
-
-        stop(false);
-        setSensorState(state);
-        NNLog.d(LOG_TAG, "Restarting NoiseSensor with state = " + sensorState);
-        start();
-        return true;
-    }
-
-    @Override
-    public boolean stop(boolean changeStateFlag) {
-        if (sensorState == NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE) {
-            NNLog.d(LOG_TAG, "Cancelled stop NoiseSensor sensor as Sensor state is not available ");
-            return false;
-        } else if (sensorState == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_PERMISSION_DENIED) {
-            NNLog.d(LOG_TAG, "Cancelled stop NoiseSensor sensor as permission denied by user.");
-            return false;
-        } else if (sensorState == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF) {
-            NNLog.d(LOG_TAG, "Cancelled stop NoiseSensor sensor as Sensor state is switched off ");
-            return false;
-        }
-        setSensorState(NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF);
-        NNLog.d(LOG_TAG, "Stopped NoiseSensor with state = " + sensorState);
-        this.reading = null;
+    public boolean stopListener() {
         if (handler != null)
             handler.removeCallbacks(hthread);
         hthread = null;
@@ -296,7 +214,13 @@ public class NoiseSensor extends BaseSensor {
 
         @Override
         public void onPostExecute(Void params) {
-            dataReady(new NoiseReading(recordTime, spl));
+            ArrayList values = new ArrayList();
+            values.add(spl);
+            SensorReading reading = new SensorReading(sensorID, sensorName, paramNames);
+            reading.setTimestampEpoch(recordTime);
+            reading.setValues(values);
+            push(reading);
+            //Log.d("NOISE", "" + spl);
         }
 
         public AudioRecord findAudioRecord() {
@@ -306,8 +230,8 @@ public class NoiseSensor extends BaseSensor {
                     for (short channelConfig : new short[]{AudioFormat.CHANNEL_IN_MONO,
                             AudioFormat.CHANNEL_IN_STEREO}) {
                         try {
-                            NNLog.d("NoiseSensor", "Attempting rate " + rate + "Hz, bits: " + audioFormat
-                                    + ", channel: " + channelConfig);
+                            //NNLog.d("NoiseSensor", "Attempting rate " + rate + "Hz, bits: " + audioFormat
+                            //        + ", channel: " + channelConfig);
                             int bufferSize = AudioRecord.getMinBufferSize(rate, channelConfig, audioFormat);
 
                             if (bufferSize != AudioRecord.ERROR_BAD_VALUE) {

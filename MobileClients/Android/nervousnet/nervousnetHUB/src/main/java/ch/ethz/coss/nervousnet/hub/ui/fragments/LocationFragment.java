@@ -39,12 +39,10 @@ import android.widget.TextView;
 
 import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
-import ch.ethz.coss.nervousnet.lib.ErrorReading;
+import ch.ethz.coss.nervousnet.lib.InfoReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
-import ch.ethz.coss.nervousnet.lib.LocationReading;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
 public class LocationFragment extends BaseFragment {
 
@@ -61,6 +59,48 @@ public class LocationFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        sensorStatusTV = (TextView) getView().findViewById(R.id.sensorStatus);
+
+        radioGroup = (RadioGroup) getView().findViewById(R.id.radioRateSensor);
+        lastCollectionRate = ((((Application) ((Activity) getContext()).getApplication()).nn_VM.getSensorState(LibConstants.SENSOR_LOCATION)));
+
+        ((RadioButton) radioGroup.getChildAt(lastCollectionRate)).setChecked(true);
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                byte state;
+                switch (checkedId) {
+                    case R.id.radioOff:
+                        state = NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF; break;
+                    case R.id.radioLow:
+                        state = NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_LOW; break;
+                    case R.id.radioMed:
+                        state = NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_MED; break;
+                    case R.id.radioHigh:
+                        state = NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_HIGH; break;
+                    default: state = -1;
+                }
+                if (lastCollectionRate >= NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF
+                        && state >= 0) {
+                    ((Application) ((Activity) getContext()).getApplication()).nn_VM.updateSensorState(LibConstants.SENSOR_LOCATION, state);
+                }
+            }
+        });
+
+        if ((((Application) ((Activity) getContext()).getApplication()).nn_VM.getNervousnetState() == NervousnetVMConstants.STATE_PAUSED)) {
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                ((RadioButton) radioGroup.getChildAt(i)).setEnabled(false);
+            }
+            sensorStatusTV.setText(R.string.local_service_paused);
+        }
+
+    }
 
 
     /*
@@ -75,16 +115,22 @@ public class LocationFragment extends BaseFragment {
 
         NNLog.d("LocationFragment", "Inside updateReadings");
 
-        if (reading instanceof ErrorReading) {
+        if (reading instanceof InfoReading) {
 
-            NNLog.d("LocationFragment", "Inside updateReadings - ErrorReading");
-            handleError((ErrorReading) reading);
+            NNLog.d("LocationFragment", "Inside updateReadings - InfoReading");
+            handleError((InfoReading) reading);
         } else {
 
             sensorStatusTV.setText(R.string.sensor_status_connected);
 
+<<<<<<< HEAD
             double[] location = ((LocationReading) reading).getLatnLong();
             Activity fragAct = getActivity();
+=======
+            // TODO
+            /*double[] location = ((LocationReading) reading).getLatnLong();
+            FragmentActivity fragAct = getActivity();
+>>>>>>> upstream/master
             if (fragAct == null)
                 System.out.println("FragmentAcvitivity is null");
 
@@ -92,15 +138,15 @@ public class LocationFragment extends BaseFragment {
             latitude.setText("" + location[0]);
 
             TextView longitude = (TextView) getActivity().findViewById(R.id.longitude);
-            longitude.setText("" + location[1]);
+            longitude.setText("" + location[1]);*/
         }
 
     }
 
     @Override
-    public void handleError(ErrorReading reading) {
+    public void handleError(InfoReading reading) {
         NNLog.d("LocationFragment", "handleError called");
-        sensorStatusTV.setText(reading.getErrorString());
+        sensorStatusTV.setText(reading.getInfoString());
 
 //        // Android 6.0 permission request
 //        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

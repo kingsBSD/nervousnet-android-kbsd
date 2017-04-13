@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 public class NNLog {
-    private static boolean isDebug = false;
+    private static boolean isDebug = true;
 
     public static void init(Context context) {
 //         String pName = context.getPackageName();

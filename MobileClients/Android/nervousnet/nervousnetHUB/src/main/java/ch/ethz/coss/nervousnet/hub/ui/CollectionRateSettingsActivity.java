@@ -43,7 +43,6 @@ import ch.ethz.coss.nervousnet.hub.Constants;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.hub.ui.adapters.CollectionRateSettingItemAdapter;
 import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 import ch.ethz.coss.nervousnet.vm.events.NNEvent;
 
 /**
@@ -72,7 +71,7 @@ public class CollectionRateSettingsActivity extends BaseActivity {
             }
         });
 
-        if (((Application) getApplication()).nn_VM.getState() == NervousnetVMConstants.STATE_PAUSED) {
+        if (((Application) getApplication()).nn_VM.getNervousnetState() == NervousnetVMConstants.STATE_PAUSED) {
             globalButton.setAlpha(.4f);
             globalButton.setClickable(false);
         }
@@ -152,7 +151,7 @@ public class CollectionRateSettingsActivity extends BaseActivity {
             startActivity(getIntent());
         } else if (event.eventType == NervousnetVMConstants.EVENT_NERVOUSNET_STATE_UPDATED) {
 
-            if (((Application) getApplication()).nn_VM.getState() == NervousnetVMConstants.STATE_PAUSED) {
+            if (((Application) getApplication()).nn_VM.getNervousnetState() == NervousnetVMConstants.STATE_PAUSED) {
                 finish();
                 startActivity(getIntent());
             } else {

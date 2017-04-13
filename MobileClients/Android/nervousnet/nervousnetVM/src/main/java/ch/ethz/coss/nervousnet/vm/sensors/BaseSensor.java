@@ -1,119 +1,99 @@
-/*******************************************************************************
- * *     Nervousnet - a distributed middleware software for social sensing.
- * *      It is responsible for collecting and managing data in a fully de-centralised fashion
- * *
- * *     Copyright (C) 2016 ETH Zürich, COSS
- * *
- * *     This file is part of Nervousnet Framework
- * *
- * *     Nervousnet is free software: you can redistribute it and/or modify
- * *     it under the terms of the GNU General Public License as published by
- * *     the Free Software Foundation, either version 3 of the License, or
- * *     (at your option) any later version.
- * *
- * *     Nervousnet is distributed in the hope that it will be useful,
- * *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- * *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * *     GNU General Public License for more details.
- * *
- * *     You should have received a copy of the GNU General Public License
- * *     along with NervousNet. If not, see <http://www.gnu.org/licenses/>.
- * *
- * *
- * * 	Contributors:
- * * 	Prasad Pulikal - prasad.pulikal@gess.ethz.ch  -  Initial API and implementation
- *******************************************************************************/
 package ch.ethz.coss.nervousnet.vm.sensors;
 
+import android.content.Context;
+import android.util.Log;
+
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import ch.ethz.coss.nervousnet.lib.SensorReading;
-import ch.ethz.coss.nervousnet.lib.Utils;
-import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
+import ch.ethz.coss.nervousnet.vm.configuration.BasicSensorConfiguration;
+import ch.ethz.coss.nervousnet.vm.database.NervousnetDBManager;
 
+/**
+ * BaseSensor is an abstract class which task is to hide implementational details of specific
+ * physical or other sensors and make sensor listening scalable. All sensor listeners should
+ * extend this class and implement methods {@link #startListener()} and {@link #stopListener()}
+ * and when a new value from a sensor is obtained, SeneorReading should be created and
+ * method {@link #push(SensorReading)} should be called which takes care that the SensorReading
+ * gets stored into a database or sent to some other parts. Currently, SensorReading is just
+ * stored into a database.
+ * TODO: Remove context from the constructor and database storage. Storage should be managed
+ * by NervousnetVM
+ */
 public abstract class BaseSensor {
+
     private static final String LOG_TAG = BaseSensor.class.getSimpleName();
 
-    protected SensorReading reading;
-    protected byte sensorState;
+    // Database handler
+    private NervousnetDBManager databaseHandler;
+    // Sensor configuration
+    protected BasicSensorConfiguration configuration;
 
-    protected List<BaseSensorListener> listenerList = new ArrayList<BaseSensorListener>();
-    protected Lock listenerMutex = new ReentrantLock();
+    // Just a shortcut of configuration above and maybe more intuitive
+    // representation
+    protected long sensorID;
+    protected String sensorName;
+    protected ArrayList<String> paramNames;
 
-    public void addListener(BaseSensorListener listener) {
-        listenerMutex.lock();
-        listenerList.add(listener);
-        listenerMutex.unlock();
+    // In order to reduce the amount of SensorReadings to be stored into a database,
+    // sampling rate is specified in the configuration. This variable is only temporary
+    // variable which stores timestamp by which no SensorReading will be stored. Then, the
+    // first SensorReading that arrives, is stored and nextSampling is updated to the next
+    // timestamp.
+    private long nextSampling = 0;
+
+
+    /**
+     *
+     * @param context Service context
+     * @param conf Sensor configuration
+     */
+    public BaseSensor(Context context, BasicSensorConfiguration conf){
+        this.databaseHandler = NervousnetDBManager.getInstance(context);
+        this.configuration = conf;
+        this.sensorID = conf.getSensorID();
+        this.sensorName = conf.getSensorName();
+        this.paramNames = conf.getParametersNames();
+        this.databaseHandler.createTableIfNotExists(conf);
     }
 
-    public void removeListener(BaseSensorListener listener) {
-        listenerMutex.lock();
-        listenerList.remove(listener);
-        listenerMutex.unlock();
-    }
 
-    public void clearListeners() {
-        listenerMutex.lock();
-        listenerList.clear();
-        listenerMutex.unlock();
-    }
-
-    public void dataReady(SensorReading reading) {
-
-        this.reading = reading;
-        listenerMutex.lock();
-        for (BaseSensorListener listener : listenerList) {
-            if (reading != null)
-                listener.sensorDataReady(reading);
-            else
-                NNLog.d(LOG_TAG, "reading object is null.");
-
+    /**
+     * Method for accepting all new sensor readings from subclasses. It takes care of passing new
+     * readings further for storing.
+     */
+    public void push(SensorReading reading){
+        if (reading.getTimestampEpoch() >= nextSampling && configuration.getActualSamplingRate() >= 0) {
+            Log.d(LOG_TAG, reading.toString());
+            nextSampling = reading.getTimestampEpoch() + configuration.getActualSamplingRate();
+            databaseHandler.store(reading);
         }
-        listenerMutex.unlock();
     }
 
-    public byte getSensorState() {
-        return sensorState;
+    /**
+     * Start sensor reading.
+     */
+    public void start(){
+        stopListener();
+        this.databaseHandler.createTableIfNotExists(configuration);
+        startListener();
     }
 
-    public void setSensorState(byte sensorState) {
-        this.sensorState = sensorState;
+    /**
+     * Stop sensor reading
+     */
+    public void stop(){
+        stopListener();
     }
 
-    public abstract boolean start();
+    /**
+     * Abstract method to register a sensor.
+     */
+    protected abstract boolean startListener();
 
-    public abstract boolean stopAndRestart(byte state);
-
-    public abstract boolean stop(boolean changeStateFlag);
-
-    public SensorReading getReading() {
-        NNLog.d(LOG_TAG, "getReading called ");
-
-        if (sensorState == NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE) {
-            NNLog.d(LOG_TAG, "Error 201 : Sensor not available.");
-            return Utils.getErrorReading(201);
-        } else if (sensorState == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_PERMISSION_DENIED) {
-            NNLog.d(LOG_TAG, "Error 203 : Sensor available but Permission Denied");
-            return Utils.getErrorReading(202);
-        } else if (sensorState == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF) {
-            NNLog.d(LOG_TAG, "Error 203 : Sensor available but switched off");
-            return Utils.getErrorReading(203);
-        }
-
-        if (reading == null) {
-            NNLog.d(LOG_TAG, "Error 204 : Sensor reading object is null");
-            return Utils.getErrorReading(204);
-        }
-        return reading;
-
-    }
-
-    public interface BaseSensorListener {
-        public void sensorDataReady(SensorReading reading);
-    }
+    /**
+     * Abstract method to unregister a sensor.
+     */
+    protected abstract boolean stopListener();
 
 }

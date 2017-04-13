@@ -1,13 +1,1 @@
-ch.ethz.coss.nervousnet.hub
-ch.ethz.coss.nervousnet.hub.authentication
-ch.ethz.coss.nervousnet.hub.ui
-ch.ethz.coss.nervousnet.hub.ui.adapters
-ch.ethz.coss.nervousnet.hub.ui.fragments
-ch.ethz.coss.nervousnet.hub.ui.views
 ch.ethz.coss.nervousnet.lib
-ch.ethz.coss.nervousnet.vm
-ch.ethz.coss.nervousnet.vm.events
-ch.ethz.coss.nervousnet.vm.lae
-ch.ethz.coss.nervousnet.vm.sensors
-ch.ethz.coss.nervousnet.vm.storage
-ch.ethz.coss.nervousnet.vm.utils

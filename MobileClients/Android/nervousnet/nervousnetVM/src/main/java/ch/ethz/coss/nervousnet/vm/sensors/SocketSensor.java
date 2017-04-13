@@ -19,7 +19,6 @@ import android.text.TextUtils;
 
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.SocketReading;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
 
 /**

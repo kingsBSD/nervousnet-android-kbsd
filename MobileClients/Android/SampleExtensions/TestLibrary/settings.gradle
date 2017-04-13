@@ -1,0 +1,3 @@
+include ':app', ':nervousnetLIB'
+
+project(':nervousnetLIB').projectDir = new File(settingsDir, '../../nervousnet/nervousnetLIB')

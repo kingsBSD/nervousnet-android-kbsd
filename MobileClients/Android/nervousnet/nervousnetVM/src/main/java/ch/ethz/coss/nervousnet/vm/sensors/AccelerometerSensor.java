@@ -33,7 +33,6 @@ import android.hardware.SensorManager;
 import ch.ethz.coss.nervousnet.lib.AccelerometerReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
 public class AccelerometerSensor extends BaseSensor implements SensorEventListener {
 

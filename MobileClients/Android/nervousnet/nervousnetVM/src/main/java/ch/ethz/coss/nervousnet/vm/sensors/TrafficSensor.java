@@ -12,7 +12,6 @@ import java.util.List;
 
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.TrafficReading;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
 
 /**

@@ -1,0 +1,118 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .DS_Store
+* doc/
+* doc/allclasses-frame.html
+* doc/allclasses-noframe.html
+* doc/ch/
+* doc/ch/ethz/
+* doc/ch/ethz/coss/
+* doc/ch/ethz/coss/nervousnet/
+* doc/ch/ethz/coss/nervousnet/lib/
+* doc/ch/ethz/coss/nervousnet/lib/AccelerometerReading.html
+* doc/ch/ethz/coss/nervousnet/lib/BatteryReading.html
+* doc/ch/ethz/coss/nervousnet/lib/BuildConfig.html
+* doc/ch/ethz/coss/nervousnet/lib/ConnectivityReading.html
+* doc/ch/ethz/coss/nervousnet/lib/DeviceReading.html
+* doc/ch/ethz/coss/nervousnet/lib/GyroReading.html
+* doc/ch/ethz/coss/nervousnet/lib/LibConstants.html
+* doc/ch/ethz/coss/nervousnet/lib/LightReading.html
+* doc/ch/ethz/coss/nervousnet/lib/LocationReading.html
+* doc/ch/ethz/coss/nervousnet/lib/NervousnetRemote.html
+* doc/ch/ethz/coss/nervousnet/lib/NoiseReading.html
+* doc/ch/ethz/coss/nervousnet/lib/ProximityReading.html
+* doc/ch/ethz/coss/nervousnet/lib/SensorReading.html
+* doc/ch/ethz/coss/nervousnet/lib/Utils.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/
+* doc/ch/ethz/coss/nervousnet/lib/class-use/AccelerometerReading.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/BatteryReading.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/BuildConfig.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/ConnectivityReading.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/DeviceReading.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/GyroReading.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/LibConstants.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/LightReading.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/LocationReading.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/NervousnetRemote.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/NoiseReading.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/ProximityReading.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/SensorReading.html
+* doc/ch/ethz/coss/nervousnet/lib/class-use/Utils.html
+* doc/ch/ethz/coss/nervousnet/lib/package-frame.html
+* doc/ch/ethz/coss/nervousnet/lib/package-summary.html
+* doc/ch/ethz/coss/nervousnet/lib/package-tree.html
+* doc/ch/ethz/coss/nervousnet/lib/package-use.html
+* doc/constant-values.html
+* doc/deprecated-list.html
+* doc/help-doc.html
+* doc/index-files/
+* doc/index-files/index-1.html
+* doc/index-files/index-10.html
+* doc/index-files/index-11.html
+* doc/index-files/index-12.html
+* doc/index-files/index-13.html
+* doc/index-files/index-14.html
+* doc/index-files/index-15.html
+* doc/index-files/index-16.html
+* doc/index-files/index-2.html
+* doc/index-files/index-3.html
+* doc/index-files/index-4.html
+* doc/index-files/index-5.html
+* doc/index-files/index-6.html
+* doc/index-files/index-7.html
+* doc/index-files/index-8.html
+* doc/index-files/index-9.html
+* doc/index.html
+* doc/overview-tree.html
+* doc/package-list
+* doc/script.js
+* doc/stylesheet.css
+* proguard-project.txt
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => nervousnetLIB/src/main/AndroidManifest.xml
+* res/ => nervousnetLIB/src/main/res/
+* src/ => nervousnetLIB/src/main/java/
+* src/.DS_Store => nervousnetLIB/src/main/resources/.DS_Store
+* src/ch/.DS_Store => nervousnetLIB/src/main/resources/ch/.DS_Store
+* src/ch/ethz/.DS_Store => nervousnetLIB/src/main/resources/ch/ethz/.DS_Store
+* src/ch/ethz/coss/.DS_Store => nervousnetLIB/src/main/resources/ch/ethz/coss/.DS_Store
+* src/ch/ethz/coss/nervousnet/.DS_Store => nervousnetLIB/src/main/resources/ch/ethz/coss/nervousnet/.DS_Store
+* src/ch/ethz/coss/nervousnet/lib/AccelerometerReading.aidl => nervousnetLIB/src/main/aidl/ch/ethz/coss/nervousnet/lib/AccelerometerReading.aidl
+* src/ch/ethz/coss/nervousnet/lib/BatteryReading.aidl => nervousnetLIB/src/main/aidl/ch/ethz/coss/nervousnet/lib/BatteryReading.aidl
+* src/ch/ethz/coss/nervousnet/lib/ConnectivityReading.aidl => nervousnetLIB/src/main/aidl/ch/ethz/coss/nervousnet/lib/ConnectivityReading.aidl
+* src/ch/ethz/coss/nervousnet/lib/DeviceReading.aidl => nervousnetLIB/src/main/aidl/ch/ethz/coss/nervousnet/lib/DeviceReading.aidl
+* src/ch/ethz/coss/nervousnet/lib/GyroReading.aidl => nervousnetLIB/src/main/aidl/ch/ethz/coss/nervousnet/lib/GyroReading.aidl
+* src/ch/ethz/coss/nervousnet/lib/LightReading.aidl => nervousnetLIB/src/main/aidl/ch/ethz/coss/nervousnet/lib/LightReading.aidl
+* src/ch/ethz/coss/nervousnet/lib/LocationReading.aidl => nervousnetLIB/src/main/aidl/ch/ethz/coss/nervousnet/lib/LocationReading.aidl
+* src/ch/ethz/coss/nervousnet/lib/NervousnetRemote.aidl => nervousnetLIB/src/main/aidl/ch/ethz/coss/nervousnet/lib/NervousnetRemote.aidl
+* src/ch/ethz/coss/nervousnet/lib/NoiseReading.aidl => nervousnetLIB/src/main/aidl/ch/ethz/coss/nervousnet/lib/NoiseReading.aidl
+* src/ch/ethz/coss/nervousnet/lib/PressureReading.aidl => nervousnetLIB/src/main/aidl/ch/ethz/coss/nervousnet/lib/PressureReading.aidl
+* src/ch/ethz/coss/nervousnet/lib/ProximityReading.aidl => nervousnetLIB/src/main/aidl/ch/ethz/coss/nervousnet/lib/ProximityReading.aidl
+* src/ch/ethz/coss/nervousnet/lib/SensorReading.aidl => nervousnetLIB/src/main/aidl/ch/ethz/coss/nervousnet/lib/SensorReading.aidl
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

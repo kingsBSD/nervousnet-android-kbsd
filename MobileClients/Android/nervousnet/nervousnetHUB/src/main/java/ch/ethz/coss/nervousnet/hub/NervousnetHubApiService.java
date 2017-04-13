@@ -32,11 +32,12 @@ import android.widget.Toast;
 
 import java.util.concurrent.locks.Lock;
 
+import ch.ethz.coss.nervousnet.lib.InfoReading;
 import ch.ethz.coss.nervousnet.lib.NervousnetRemote;
 import ch.ethz.coss.nervousnet.lib.RemoteCallback;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
+import ch.ethz.coss.nervousnet.lib.Utils;
 import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 
 public class NervousnetHubApiService extends Service {
 
@@ -74,6 +75,12 @@ public class NervousnetHubApiService extends Service {
 
         }
 
+        @Override
+        public InfoReading writeReading(SensorReading reading) {
+            NNLog.d(LOG_TAG, "WriteReading:  Sensor ID= " + reading.getSensorID() + " sensorName "+reading.getSensorName());
+            ((Application) getApplication()).nn_VM.store(reading);
+            return Utils.getInfoReading(001);
+        }
 
     };
 
@@ -95,7 +102,7 @@ public class NervousnetHubApiService extends Service {
         if (!wakeLock.isHeld()) {
             wakeLock.acquire();
         }
-        if (((Application) getApplication()).nn_VM.getState() == NervousnetVMConstants.STATE_RUNNING) {
+        if (((Application) getApplication()).nn_VM.getNervousnetState() == NervousnetVMConstants.STATE_RUNNING) {
 
             // Display a notification about us starting. We put an icon in the
             // status bar.
@@ -116,7 +123,7 @@ public class NervousnetHubApiService extends Service {
 //        NNLog.d(LOG_TAG, "Inside onBind " + mBinder.getCallingUid());
 //        NNLog.d(LOG_TAG, "Inside onBind " + mBinder.getCallingUserHandle());
 
-        if (((Application) getApplication()).nn_VM.getState() == NervousnetVMConstants.STATE_PAUSED) {
+        if (((Application) getApplication()).nn_VM.getNervousnetState() == NervousnetVMConstants.STATE_PAUSED) {
 
             return null;
         }
@@ -127,7 +134,7 @@ public class NervousnetHubApiService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         NNLog.d(LOG_TAG, "Service execution started");
-        if (((Application) getApplicationContext()).nn_VM.getState() == NervousnetVMConstants.STATE_RUNNING) {
+        if (((Application) getApplicationContext()).nn_VM.getNervousnetState() == NervousnetVMConstants.STATE_RUNNING) {
             Toast.makeText(NervousnetHubApiService.this, R.string.toast_service_started, Toast.LENGTH_SHORT).show();
             ((Application) getApplicationContext()).nn_VM.startSensors();
         }

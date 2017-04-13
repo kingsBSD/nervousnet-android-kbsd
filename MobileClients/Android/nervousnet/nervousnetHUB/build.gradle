@@ -7,6 +7,8 @@ android {
         applicationId "ch.ethz.coss.nervousnet.hub"
         minSdkVersion 17
         targetSdkVersion 23
+        versionCode 47
+        versionName '0.7.40 alpha'
     }
     buildTypes {
         release {

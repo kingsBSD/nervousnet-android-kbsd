@@ -19,10 +19,11 @@ import ch.ethz.coss.nervousnet.hub.Application;
 import ch.ethz.coss.nervousnet.hub.R;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 import ch.ethz.coss.nervousnet.vm.events.NNEvent;
 
 public class CollectionRateSettingItemAdapter extends ArrayAdapter<String> {
+    // TODO
+    private final long[] sensorIDs = NervousnetVMConstants.sensorIDs;
 
     private final Context context;
     private final String[] labels;
@@ -50,26 +51,15 @@ public class CollectionRateSettingItemAdapter extends ArrayAdapter<String> {
         imageView.setImageResource(icons[position]);
 
         button = (Button) convertView.findViewById(R.id.sensor_level_button);
-        int sensorState = ((Application) context.getApplicationContext()).nn_VM.getSensorState(position);
-        if (pos != LibConstants.SENSOR_NOTIFICATION) { // doesn't make sense to specify a frequency for Notifications and other events.
-            button.setText(NervousnetVMConstants.sensor_freq_labels[sensorState]);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NNLog.d("CollectionRateSettingItemAdapter", "button on click");
-                    createDialog(position).show();
-                }
-            });
-        }
-        else { // event-based sensors should just toggle on-off.
-            if (sensorState == NervousnetVMConstants.SENSOR_STATE_AVAILABLE_BUT_OFF) {
-                button.setText(NervousnetVMConstants.sensor_freq_labels[0]);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        EventBus.getDefault().post(new NNEvent((long) position, NervousnetVMConstants.SENSOR_STATE_AVAILABLE_DELAY_LOW, NervousnetVMConstants.EVENT_CHANGE_SENSOR_STATE_REQUEST));
-                    }
-                });
+
+        button.setText(NervousnetVMConstants.sensor_freq_labels[((Application) context.getApplicationContext()).nn_VM
+                .getSensorState(sensorIDs[position])]);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NNLog.d("CollectionRateSettingItemAdapter", "button on click");
+                createDialog(position).show();
+
             }
             else {
                 button.setText(NervousnetVMConstants.sensor_on);
@@ -82,7 +72,7 @@ public class CollectionRateSettingItemAdapter extends ArrayAdapter<String> {
             }
         }
 
-        if (((Application) context.getApplicationContext()).nn_VM.getState() == NervousnetVMConstants.STATE_PAUSED
+        if (((Application) context.getApplicationContext()).nn_VM.getNervousnetState() == NervousnetVMConstants.STATE_PAUSED
                 || ((Application) context.getApplicationContext()).nn_VM
                 .getSensorState(position) == NervousnetVMConstants.SENSOR_STATE_NOT_AVAILABLE
                 || ((Application) context.getApplicationContext()).nn_VM
@@ -103,7 +93,7 @@ public class CollectionRateSettingItemAdapter extends ArrayAdapter<String> {
                 String[] option_array = NervousnetVMConstants.sensor_freq_labels;
                 String optionSelected = option_array[itemClicked];
 
-                EventBus.getDefault().post(new NNEvent((long) position, (byte) itemClicked, NervousnetVMConstants.EVENT_CHANGE_SENSOR_STATE_REQUEST));
+                EventBus.getDefault().post(new NNEvent(sensorIDs[position], (byte) itemClicked, NervousnetVMConstants.EVENT_CHANGE_SENSOR_STATE_REQUEST));
 //                ((Application) context.getApplicationContext()).nn_VM.updateSensorConfig((long) position,
 //                        (byte) itemClicked);
 //                ((Activity) context).finish();

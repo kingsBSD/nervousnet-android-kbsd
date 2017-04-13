@@ -16,8 +16,6 @@ import java.util.Date;
 
 import java.nio.channels.FileChannel;
 
-import ch.ethz.coss.nervousnet.vm.storage.SQLHelper;
-
 /**
  * Created by grg on 23/08/16.
  */

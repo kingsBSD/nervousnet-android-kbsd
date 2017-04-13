@@ -62,16 +62,14 @@ import ch.ethz.coss.nervousnet.hub.ui.fragments.LocationFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.NoiseFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.NotificationFragment;
 import ch.ethz.coss.nervousnet.hub.ui.fragments.ProximityFragment;
-import ch.ethz.coss.nervousnet.hub.ui.fragments.SocketFragment;
-import ch.ethz.coss.nervousnet.hub.ui.fragments.TrafficFragment;
-import ch.ethz.coss.nervousnet.lib.ErrorReading;
+
+import ch.ethz.coss.nervousnet.lib.InfoReading;
 import ch.ethz.coss.nervousnet.lib.LibConstants;
 import ch.ethz.coss.nervousnet.lib.NervousnetServiceConnectionListener;
 import ch.ethz.coss.nervousnet.lib.NervousnetServiceController;
 import ch.ethz.coss.nervousnet.lib.SensorReading;
 import ch.ethz.coss.nervousnet.lib.Utils;
 import ch.ethz.coss.nervousnet.vm.NNLog;
-import ch.ethz.coss.nervousnet.vm.NervousnetVMConstants;
 import ch.ethz.coss.nervousnet.vm.events.NNEvent;
 
 public class SensorDisplayActivity extends BaseActivity implements ActionBarImplementation, NervousnetServiceConnectionListener {
@@ -124,9 +122,14 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
         NNLog.d("SensorDisplayActivity", "Inside updateStatus, index =  " + index);
 
         if (reading != null) {
+<<<<<<< HEAD
             if (reading instanceof ErrorReading) {
                 fragment.handleError((ErrorReading) reading);
 
+=======
+            if (reading instanceof InfoReading) {
+                fragment.handleError((InfoReading) reading);
+>>>>>>> upstream/master
             } else {
                 fragment.updateReadings(reading);
             }
@@ -252,11 +255,16 @@ public class SensorDisplayActivity extends BaseActivity implements ActionBarImpl
 
     @Override
     public void onServiceDisconnected() {
+<<<<<<< HEAD
+=======
+        fragment.handleError(Utils.getInfoReading(101));
+
+>>>>>>> upstream/master
         stopRepeatingTask();
     }
 
     @Override
-    public void onServiceConnectionFailed(ErrorReading errorReading) {
+    public void onServiceConnectionFailed(InfoReading infoReading) {
 
     }
 

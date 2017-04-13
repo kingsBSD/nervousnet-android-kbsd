@@ -1,6 +1,7 @@
 package ch.ethz.coss.nervousnet.lib;
 
 import ch.ethz.coss.nervousnet.lib.SensorReading;
+import ch.ethz.coss.nervousnet.lib.InfoReading;
 import ch.ethz.coss.nervousnet.lib.RemoteCallback;
 
 import java.util.List;
@@ -37,8 +38,9 @@ interface NervousnetRemote
 	    * cb = Callback object with list that will contain the returned objects of SensorReadings
 	    */
 	    void getReadings(long sensorType, long startTime, long endTime,  RemoteCallback cb);
-	    
 
+
+        InfoReading writeReading(in SensorReading reading);
 	}
 	/*Methods to be added
 	getAverage, getCorrelation, getEntropy, getKMeans,
